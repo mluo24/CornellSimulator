@@ -1,16 +1,24 @@
-MODULES=adventure command state main author
+MODULES=main author
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
 TEST=test.byte
 MAIN=main.byte
 OCAMLBUILD=ocamlbuild -use-ocamlfind
+PKGS=unix,oUnit,str,graphics
 
 default: build
-	OCAMLRUNPARAM=b utop
+	utop
 
 build:
-	$(OCAMLBUILD) $(OBJECTS)
+	# $(OCAMLBUILD) $(OBJECTS) && js_of_ocaml +graphics.js $(MAIN)
+	 $(OCAMLBUILD) $(OBJECTS)
+
+build1:
+	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
+
+main: 
+	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
 
 test:
 	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
@@ -18,11 +26,11 @@ test:
 play:
 	$(OCAMLBUILD) -tag 'debug' $(MAIN) && OCAMLRUNPARAM=b ./$(MAIN)
 
-check:
-	@bash check.sh
+# check:
+# 	@bash check.sh
 	
-finalcheck:
-	@bash check.sh final
+# finalcheck:
+# 	@bash check.sh final
 
 zip:
 	zip adventure.zip *.ml* *.json *.sh _tags .merlin .ocamlformat .ocamlinit LICENSE Makefile	
