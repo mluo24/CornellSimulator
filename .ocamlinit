@@ -1,10 +1,7 @@
 #require "ounit2";;
 #require "yojson";;
 #require "ANSITerminal";;
-#directory "_build";;
-
 #require "graphics";;
-
 #require "bisect_ppx.runtime";;
-
+#directory "_build";;
 #load "main.cmo";;
