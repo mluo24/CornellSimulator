@@ -5,3 +5,5 @@
 #require "bisect_ppx.runtime";;
 #directory "_build";;
 #load "main.cmo";;
+#load "item.cmo";;
+#load "itemtype.cmo";;
