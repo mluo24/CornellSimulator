@@ -1,4 +1,5 @@
 open Graphics
+open World
 open Unix
 
 (* infinite loop *)
@@ -7,7 +8,9 @@ let rec loop () = loop ()
 (* Opens the graph. If closed, catch fatal I/O error and exit*)
 let main () =
   try
-    Graphics.open_graph "";
+    Graphics.open_graph " 800x600";
+    set_window_title "Cornell Simulator";
+    resize_window (World.x_dim) (World.y_dim);
     loop ()
   with
     | Graphic_failure x ->

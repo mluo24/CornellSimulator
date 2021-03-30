@@ -1,4 +1,4 @@
-MODULES=main author
+MODULES=main author world
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
