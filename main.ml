@@ -1,5 +1,6 @@
 open Graphics
 open Unix
+open Images
 
 let main () =
   Graphics.open_graph "";

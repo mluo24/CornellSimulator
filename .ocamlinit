@@ -4,6 +4,7 @@
 #directory "_build";;
 
 #require "graphics";;
+#require "images";;
 
 #require "bisect_ppx.runtime";;
 
