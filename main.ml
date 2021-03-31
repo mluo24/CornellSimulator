@@ -1,7 +1,8 @@
 open Graphics
-open World
+
+(*open World*)
+open State
 open Unix
-open Images
 
 (* infinite loop *)
 let rec loop () = loop ()
@@ -11,7 +12,8 @@ let main () =
   try
     Graphics.open_graph "";
     set_window_title "Cornell Simulator";
-    resize_window World.x_dim World.y_dim;
+    resize_window 600 600;
+    State.draw_point;
     loop ()
   with Graphic_failure x ->
     print_string ("Goodbye. " ^ x);

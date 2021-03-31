@@ -2,11 +2,6 @@
 #require "yojson";;
 #require "ANSITerminal";;
 #require "graphics";;
-<<<<<<< HEAD
-#require "images";;
-
-=======
->>>>>>> aab8e55dee5ec2717615c0b7ce770fd42c8fead0
 #require "bisect_ppx.runtime";;
 #directory "_build";;
 #load "main.cmo";;
