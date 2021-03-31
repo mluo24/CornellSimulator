@@ -1,7 +1,7 @@
 open Graphics
+open State
 
 (*open World*)
-open State
 open Unix
 
 (* infinite loop *)
@@ -13,7 +13,6 @@ let main () =
     Graphics.open_graph "";
     set_window_title "Cornell Simulator";
     resize_window 600 600;
-    State.draw_point;
     loop ()
   with Graphic_failure x ->
     print_string ("Goodbye. " ^ x);
