@@ -14,6 +14,10 @@ let rows = failwith "Unimplemented"
 
 let cols = failwith "Unimplemented"
 
+let tile_size = failwith "Unimplemented"
+
+let layers = failwith "Unimplemented"
+
 let arr_from_txt = failwith "Unimplemented"
 
 let int_to_tile = failwith "Unimplemented"
