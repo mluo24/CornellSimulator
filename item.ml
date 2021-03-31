@@ -1,6 +1,7 @@
 (* handle the representation of food water slip day etc *)
 
 open Graphics
+open Yojson.Basic.Util
 (** The abstract type of values representing the items group *)
 type t
 
@@ -17,4 +18,16 @@ type item_id = string
 
 (* string representation of item type *)
 type item_type = string
+
+let acquired item = failwith "unimplemented"
+
+(* item name  *)
+let name item = failwith "unimplemented"
+
+let description item = failwith "unimplemented"
+
+(* effect *)
+let item_effect item = failwith "unimplemented"
+
+let item_position item = failwith "unimplemented"
 

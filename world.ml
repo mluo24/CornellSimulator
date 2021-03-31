@@ -12,9 +12,9 @@ let y_dim = 640
 
 let tile_size = 16
 
-let row = x_dim / tile_size
+let rows = x_dim / tile_size
 
-let col = y_dim / tile_size
+let cols = y_dim / tile_size
 
 let layers = 2
 

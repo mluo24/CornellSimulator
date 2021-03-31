@@ -1,6 +1,7 @@
 (* handle the representation of food water slip day etc *)
 (* open Position *)
 open Graphics
+open Yojson.Basic.Util
 (** The abstract type of values representing the items group *)
 type t
 

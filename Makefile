@@ -1,11 +1,11 @@
-MODULES=main author world item position state guages 
+MODULES=main author world item position state gauges 
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
 TEST=test.byte
 MAIN=main.byte
-OiCAMLBUILD=ocamlbuild -use-ocamlfind
-PKGS=unix,oUnit,str,graphics
+OCAMLBUILD=ocamlbuild -use-ocamlfind
+PKGS=unix,oUnit,str,graphics,yojson
 
 default: build
 	OCAMLRUNPARAM=b utop
