@@ -1,14 +1,14 @@
-MODULES=main author world
+MODULES=main author world item position state guages 
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
 TEST=test.byte
 MAIN=main.byte
-OCAMLBUILD=ocamlbuild -use-ocamlfind
+OiCAMLBUILD=ocamlbuild -use-ocamlfind
 PKGS=unix,oUnit,str,graphics
 
 default: build
-	utop
+	OCAMLRUNPARAM=b utop
 
 build:
 	# $(OCAMLBUILD) $(OBJECTS) && js_of_ocaml +graphics.js $(MAIN)

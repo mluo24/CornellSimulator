@@ -1,12 +1,11 @@
 (** The abstract type of values representing the game map. *)
 type t
 
-(** The type of a tile 
-    TODO: use records to store data within the tiles, finish the types of tiles that we may need
-*)
-type tile = 
-    | Grass 
-    | Building
+(** The type of a tile TODO: use records to store data within the tiles,
+    finish the types of tiles that we may need *)
+type tile =
+  | Grass
+  | Building
 
 (** [x_dim] is the width of the graphics window *)
 val x_dim : int
@@ -17,9 +16,13 @@ val y_dim : int
 (** [tile_size] is the width and height each tile in pixels *)
 val tile_size : int
 
-val row : int
+(** [rows] is the number of tiles in each row of the map *)
+val rows : int
 
-val col : int
+(** [cols] is the number of tiles in each column of the map *)
+val cols : int
+
+val layers : int
 
 (** *)
 val arr_from_txt : string -> int array
