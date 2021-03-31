@@ -1,7 +1,7 @@
 # assignment
 _doc.public
 _doc.private
-adventure.zip
+game.zip
 
 # ocaml
 *.cmo
@@ -12,6 +12,7 @@ adventure.zip
 *.native
 *.byte
 _build
+/_build
 
 # temporary files
 *.swp
