@@ -10,6 +10,7 @@ let rec loop () = loop ()
 (** Opens the graph. If closed with x button, catch fatal I/O error and exit *)
 let main () =
   try
+    (**)
     State.draw_point;
 
     loop ()
