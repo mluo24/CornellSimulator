@@ -1,7 +1,7 @@
 (* interaction between key input, user, item, map *)
 open Graphics
 
-type state = {
+type t_pos = {
   mutable x : int;
   mutable y : int;
 }
