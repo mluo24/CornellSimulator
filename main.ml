@@ -1,5 +1,6 @@
 open Graphics
 open State
+open World
 
 (*open World*)
 open Unix
