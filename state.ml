@@ -43,6 +43,6 @@ let move_key s c =
   | 'w' -> if s.y < 400 then s.y <- s.y + 1
   | 'a' -> if s.x > 0 then s.x <- s.x - 1
   | 's' -> if s.y > 0 then s.y <- s.y + 1
-  | 'd' -> if s.x < 800 then s.x <- s.x + 1
+  | 'd' -> if s.x < 800 then s.x <- s.x - 1
   | 'e' -> dot_end
   | _ -> ()
