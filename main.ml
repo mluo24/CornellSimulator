@@ -11,8 +11,7 @@ let rec loop () = loop ()
 let main () =
   try
     (**)
-    State.draw_point;
-
+    State.dot_init;
     loop ()
   with Graphic_failure x -> (
     match x with

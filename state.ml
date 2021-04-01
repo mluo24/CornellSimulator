@@ -1,7 +1,7 @@
 (* interaction between key input, user, item, map *)
 open Graphics
 
-type t = {
+type state = {
   mutable x : int;
   mutable y : int;
 }
@@ -9,7 +9,7 @@ type t = {
 (* { character: Character; world: time: } *)
 
 (* for now, the character is a black dot *)
-let dot =
+let dot_init =
   Graphics.open_graph "";
   set_window_title "Cornell Simulator";
   resize_window 600 600;

@@ -1,10 +1,10 @@
 (* interaction between key input, user, item, map *)
 
-type t
+type state
 
 (* { character: Character; world: time: } *)
 
 (** stand in character for now is dot and it's init pos is center *)
-val dot : unit
+val dot_init : unit
 
 (** match keyboard input to a move *)
