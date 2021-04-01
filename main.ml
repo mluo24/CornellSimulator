@@ -10,9 +10,6 @@ let rec loop () = loop ()
 (** Opens the graph. If closed with x button, catch fatal I/O error and exit *)
 let main () =
   try
-    Graphics.open_graph "";
-    set_window_title "Cornell Simulator";
-    resize_window 600 600;
     State.draw_point;
 
     loop ()
