@@ -14,6 +14,8 @@ type t = {
   tiles : tile array;
 }
 
+let x_dim = failwith "Unimplemented"
+
 let y_dim = failwith "Unimplemented"
 
 let tile_sizw = failwith "Unimplemented"
