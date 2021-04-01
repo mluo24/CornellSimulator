@@ -1,5 +1,4 @@
 open Graphics
-open State
 
 (*open World*)
 open Unix
