@@ -5,14 +5,15 @@ open Yojson.Basic.Util
 (** The abstract type of values representing the items group *)
 type t
 
+type ilist
+
 type effect
 
 (* from json for now, contain id, position, item_type *)
-val init_item : Yojson.Basic.t -> t
+val init_item_list : Yojson.Basic.t -> Yojson.Basic.t-> ilist 
 
-(* representation of item for graphic library to draw *)
-val image_rep: t -> color array array
-
+val draw : t -> unit
+val draw_all : ilist -> unit
 (** The type of item identifiers -unique. *)
 type item_id = string
 
