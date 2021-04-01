@@ -80,10 +80,12 @@ let world_test_get_tile_arr name map expected_output =
 let world_tests = [
   world_test_get_tile_arr "empty file gives empty array" blank (Array.make 0 Blank);
   world_test_get_tile_arr "testmap.json" map (Array.map int_to_tile [| 1;1;1;1;1;1;1;1;1;1;
-                                                                        1;3;3;3;3;3;3;3;3;3;
+                                                                        1;1;1;3;1;3;3;3;1;1;
+                                                                        1;3;3;3;3;3;3;3;3;1;
                                                                         2;2;2;2;2;2;2;2;2;2;
-                                                                        1;1;1;1;1;1;1;1;1;1;
-                                                                        1;1;1;1;1;1;1;1;1;1 |])
+                                                                        1;1;1;1;1;1;2;1;1;1;
+                                                                        1;1;1;1;1;1;2;1;1;1;
+                                                                        1;1;1;1;1;1;2;1;1;1|])
 ]
     
 let suite =

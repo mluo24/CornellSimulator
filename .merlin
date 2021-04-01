@@ -9,3 +9,4 @@ PKG ounit2
 PKG yojson
 PKG graphics
 PKG ANSITerminal
+PKG camlimages

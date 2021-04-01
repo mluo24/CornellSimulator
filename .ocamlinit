@@ -2,6 +2,7 @@
 #require "yojson";;
 #require "ANSITerminal";;
 #require "graphics";;
+#require "camlimages.all";;
 #require "bisect_ppx.runtime";;
 #directory "_build";;
 #load "main.cmo";;
