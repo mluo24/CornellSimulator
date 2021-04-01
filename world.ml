@@ -18,7 +18,7 @@ let x_dim = failwith "Unimplemented"
 
 let y_dim = failwith "Unimplemented"
 
-let tile_sizw = failwith "Unimplemented"
+let tile_size = failwith "Unimplemented"
 
 (* let tile_size = 16
 
