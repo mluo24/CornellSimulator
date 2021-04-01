@@ -1,4 +1,5 @@
 open Graphics
+open State
 
 (*open World*)
 open Unix
@@ -12,18 +13,18 @@ let main () =
     Graphics.open_graph "";
     set_window_title "Cornell Simulator";
     resize_window 600 600;
-    Graphics.set_color black;
-    Graphics.fill_circle 300 300 20;
+    State.draw_point;
     loop ()
-  with Graphic_failure x -> begin 
-    match x with 
-    | "fatal I/O error" -> print_endline "Goodbye.";
-    | _ -> print_endline (x ^ "Run export DISPLAY=:0 and make sure X server is running.");
-  end
+  with Graphic_failure x -> (
+    match x with
+    | "fatal I/O error" -> print_endline "Goodbye."
+    | _ ->
+        print_endline
+          (x ^ "Run export DISPLAY=:0 and make sure X server is running."))
 
-(* let main () = open_graph ""; set_window_title "Hello"; draw_string
-   "WELCOME "; print_endline "Press enter to exit:"; let s = read_line
-   () in if s = s then close_graph () *)
+(* let main () = open_graph ""; set_window_title "Hello"; draw_string "WELCOME
+   "; print_endline "Press enter to exit:"; let s = read_line () in if s = s
+   then close_graph () *)
 
 (** runs the program *)
 let () = main ()
