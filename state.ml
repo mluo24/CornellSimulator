@@ -33,16 +33,20 @@ let dot_init s =
   resize_window 800 400;
   dot s
 
+let redraw_dot s =
+  Graphics.clear_graph ();
+  dot s
+
 let dot_end =
   Graphics.close_graph ();
   print_string "End of dot."
 
 let move_key s c =
-  dot s;
+  redraw_dot s;
   match c with
   | 'w' -> if s.y < 400 then s.y <- s.y + 1
-  | 'a' -> if s.x > 0 then s.x <- s.x + 1
+  | 'd' -> if s.x > 0 then s.x <- s.x + 1
   | 's' -> if s.y > 0 then s.y <- s.y - 1
-  | 'd' -> if s.x < 800 then s.x <- s.x - 1
+  | 'a' -> if s.x < 800 then s.x <- s.x - 1
   | 'e' -> dot_end
   | _ -> ()
