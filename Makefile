@@ -33,7 +33,7 @@ play:
 # 	@bash check.sh final
 
 zip:
-	zip game.zip *.ml* *.json *.sh _tags .merlin .ocamlformat .ocamlinit LICENSE Makefile	
+	zip src.zip *.ml* *.json *.sh _tags .merlin .ocamlformat .ocamlinit LICENSE Makefile	
 	
 docs: docs-public docs-private
 	
@@ -50,4 +50,4 @@ docs-private: build
 
 clean:
 	ocamlbuild -clean
-	rm -rf _doc.public _doc.private game.zip
+	rm -rf _doc.public _doc.private src.zip
