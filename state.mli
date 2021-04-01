@@ -1,6 +1,9 @@
 (* interaction between key input, user, item, map *)
 
-type t_pos
+type t_pos = {
+  mutable x : int;
+  mutable y : int;
+}
 
 (* { character: Character; world: time: } *)
 
