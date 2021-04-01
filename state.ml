@@ -8,8 +8,7 @@ type t_pos = {
 
 (* { character: Character; world: time: } *)
 
-(* for now, the character is a black dot *)
-exception End
+
 
 let key_input key init the_end =
   init;
@@ -28,9 +27,6 @@ let dot s =
   Graphics.fill_circle s.x s.y 20
 
 let dot_init s =
-  Graphics.open_graph "";
-  set_window_title "Cornell Simulator";
-  resize_window 800 400;
   dot s
 
 let redraw_dot s =

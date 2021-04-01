@@ -26,18 +26,37 @@ val y_dim : int
    val layers : int *)
 
 (** *)
-val map_from_json : Yojson.Basic.t -> t
-
-(* val arr_from_txt : string -> int array *)
+val map_from_json_file : string -> t
 
 (** *)
 val int_to_tile : int -> tile
 
-(** val get_tile_arr : t -> tile array *)
-
-(**val get_tile : int -> int -> tile *)
-
-(* val tile_to_img : tile -> int * int *)
+(** *)
+val get_tile_arr : t -> tile array
 
 (** *)
-val map_from_arr : int array -> t
+val get_tile : int -> int -> t -> tile
+
+(** *)
+val get_rows : t -> int
+
+(** *)
+val get_cols : t -> int
+
+(** *)
+val get_tile_size : t -> int
+
+(** *)
+val get_color_from_tile : tile -> Graphics.color
+
+(** *)
+val draw_tile : int -> int -> tile -> t -> unit
+
+(** *)
+val draw_tiles : t -> unit
+
+
+(* val arr_from_txt : string -> int array *)
+(* val tile_to_img : tile -> int * int *)
+(** *)
+(* val map_from_arr : int array -> t *)

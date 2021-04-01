@@ -1,0 +1,18 @@
+{
+  "hw":{
+    "name" : "home work",
+    "description" : "homework to be done",
+    "color" : {"r":200, "g":230, "b":20},
+    "size" : 20,
+    "effect" :{"effect_dis":"do homework"}
+  },
+  "water":{
+    "name" : "water",
+    "description" : "water",
+    "color" : {"r":8, "g":200, "b":200},
+    "size" : 30,
+    "effect" :{"effect_dis":"drink water"}
+
+  }
+
+}
