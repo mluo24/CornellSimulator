@@ -5,9 +5,6 @@ type t
 
 (* { character: Character; world: time: } *)
 
-let draw_point =
-  Graphics.open_graph "";
-  (* set_window_title "Cornell Simulator"; *)
-  resize_window 600 600;
+let draw_point x y r =
   Graphics.set_color black;
-  Graphics.fill_circle 300 300 20
+  Graphics.fill_circle x y r
