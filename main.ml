@@ -7,10 +7,11 @@ open Unix
 (** infinite loop *)
 let rec loop () = loop ()
 
+let s : State.t_pos = { x = 400; y = 200 }
+
 (** Opens the graph. If closed with x button, catch fatal I/O error and exit *)
 let main () =
   try
-    let s : State.t_pos = {x = 400; y = 200};
     State.dot_init;
     loop ()
   with Graphic_failure x -> (
