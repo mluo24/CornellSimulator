@@ -1,20 +1,13 @@
 (* interaction between key input, user, item, map *)
-open Position
+open Graphics
 
 type t
 
 (* { character: Character; world: time: } *)
 
-type move = {
-  forward : Position.t;
-  back : Position.t;
-  right : Position.t;
-  left : Position.t;
-}
-
-(** match keyboard input to a move *)
-let key c = failwith "unimplemented"
-
-let move_character m c = failwith "unimplement"
-
-let collect_item item c = failwith "unimplement"
+let draw_point =
+  Graphics.open_graph "";
+  (* set_window_title "Cornell Simulator"; *)
+  resize_window 600 600;
+  Graphics.set_color black;
+  Graphics.fill_circle 300 300 20

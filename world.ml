@@ -2,9 +2,9 @@ open Yojson.Basic.Util
 open Graphics
 (* animation loading tilesets *)
 
-type tile = 
+type tile =
   | Blank
-  | Grass 
+  | Grass
   | Sidewalk
   | Building
 
@@ -12,27 +12,23 @@ type t = {
   cols : int;
   rows : int;
   tile_size : int;
-  tiles: tile array
+  tiles : tile array;
 }
 
-let x_dim = 800
+let x_dim = failwith "Unimplemented"
 
 let y_dim = 400
 
 (* let tile_size = 16
 
-let rows = x_dim / tile_size
+   let cols = failwith "Unimplemented"
 
-let cols = y_dim / tile_size
+   let tile_size = failwith "Unimplemented"
 
-let layers = 2 *)
+   let layers = 2 *)
 
-let int_to_tile i = 
-  match i with
-  | 1 -> Grass
-  | 2 -> Sidewalk
-  | 3 -> Building
-  | _ -> Blank
+let int_to_tile i =
+  match i with 1 -> Grass | 2 -> Sidewalk | 3 -> Building | _ -> Blank
 
 let map_from_json_file filename =
   let json = Yojson.Basic.from_file filename in 
