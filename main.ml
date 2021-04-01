@@ -1,4 +1,5 @@
 open Graphics
+open State
 
 (*open World*)
 open Unix
@@ -13,6 +14,7 @@ let main () =
     set_window_title "Cornell Simulator";
     resize_window 600 600;
     State.draw_point;
+
     loop ()
   with Graphic_failure x -> (
     match x with
