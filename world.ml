@@ -16,9 +16,10 @@ type t = {
   tiles : tile array;
 }
 
+(** possibly make this in the type of the map *)
 let x_dim = 800
 
-let y_dim = 400
+let y_dim = 560
 
 (* let tile_size = 16
 
