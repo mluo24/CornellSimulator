@@ -26,6 +26,9 @@ test:
 play:
 	$(OCAMLBUILD) -tag 'debug' $(MAIN) && OCAMLRUNPARAM=b ./$(MAIN)
 
+tiles:
+	$(OCAMLBUILD) imgdemo.byte && ./imgdemo.byte
+
 # check:
 # 	@bash check.sh
 	

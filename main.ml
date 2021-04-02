@@ -16,7 +16,7 @@ let main () =
     set_window_title "Cornell Simulator";
     resize_window World.x_dim World.y_dim;
     State.in_game ();
-    (* let img = Png.load "ezra.png" [] in
+    (* let img = Images.sub (Png.load "ezra.png" []) 0 0 50 50 in
     let g = Graphic_image.of_image img in
     Graphics.draw_image g 0 0; *)
     loop ()
