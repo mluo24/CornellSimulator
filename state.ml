@@ -1,5 +1,6 @@
 (* interaction between key input, user, item, map *)
 open Graphics
+open Position
 
 type t_pos = {
   mutable x : int;
@@ -8,7 +9,7 @@ type t_pos = {
 
 (* { character: Character; world: time: } *)
 
-
+exception End
 
 let key_input key init the_end =
   init;
@@ -26,8 +27,7 @@ let dot s =
   Graphics.set_color black;
   Graphics.fill_circle s.x s.y 20
 
-let dot_init s =
-  dot s
+let dot_init s = dot s
 
 let redraw_dot s =
   Graphics.clear_graph ();

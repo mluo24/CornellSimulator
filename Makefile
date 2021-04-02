@@ -1,4 +1,4 @@
-MODULES=main author world item position state gauges 
+MODULES=main position state author world item gauges 
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
