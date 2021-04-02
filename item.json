@@ -5,7 +5,7 @@
       "type":"water"
     },
     { "id":"2",
-      "position":{"x":500, "y":200},
+      "position":{"x":70, "y":200},
       "type":"hw"
   }
   ]

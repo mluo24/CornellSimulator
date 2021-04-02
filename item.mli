@@ -26,6 +26,9 @@ type item_type = string
 (* Whether the item has been collected *)
 val acquired : t -> bool
 
+val get_item : ilist -> Character.t ->
+  ilist
+
 (* item name  *)
 val name: t -> string
 

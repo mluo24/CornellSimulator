@@ -29,7 +29,10 @@ type t = {
   rep : item_prop;
 }
 
-type ilist = { items : t list }
+type ilist = {
+  items : t list;
+  aquired : t list;
+}
 
 let to_color json : Graphics.color =
   Graphics.rgb
@@ -67,6 +70,7 @@ let init_item_list item_file item_rep_file =
     items =
       item_file |> member "items" |> to_list
       |> List.map (to_item item_rep_file);
+    aquired = [];
   }
 
 let draw (item : t) : unit =
@@ -79,6 +83,20 @@ let acquired item = failwith "unimplemented"
 
 (* item name *)
 let name item = failwith "unimplemented"
+
+let get_item ilist (c : Character.t) : ilist =
+  let rec find_item lst acc rem_acc (cpos : Position.t) (csize : int) =
+    match lst with
+    | [] -> { items = acc; aquired = rem_acc }
+    | h :: t ->
+        let dist = Position.distance h.pos cpos in
+        if dist < h.rep.size + csize then
+          find_item t acc (h :: rem_acc) cpos csize
+        else find_item t (h :: acc) rem_acc cpos csize
+  in
+  find_item ilist.items [] ilist.aquired
+    (Character.get_position c)
+    (Character.get_size c)
 
 let description item = failwith "unimplemented"
 

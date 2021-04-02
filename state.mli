@@ -4,7 +4,18 @@ type t
 
 (* { character: Character; world: time: } *)
 
-(** stand in character for now is dot and it's init pos is center *)
-val draw_point : int -> int -> int -> unit
+(* val key_input : (char -> unit) -> 'a -> unit -> unit *)
 
-(** match keyboard input to a move *)
+val init_game : unit -> t
+
+val draw : t -> unit
+
+val in_game : unit -> unit
+
+(* val dot : t_pos -> unit
+
+   val dot_init : t_pos -> unit
+
+   val dot_end : unit
+
+   (** match keyboard input to a move *) val move_key : t_pos -> char -> unit *)
