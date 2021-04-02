@@ -18,8 +18,8 @@ type t = {
 
 (** possibly make this in the type of the map *)
 let x_dim = 800
-
 let y_dim = 560
+
 
 (* let tile_size = 16
 

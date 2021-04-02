@@ -9,6 +9,10 @@ open Unix
 (** infinite loop *)
 let rec loop () = loop ()
 
+let ex_s : State.t_pos = { x = 400; y = 200 }
+
+(** Opens the graph. If closed with x button, catch fatal I/O error and exit *)
+
 (** [main] opens the graph, sets it up, and draws everything on. If closed
     with x button, catch fatal I/O error and exit *)
 let main () =
@@ -18,13 +22,13 @@ let main () =
     resize_window World.x_dim World.y_dim;
     let m = World.map_from_json_file "testmap.json" in
     World.draw_tiles m;
-    State.draw_point 300 300 20;
     let items =
       Item.init_item_list
         (Yojson.Basic.from_file "item.json")
         (Yojson.Basic.from_file "item_rep.json")
     in
     Item.draw_all items;
+    State.key_input (State.move_key ex_s) (State.dot_init ex_s) State.dot_end;
     loop ()
   with Graphic_failure x -> (
     match x with

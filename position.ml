@@ -1,8 +1,8 @@
 open Yojson.Basic.Util
 
 type t = {
-  x : int;
-  y : int;
+  mutable x : int;
+  mutable y : int;
 }
 
 let from_json json =
