@@ -7,3 +7,5 @@
 #load "main.cmo";;
 #load "world.cmo";;
 #load "state.cmo";;
+#load "character.cmo";;
+
