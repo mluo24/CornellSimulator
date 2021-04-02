@@ -13,6 +13,8 @@ val move : t -> char -> unit
 
 val get_user_name : t -> string
 
+val get_size : t -> int
+
 (* val get_level: t -> how getting an item effect user *)
 (* val aquire_item : Item.t -> t *)
 

@@ -14,6 +14,8 @@ type t = {
 
 let get_position c = c.pos
 
+let get_size c = c.rep.size
+
 let init_character () =
   {
     name = "bear";

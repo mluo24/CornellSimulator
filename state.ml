@@ -7,7 +7,7 @@ open Character
 type t = {
   world : World.t;
   character : Character.t;
-  items : Item.ilist;
+  mutable items : Item.ilist;
 }
 
 let init_game () =
@@ -36,10 +36,16 @@ let in_game () =
   try
     while true do
       let s = Graphics.wait_next_event [ Graphics.Key_pressed ] in
-      if s.Graphics.keypressed then begin
-        Character.move game_state.character s.Graphics.key;
-        draw game_state
-      end
+      if s.Graphics.keypressed then
+        let c = s.Graphics.key in
+        match c with
+        | 't' ->
+            game_state.items <-
+              Item.get_item game_state.items game_state.character;
+            draw game_state
+        | _ ->
+            Character.move game_state.character s.Graphics.key;
+            draw game_state
     done
   with End -> end_game ()
 
