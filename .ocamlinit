@@ -4,8 +4,11 @@
 #require "graphics";;
 #require "bisect_ppx.runtime";;
 #directory "_build";;
+#require "drawable";;
 #load "main.cmo";;
 #load "world.cmo";;
 #load "state.cmo";;
 #load "character.cmo";;
+#load_rec "treeDictionary.cmo";;
+
 
