@@ -47,6 +47,9 @@ val get_cols : t -> int
 val get_tile_size : t -> int
 
 (** *)
+val get_image_from_tile : tile -> int -> Graphics.image
+
+(** *)
 val get_color_from_tile : tile -> Graphics.color
 
 (** *)

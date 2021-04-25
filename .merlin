@@ -8,4 +8,8 @@ PKG oUnit
 PKG ounit2
 PKG yojson
 PKG graphics
+PKG camlimages
+PKG camlimages.graphics
+PKG camlimages.png
+PKG camlimages.all
 PKG ANSITerminal
