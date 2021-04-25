@@ -53,25 +53,6 @@ let in_game () =
 
 (* { character: Character; world: time: } *)
 
-<<<<<<< HEAD
-let redraw_dot s =
-  Graphics.clear_graph ();
-  dot s
-
-let dot_end =
-  Graphics.close_graph ();
-  print_string "End of dot."
-
-let move_key s c =
-  redraw_dot s;
-  match c with
-  | 'w' -> if s.y < 560 then s.y <- s.y + 1
-  | 'd' -> if s.x > 0 then s.x <- s.x + 1
-  | 's' -> if s.y > 0 then s.y <- s.y - 1
-  | 'a' -> if s.x < 800 then s.x <- s.x - 1
-  | 'e' -> dot_end
-  | _ -> ()
-=======
 (* exception End *)
 
 (* let key_input key init the_end = init; try while true do try let s =
@@ -91,4 +72,3 @@ let move_key s c =
    s.y <- s.y + 1 | 'd' -> if s.x > 0 then s.x <- s.x + 1 | 's' -> if s.y > 0
    then s.y <- s.y - 1 | 'a' -> if s.x < 800 then s.x <- s.x - 1 | 'e' ->
    dot_end | _ -> () *)
->>>>>>> 4c01867e9277591c911c379311a061f77c2fe67b

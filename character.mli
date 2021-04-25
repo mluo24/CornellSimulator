@@ -3,12 +3,12 @@ open Graphics
 
 type t
 
-(* current position*)
+(** current position*)
 val get_position : t -> Position.t
 
 val move : t -> char -> unit
 
-(* for drawing player *)
+(** for drawing player *)
 (* val get_user_rep : t -> color array array *)
 
 val get_user_name : t -> string
