@@ -1,21 +1,20 @@
 (* interaction between key input, user, item, map *)
 
+(** The abstract type of values representing the game state. t currently keep
+    track of
+
+    - world: the state of the map
+    - character:the state of the user
+    - items : the state of items on the map *)
 type t
 
 (* { character: Character; world: time: } *)
 
-(* val key_input : (char -> unit) -> 'a -> unit -> unit *)
-
+(** [init_game ] is the initial state of the game when playing *)
 val init_game : unit -> t
 
+(** [draw t] draw current state [t] of the game *)
 val draw : t -> unit
 
+(** [in_game] update state of the game based on user input *)
 val in_game : unit -> unit
-
-(* val dot : t_pos -> unit
-
-   val dot_init : t_pos -> unit
-
-   val dot_end : unit
-
-   (** match keyboard input to a move *) val move_key : t_pos -> char -> unit *)
