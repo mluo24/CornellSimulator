@@ -21,7 +21,6 @@ type t = {
 let x_dim = 800
 let y_dim = 560
 
-
 (* let tile_size = 16
 
    let cols = failwith "Unimplemented"
@@ -54,11 +53,13 @@ let get_cols map = map.cols
 
 let get_tile_size map = map.tile_size
 
-type info = {
+(* type info = {
     coords: int * int;
     wh:int * int
-}
+} *)
+
 let get_image_from_tile tile tsize = 
+  let get_natural_tiles = load_tileset "assets/Terrain.png" tsize 48 32 in
   match tile with 
   | Blank -> Graphics.make_image (Array.make_matrix tsize tsize Graphics.transp)
   | Grass -> Imgdemo.get_tileset_part 0 0 tsize tsize "assets/Terrain.png"
