@@ -1,5 +1,6 @@
 open Yojson.Basic.Util
 open Graphics
+open Imgdemo
 
 (* animation loading tilesets *)
 
@@ -18,8 +19,8 @@ type t = {
 
 (** possibly make this in the type of the map *)
 let x_dim = 800
-let y_dim = 560
 
+let y_dim = 560
 
 (* let tile_size = 16
 
@@ -53,6 +54,26 @@ let get_cols map = map.cols
 
 let get_tile_size map = map.tile_size
 
+type info = {
+  coords : int * int;
+  wh : int * int;
+}
+
+let get_image_from_tile tile tsize =
+  match tile with
+  | Blank ->
+      Graphics.make_image (Array.make_matrix tsize tsize Graphics.transp)
+  | Grass -> Imgdemo.get_tileset_part 0 0 tsize tsize "assets/Terrain.png"
+  | Sidewalk -> Imgdemo.get_tileset_part 256 0 tsize tsize "assets/Street.png"
+  | Building ->
+      Imgdemo.get_tileset_part 0 0 tsize tsize "assets/Buildings.png"
+
+(* let get_info () = *)
+(* match tile with | Blank -> Graphics.make_image (Array.make_matrix tsize
+   tsize Graphics.transp) | Grass -> Graphics. *)
+(* in let info = get_info () in Graphics.make_image (Array.make_matrix tsize
+   tsize Graphics.transp) *)
+
 let get_color_from_tile tile =
   match tile with
   | Blank -> Graphics.black
@@ -60,10 +81,15 @@ let get_color_from_tile tile =
   | Sidewalk -> Graphics.yellow
   | Building -> Graphics.rgb 100 100 100
 
+(* let draw_tile x y tile map = let tsize = get_tile_size map in
+   Graphics.set_color (get_color_from_tile tile); Graphics.fill_rect x y tsize
+   tsize *)
+
 let draw_tile x y tile map =
   let tsize = get_tile_size map in
-  Graphics.set_color (get_color_from_tile tile);
-  Graphics.fill_rect x y tsize tsize
+  Graphics.draw_image (get_image_from_tile tile tsize) x y
+(* Graphics.set_color (get_color_from_tile tile); Graphics.fill_rect x y tsize
+   tsize *)
 
 let draw_tile_iter map i tile_t =
   let tsize = get_tile_size map in
