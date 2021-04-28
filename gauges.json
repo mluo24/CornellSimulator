@@ -1,0 +1,26 @@
+{
+  "gauges":[
+    {
+      "name": "health",
+      "max": 100,
+      "init":100
+    },
+    {
+      "name":"slip day",
+      "max":5,
+      "init":0
+
+    },
+    {
+      "name":"brain",
+      "max":100,
+      "init":5
+
+    },
+    {
+      "name":"mental health",
+      "max":100,
+      "init":80
+    }
+  ]
+}

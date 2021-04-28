@@ -2,6 +2,7 @@
     dictionaries. *)
 
 open Dictionary
+open GameGaugesDict
 
 module String : KeySig with type t = string = struct
   type t = string
@@ -33,8 +34,8 @@ module CaselessString : KeySig with type t = string = struct
     [@@coverage off]
 end
 
-module IntPos : ValueSig with type t = int = struct
-  exception Negative
+module IntPos : GameValue with type t = int = struct
+  exception IllegalSubtraction
 
   type t = int
 
@@ -45,9 +46,9 @@ module IntPos : ValueSig with type t = int = struct
 
   let add i1 i2 = i1 + i2
 
+  let minimum = 0
+
   let subtract i1 i2 =
     let num = i1 - i2 in
-    if num < 0 then raise Negative else num
-
-  let minimum = 0
+    if num < minimum then raise IllegalSubtraction else num
 end

@@ -17,16 +17,6 @@ module type Formattable = sig
   (* val stringnigy : t -> string *)
 end
 
-module type Operationable = sig
-  type t
-
-  val add : t -> t -> t
-
-  val subtract : t -> t -> t
-
-  val minimum : t
-end
-
 module type KeySig = sig
   type t
 
@@ -39,10 +29,6 @@ module type ValueSig = sig
   type t
 
   include Formattable with type t := t
-
-  include Comparable with type t := t
-
-  include Operationable with type t := t
 end
 
 module type Dictionary = sig
@@ -71,8 +57,6 @@ module type Dictionary = sig
   val find : key -> t -> value option
 
   val remove : key -> t -> t
-
-  val op_val : key -> (value -> value -> value) -> value -> t -> t
 
   val fold : (key -> value -> 'acc -> 'acc) -> 'acc -> t -> 'acc
 

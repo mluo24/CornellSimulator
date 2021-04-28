@@ -1,4 +1,4 @@
-MODULES=main position drawable dictionary treeDictionary state author world item gauges character  
+MODULES=main position gameGaugesDict gameDataStructure keyValueType drawable dictionary treeDictionary state author world item gauges character  
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
