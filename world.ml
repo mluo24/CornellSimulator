@@ -1,6 +1,6 @@
 open Yojson.Basic.Util
 open Graphics
-open Imgdemo
+open ImageHandler
 
 (* animation loading tilesets *)
 
@@ -58,13 +58,20 @@ let get_tile_size map = map.tile_size
     wh:int * int
 } *)
 
+let terrain_image = ImageHandler.get_entire_image "assets/Terrain.png"
+
+let street_image = ImageHandler.get_entire_image "assets/Street.png"
+
+let building_image = ImageHandler.get_entire_image "assets/Buildings.png"
+
 let get_image_from_tile tile tsize = 
-  let get_natural_tiles = load_tileset "assets/Terrain.png" tsize 48 32 in
+  (* let get_natural_tiles = load_tileset "assets/Terrain.png" tsize 48 32 in *)
   match tile with 
-  | Blank -> Graphics.make_image (Array.make_matrix tsize tsize Graphics.transp)
-  | Grass -> Imgdemo.get_tileset_part 0 0 tsize tsize "assets/Terrain.png"
-  | Sidewalk -> Imgdemo.get_tileset_part 256 0 tsize tsize "assets/Street.png"
-  | Building -> Imgdemo.get_tileset_part 0 0 tsize tsize "assets/Buildings.png"
+  | Blank -> Graphics.make_image 
+    (Array.make_matrix tsize tsize Graphics.transp)
+  | Grass -> ImageHandler.get_tileset_part 0 0 tsize tsize terrain_image
+  | Sidewalk -> ImageHandler.get_tileset_part 256 0 tsize tsize street_image
+  | Building -> ImageHandler.get_tileset_part 0 0 tsize tsize building_image
   (* let get_info () =  *)
     (* match tile with
     | Blank -> Graphics.make_image (Array.make_matrix tsize tsize Graphics.transp)
