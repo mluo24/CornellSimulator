@@ -1,9 +1,11 @@
 open Position
 open Graphics
 open Imgdemo
+open World
 
 type t = {
   name : string;
+  (*mutable mem : Word.tile;*)
   mutable rep : Graphics.image;
   pos : Position.t;
   speed : int;
@@ -22,6 +24,7 @@ let get_size c = 50
 
 let get_person_image person =
   match person with
+  (* 16 16 15 17*)
   | Still -> Imgdemo.get_tileset_part 16 16 15 17 "assets/spr_player.png"
   | Up -> Imgdemo.get_tileset_part 50 64 15 16 "assets/spr_player.png"
   | Left -> Imgdemo.get_tileset_part 50 32 15 17 "assets/spr_player.png"
@@ -32,11 +35,14 @@ let init_character () =
   {
     name = "bear";
     rep = get_person_image Still;
-    pos = { x = 30; y = 60 };
-    speed = 10;
+    pos = { x = 30; y = 30 };
+    speed = 15;
   }
 
+let draw t = Graphics.draw_image t.rep t.pos.x t.pos.y
+
 let move_up t =
+  let old_pos = t.pos in
   if t.pos.y < World.y_dim then t.pos.y <- t.pos.y + t.speed;
   t.rep <- get_person_image Up
 
