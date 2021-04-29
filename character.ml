@@ -40,10 +40,10 @@ let init_character () =
   {
     name = "bear";
     rep = get_person_image Still;
-    pos = { x = 300; y = 300 };
-    speed = 15;
-    tile_mem = World.get_tile (300 / 15) (300 / 15) world;
-    pos_mem = { x = 300; y = 300 };
+    pos = { x = 160; y = 160 };
+    speed = 16;
+    tile_mem = World.get_tile 10 10 world;
+    pos_mem = { x = 160; y = 160 };
   }
 
 let draw t = Graphics.draw_image t.rep t.pos.x t.pos.y
@@ -53,7 +53,9 @@ let move_up t =
     World.draw_tile t.pos.x t.pos.y t.tile_mem world;
     t.pos_mem <- t.pos;
     t.tile_mem <-
-      World.get_tile (t.pos.x / 15) ((t.pos.y + t.speed) / 15) world;
+      World.get_tile
+        ((World.y_dim - t.pos.y + t.speed) / 16)
+        (t.pos.x / 16) world;
     t.pos.y <- t.pos.y + t.speed;
     t.rep <- get_person_image Up;
     draw t
@@ -64,7 +66,10 @@ let move_right t =
     World.draw_tile t.pos.x t.pos.y t.tile_mem world;
     t.pos_mem <- t.pos;
     t.tile_mem <-
-      World.get_tile ((t.pos.x + t.speed) / 15) (t.pos.y / 15) world;
+      World.get_tile
+        ((World.y_dim - t.pos.y) / 16)
+        ((t.pos.x + t.speed) / 16)
+        world;
     t.pos.x <- t.pos.x + t.speed;
     t.rep <- get_person_image Right;
     draw t
@@ -75,7 +80,9 @@ let move_down t =
     World.draw_tile t.pos.x t.pos.y t.tile_mem world;
     t.pos_mem <- t.pos;
     t.tile_mem <-
-      World.get_tile (t.pos.x / 15) ((t.pos.y - t.speed) / 15) world;
+      World.get_tile
+        ((World.y_dim - t.pos.y - t.speed) / 16)
+        (t.pos.x / 15) world;
     t.pos.y <- t.pos.y - t.speed;
     t.rep <- get_person_image Down;
     draw t
@@ -86,7 +93,10 @@ let move_left t =
     World.draw_tile t.pos.x t.pos.y t.tile_mem world;
     t.pos_mem <- t.pos;
     t.tile_mem <-
-      World.get_tile ((t.pos.x - t.speed) / 15) (t.pos.y / 15) world;
+      World.get_tile
+        ((World.y_dim - t.pos.y) / 16)
+        ((t.pos.x - t.speed) / 16)
+        world;
     t.pos.x <- t.pos.x - t.speed;
     t.rep <- get_person_image Left;
     draw t
