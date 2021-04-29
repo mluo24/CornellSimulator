@@ -19,6 +19,7 @@ type t = {
 
 (** possibly make this in the type of the map *)
 let x_dim = 800
+
 let y_dim = 560
 
 (* let tile_size = 16
@@ -87,16 +88,15 @@ let get_color_from_tile tile =
   | Sidewalk -> Graphics.yellow
   | Building -> Graphics.rgb 100 100 100
 
-(* let draw_tile x y tile map =
-  let tsize = get_tile_size map in
-  Graphics.set_color (get_color_from_tile tile);
-  Graphics.fill_rect x y tsize tsize *)
+(* let draw_tile x y tile map = let tsize = get_tile_size map in
+   Graphics.set_color (get_color_from_tile tile); Graphics.fill_rect x y tsize
+   tsize *)
 
 let draw_tile x y tile map =
   let tsize = get_tile_size map in
   Graphics.draw_image (get_image_from_tile tile tsize) x y
-  (* Graphics.set_color (get_color_from_tile tile);
-  Graphics.fill_rect x y tsize tsize *)
+(* Graphics.set_color (get_color_from_tile tile); Graphics.fill_rect x y tsize
+   tsize *)
 
 let draw_tile_iter map i tile_t =
   let tsize = get_tile_size map in
