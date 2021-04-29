@@ -1,15 +1,11 @@
 open Position
 open Graphics
-<<<<<<< HEAD
-open Imgdemo
-open World
-=======
 open ImageHandler
->>>>>>> dc05468668f64479c6da4f1444248db71e66f032
 
 type t = {
   name : string;
-  (*mutable mem : Word.tile;*)
+  mutable tile_mem : World.tile;
+  mutable pos_mem : Position.t;
   mutable rep : Graphics.image;
   pos : Position.t;
   speed : int;
@@ -22,55 +18,79 @@ type person =
   | Right
   | Down
 
+let draw t = Graphics.draw_image t.rep t.pos.x t.pos.y
+
 let get_position c = c.pos
 
 let get_size c = 50
 
 let player_sprites = get_entire_image "assets/spr_player.png"
 
+let world = World.map_from_json_file "realmap.json"
+
 let get_person_image person =
   match person with
-<<<<<<< HEAD
-  (* 16 16 15 17*)
-  | Still -> Imgdemo.get_tileset_part 16 16 15 17 "assets/spr_player.png"
-  | Up -> Imgdemo.get_tileset_part 50 64 15 16 "assets/spr_player.png"
-  | Left -> Imgdemo.get_tileset_part 50 32 15 17 "assets/spr_player.png"
-  | Right -> Imgdemo.get_tileset_part 50 48 15 17 "assets/spr_player.png"
-  | Down -> Imgdemo.get_tileset_part 48 16 15 17 "assets/spr_player.png"
-=======
   | Still -> ImageHandler.get_tileset_part 16 16 15 17 player_sprites
   | Up -> ImageHandler.get_tileset_part 50 64 15 16 player_sprites
   | Left -> ImageHandler.get_tileset_part 50 32 15 17 player_sprites
   | Right -> ImageHandler.get_tileset_part 50 48 15 17 player_sprites
   | Down -> ImageHandler.get_tileset_part 48 16 15 17 player_sprites
->>>>>>> dc05468668f64479c6da4f1444248db71e66f032
 
 let init_character () =
   {
     name = "bear";
     rep = get_person_image Still;
-    pos = { x = 30; y = 30 };
+    pos = { x = 300; y = 300 };
     speed = 15;
+    tile_mem = World.get_tile (300 / 15) (300 / 15) world;
+    pos_mem = { x = 300; y = 300 };
   }
 
 let draw t = Graphics.draw_image t.rep t.pos.x t.pos.y
 
 let move_up t =
-  let old_pos = t.pos in
-  if t.pos.y < World.y_dim then t.pos.y <- t.pos.y + t.speed;
-  t.rep <- get_person_image Up
+  if t.pos.y < World.y_dim then begin
+    World.draw_tile t.pos.x t.pos.y t.tile_mem world;
+    t.pos_mem <- t.pos;
+    t.tile_mem <-
+      World.get_tile (t.pos.x / 15) ((t.pos.y + t.speed) / 15) world;
+    t.pos.y <- t.pos.y + t.speed;
+    t.rep <- get_person_image Up;
+    draw t
+  end
 
 let move_right t =
-  if t.pos.x < World.x_dim then t.pos.x <- t.pos.x + t.speed;
-  t.rep <- get_person_image Right
+  if t.pos.x < World.x_dim then begin
+    World.draw_tile t.pos.x t.pos.y t.tile_mem world;
+    t.pos_mem <- t.pos;
+    t.tile_mem <-
+      World.get_tile ((t.pos.x + t.speed) / 15) (t.pos.y / 15) world;
+    t.pos.x <- t.pos.x + t.speed;
+    t.rep <- get_person_image Right;
+    draw t
+  end
 
 let move_down t =
-  if t.pos.y > 0 then t.pos.y <- t.pos.y - t.speed;
-  t.rep <- get_person_image Down
+  if t.pos.y > 0 then begin
+    World.draw_tile t.pos.x t.pos.y t.tile_mem world;
+    t.pos_mem <- t.pos;
+    t.tile_mem <-
+      World.get_tile (t.pos.x / 15) ((t.pos.y - t.speed) / 15) world;
+    t.pos.y <- t.pos.y - t.speed;
+    t.rep <- get_person_image Down;
+    draw t
+  end
 
 let move_left t =
-  if t.pos.x > 0 then t.pos.x <- t.pos.x - t.speed;
-  t.rep <- get_person_image Left
+  if t.pos.x > 0 then begin
+    World.draw_tile t.pos.x t.pos.y t.tile_mem world;
+    t.pos_mem <- t.pos;
+    t.tile_mem <-
+      World.get_tile ((t.pos.x - t.speed) / 15) (t.pos.y / 15) world;
+    t.pos.x <- t.pos.x - t.speed;
+    t.rep <- get_person_image Left;
+    draw t
+  end
 
 let move (t : t) c =
   match c with
@@ -87,5 +107,3 @@ let get_user_name t = t.name
 
 (* val get_level: t -> how getting an item effect user *)
 (* let aquire_item = failwith "unimplemented" *)
-
-let draw t = Graphics.draw_image t.rep t.pos.x t.pos.y

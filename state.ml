@@ -43,9 +43,8 @@ let in_game () =
             game_state.items <-
               Item.get_item game_state.items game_state.character;
             draw game_state
-        | _ ->
-            Character.move game_state.character s.Graphics.key;
-            draw game_state
+        | _ -> Character.move game_state.character s.Graphics.key
+      (* draw game_state *)
     done
   with End -> end_game ()
 
