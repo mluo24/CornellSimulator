@@ -1,5 +1,17 @@
-{
-  "hw":{
+{ "init item":[
+  {"name":"hw",
+    "init": 5,
+    "max": 300
+  }, 
+  {
+    "name":"water",
+    "init": 0,
+    "max": 10
+
+  }
+],
+  "type dict":
+  {"hw":{
     "name" : "homework",
     "description" : "homework to be done",
     "color" : {"r":200, "g":230, "b":20},
@@ -18,9 +30,8 @@
         }
 
       ]
-    },
-    "init": 5,
-    "max": 300
+    }
+    
   },
   "water":{
     "name" : "water",
@@ -35,10 +46,9 @@
         }
       ],
       "subtract": []
-    },
-    "init": 0,
-    "max": 10
+    }
+    
 
-  }
+  }}
 
 }

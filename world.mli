@@ -16,14 +16,9 @@ val x_dim : int
 val y_dim : int
 
 (* (** [tile_size] is the width and height each tile in pixels *) val
-   tile_size : int
-
-   (** [rows] is the number of tiles in each row of the map *) val rows : int
-
-   (** [cols] is the number of tiles in each column of the map *) val cols :
-   int
-
-   val layers : int *)
+   tile_size : int (** [rows] is the number of tiles in each row of the map *)
+   val rows : int (** [cols] is the number of tiles in each column of the map
+   *) val cols : int val layers : int *)
 
 (** *)
 val map_from_json_file : string -> t
@@ -55,8 +50,8 @@ val draw_tile : int -> int -> tile -> t -> unit
 (** *)
 val draw_tiles : t -> unit
 
-
 (* val arr_from_txt : string -> int array *)
 (* val tile_to_img : tile -> int * int *)
 (** *)
+
 (* val map_from_arr : int array -> t *)

@@ -15,6 +15,14 @@ module type Operationable = sig
   val minimum : t
 end
 
+module type Key = sig
+  type t
+
+  include Dictionary.KeySig with type t := t
+
+  val to_string : t -> string
+end
+
 (* type for number value *)
 module type GameValue = sig
   type t
@@ -22,6 +30,8 @@ module type GameValue = sig
   include Dictionary.Comparable with type t := t
 
   include Operationable with type t := t
+
+  val to_string : t -> string
 end
 
 (* value of the dictionary key sig *)
@@ -31,16 +41,20 @@ module type GValue = sig
   type t
 
   include Dictionary.ValueSig with type t := t
+
+  val to_string : t -> string
 end
 
 module type GameGuagesDict = sig
   exception InvalidEffect
 
-  module Key : Dictionary.KeySig
+  module Key : Key
 
   module GameValue : GameValue
 
   module Value : GValue
+
+  module D : Dictionary
 
   type game_value = GameValue.t
 
@@ -54,6 +68,8 @@ module type GameGuagesDict = sig
 
   val insert : key -> game_value -> game_value -> t -> t
 
+  val fold : (key -> value -> 'acc -> 'acc) -> 'acc -> t -> 'acc
+
   val change_gauges :
     key -> (game_value -> game_value -> game_value) -> game_value -> t -> t
 end
@@ -66,7 +82,7 @@ end
 module MakeGameDict =
 functor
   (GV : GameValue)
-  (K : Dictionary.KeySig)
+  (K : Key)
   (DM : DictionaryMaker)
   ->
   struct
@@ -80,7 +96,13 @@ functor
 
       type t = game_value * game_value
 
-      let format = failwith "un implement"
+      let to_string t =
+        match t with
+        | v, max -> GameValue.to_string v ^ "/" ^ GameValue.to_string max
+
+      let format fmt t =
+        Format.fprintf fmt "\"%s\""
+          (Stdlib.String.lowercase_ascii (to_string t))
     end
 
     exception InvalidEffect
@@ -96,6 +118,8 @@ functor
     let empty = D.empty
 
     let insert k init max dict = D.insert k (init, max) dict
+
+    let fold fuc acc dict = D.fold fuc acc dict
 
     let change_gauges name func value dict =
       let cur_val = D.find name dict in

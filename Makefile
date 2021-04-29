@@ -1,11 +1,11 @@
-MODULES=main position gameGaugesDict gameDataStructure keyValueType drawable dictionary treeDictionary state author world item gauges character  
+MODULES=main position gameGaugesDict gameDataStructure keyValueType drawable dictionary treeDictionary state author world item gauges character imgdemo
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
 TEST=test.byte
 MAIN=main.byte
 OCAMLBUILD=ocamlbuild -use-ocamlfind
-PKGS=unix,oUnit,str,graphics,yojson
+PKGS=unix,oUnit,str,graphics,yojson,camlimages,camlimages.graphics,camlimages.png,camlimages.all
 
 default: build
 	OCAMLRUNPARAM=b utop
@@ -30,6 +30,9 @@ bisect-test:
 play:
 	$(OCAMLBUILD) -tag 'debug' $(MAIN) && OCAMLRUNPARAM=b ./$(MAIN)
 
+tiles:
+	$(OCAMLBUILD) imgdemo.byte && ./imgdemo.byte
+
 # check:
 # 	@bash check.sh
 	
@@ -43,12 +46,12 @@ docs: docs-public docs-private
 	
 docs-public: build
 	mkdir -p _doc.public
-	ocamlfind ocamldoc -I _build -package graphics,yojson,ANSITerminal \
+	ocamlfind ocamldoc -I _build -package graphics,yojson,ANSITerminal,camlimages.all \
 		-html -stars -d _doc.public $(MLIS)
 
 docs-private: build
 	mkdir -p _doc.private
-	ocamlfind ocamldoc -I _build -package graphics,yojson,ANSITerminal \
+	ocamlfind ocamldoc -I _build -package graphics,yojson,ANSITerminal,camlimages.all \
 		-html -stars -d _doc.private \
 		-inv-merge-ml-mli -m A $(MLIS) $(MLS)
 

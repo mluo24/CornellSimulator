@@ -18,16 +18,11 @@ type t = {
 
 (** possibly make this in the type of the map *)
 let x_dim = 800
+
 let y_dim = 560
 
-
-(* let tile_size = 16
-
-   let cols = failwith "Unimplemented"
-
-   let tile_size = failwith "Unimplemented"
-
-   let layers = 2 *)
+(* let tile_size = 16 let cols = failwith "Unimplemented" let tile_size =
+   failwith "Unimplemented" let layers = 2 *)
 
 let int_to_tile i =
   match i with 1 -> Grass | 2 -> Sidewalk | 3 -> Building | _ -> Blank
@@ -63,7 +58,8 @@ let get_color_from_tile tile =
 let draw_tile x y tile map =
   let tsize = get_tile_size map in
   Graphics.set_color (get_color_from_tile tile);
-  Graphics.fill_rect x y tsize tsize
+  Graphics.fill_rect x y tsize tsize;
+  Graphics.synchronize ()
 
 let draw_tile_iter map i tile_t =
   let tsize = get_tile_size map in
@@ -73,9 +69,3 @@ let draw_tile_iter map i tile_t =
   draw_tile x y tile_t map
 
 let draw_tiles map = Array.iteri (draw_tile_iter map) (get_tile_arr map)
-
-(* let map_from_arr arr = failwith "Unimplemented" *)
-
-(* let ic = open_in filename in let try_read () = try Some (input_line ic)
-   with End_of_file -> None in let rec loop acc = match try_read () with |
-   Some s -> loop (s :: acc) | None -> close_in ic; List.rev acc in loop [] *)

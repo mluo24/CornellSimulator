@@ -31,7 +31,7 @@ type t = {
 
 type ilist = {
   items : t list;
-  aquired : t list;
+  aquired : GameDataStructure.GameIntDict.t;
 }
 
 let to_color json : Graphics.color =
@@ -64,13 +64,14 @@ let to_item item_rep_json json =
     rep = get_item_prop item_rep_json itype;
   }
 
+(* let init_bag json = *)
 (* from json for now, contain id, position, item_type *)
 let init_item_list item_file item_rep_file =
   {
     items =
       item_file |> member "items" |> to_list
       |> List.map (to_item item_rep_file);
-    aquired = [];
+    aquired = GameDataStructure.GameIntDict.empty;
   }
 
 let draw (item : t) : unit =

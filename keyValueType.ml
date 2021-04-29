@@ -13,11 +13,15 @@ module String : KeySig with type t = string = struct
     | x when x > 0 -> GT
     | _ -> EQ
 
+  let to_string t = Fun.id t
+
   let format fmt s = Format.fprintf fmt "\"%s\"" s [@@coverage off]
 end
 
-module CaselessString : KeySig with type t = string = struct
+module CaselessString : Key with type t = string = struct
   type t = string
+
+  let to_string t = Fun.id t
 
   let compare s1 s2 =
     match
@@ -38,6 +42,8 @@ module IntPos : GameValue with type t = int = struct
   exception IllegalSubtraction
 
   type t = int
+
+  let to_string t = string_of_int t
 
   let compare x y =
     match Stdlib.compare x y with x when x < 0 -> LT | 0 -> EQ | _ -> GT
