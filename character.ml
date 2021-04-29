@@ -1,6 +1,6 @@
 open Position
 open Graphics
-open Imgdemo
+open ImageHandler
 
 type t = {
   name : string;
@@ -20,13 +20,15 @@ let get_position c = c.pos
 
 let get_size c = 50
 
+let player_sprites = get_entire_image "assets/spr_player.png"
+
 let get_person_image person =
   match person with
-  | Still -> Imgdemo.get_tileset_part 16 16 15 17 "assets/spr_player.png"
-  | Up -> Imgdemo.get_tileset_part 50 64 15 16 "assets/spr_player.png"
-  | Left -> Imgdemo.get_tileset_part 50 32 15 17 "assets/spr_player.png"
-  | Right -> Imgdemo.get_tileset_part 50 48 15 17 "assets/spr_player.png"
-  | Down -> Imgdemo.get_tileset_part 48 16 15 17 "assets/spr_player.png"
+  | Still -> ImageHandler.get_tileset_part 16 16 15 17 player_sprites
+  | Up -> ImageHandler.get_tileset_part 50 64 15 16 player_sprites
+  | Left -> ImageHandler.get_tileset_part 50 32 15 17 player_sprites
+  | Right -> ImageHandler.get_tileset_part 50 48 15 17 player_sprites
+  | Down -> ImageHandler.get_tileset_part 48 16 15 17 player_sprites
 
 let init_character () =
   {

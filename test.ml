@@ -76,8 +76,8 @@ let world_test_get_tile_arr name map expected_output =
   assert_equal expected_output (get_tile_arr map)
     ~printer:(string_of_array string_of_tile)
 
-(******************************************************************** End
-  helper functions.
+(******************************************************************** 
+  End helper functions.
   ********************************************************************)
 
 let world_tests =

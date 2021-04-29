@@ -18,12 +18,13 @@ let load_tileset filename tile_size =
   let all_tiles = get_entire_image filename in
   let imgwidth = fst (Images.size all_tiles) in 
   let imgheight = snd (Images.size all_tiles) in 
-  let images = Array.make ((imgwidth / tile_size) * (imgheight / tile_size)) 
+  let cols = imgwidth / tile_size in
+  let rows = imgheight / tile_size in
+  let images = Array.make (cols * rows) 
                (Graphics.create_image tile_size tile_size) in
   Array.mapi (fun i img -> 
-              let x = 0 in let y = 0 in 
-              (* let x = i mod cols * tsize in *)
-              (*let y = y_dim - tsize - (i / cols * tsize) in *)
+              let x = (i mod cols) * tile_size in
+              let y = (i / cols) * tile_size in
               get_tileset_part x y 
               tile_size tile_size all_tiles) 
   images
