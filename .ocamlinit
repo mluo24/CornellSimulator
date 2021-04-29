@@ -9,3 +9,4 @@
 #load "world.cmo";;
 #load "state.cmo";;
 #load "character.cmo";;
+#load "imageHandler.cmo";;
