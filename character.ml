@@ -51,12 +51,10 @@ let draw t = Graphics.draw_image t.rep t.pos.x t.pos.y
 let move_up t =
   if t.pos.y < World.y_dim - 16 then begin
     World.draw_tile t.pos.x t.pos.y t.tile_mem world;
+    t.pos.y <- t.pos.y + t.speed;
     t.pos_mem <- t.pos;
     t.tile_mem <-
-      World.get_tile
-        ((World.y_dim - t.pos.y + t.speed - 16) / 16)
-        (t.pos.x / 16) world;
-    t.pos.y <- t.pos.y + t.speed;
+      World.get_tile ((World.y_dim - t.pos.y - 16) / 16) (t.pos.x / 16) world;
     t.rep <- get_person_image Up;
     draw t
   end
@@ -64,13 +62,10 @@ let move_up t =
 let move_right t =
   if t.pos.x < World.x_dim - 16 then begin
     World.draw_tile t.pos.x t.pos.y t.tile_mem world;
+    t.pos.x <- t.pos.x + t.speed;
     t.pos_mem <- t.pos;
     t.tile_mem <-
-      World.get_tile
-        ((World.y_dim - t.pos.y - 16) / 16)
-        ((t.pos.x + t.speed) / 16)
-        world;
-    t.pos.x <- t.pos.x + t.speed;
+      World.get_tile ((World.y_dim - t.pos.y - 16) / 16) (t.pos.x / 16) world;
     t.rep <- get_person_image Right;
     draw t
   end
@@ -78,12 +73,10 @@ let move_right t =
 let move_down t =
   if t.pos.y > 0 then begin
     World.draw_tile t.pos.x t.pos.y t.tile_mem world;
+    t.pos.y <- t.pos.y - t.speed;
     t.pos_mem <- t.pos;
     t.tile_mem <-
-      World.get_tile
-        ((World.y_dim - t.pos.y - t.speed - 16) / 16)
-        (t.pos.x / 16) world;
-    t.pos.y <- t.pos.y - t.speed;
+      World.get_tile ((World.y_dim - t.pos.y - 16) / 16) (t.pos.x / 16) world;
     t.rep <- get_person_image Down;
     draw t
   end
@@ -91,13 +84,10 @@ let move_down t =
 let move_left t =
   if t.pos.x > 0 then begin
     World.draw_tile t.pos.x t.pos.y t.tile_mem world;
+    t.pos.x <- t.pos.x - t.speed;
     t.pos_mem <- t.pos;
     t.tile_mem <-
-      World.get_tile
-        ((World.y_dim - t.pos.y - 16) / 16)
-        ((t.pos.x - t.speed) / 16)
-        world;
-    t.pos.x <- t.pos.x - t.speed;
+      World.get_tile ((World.y_dim - t.pos.y - 16) / 16) (t.pos.x / 16) world;
     t.rep <- get_person_image Left;
     draw t
   end
