@@ -3,6 +3,7 @@ open Images
 open State
 open World
 open Item
+open ImageHandler
 open Unix
 
 (** infinite loop *)
@@ -14,10 +15,10 @@ let main () =
   try
     Graphics.open_graph "";
     set_window_title "Cornell Simulator";
-    resize_window World.x_dim World.y_dim;
+    resize_window (World.x_dim + 200) World.y_dim;
     State.in_game ();
-    (* let img = Images.sub (Png.load "ezra.png" []) 0 0 50 50 in let g =
-       Graphic_image.of_image img in Graphics.draw_image g 0 0; *)
+    (* let imgs = ImageHandler.load_tileset "assets/Buildings.png" 16 in
+       Array.iteri (fun i img -> Graphics.draw_image img (i * 16) 0) imgs; *)
     loop ()
   with Graphic_failure x -> (
     match x with

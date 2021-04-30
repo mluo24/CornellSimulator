@@ -4,6 +4,7 @@ open Position
 open Item
 open Character
 open Yojson.Basic
+open Mission
 
 type t = {
   world : World.t;
@@ -11,17 +12,19 @@ type t = {
   mutable items : Item.ilist;
   (* mutable gauges: Gauges.t *)
   mutable gauges : Gauges.t;
+  mutable missions : Mission.t;
 }
 
 let init_game () =
   {
-    world = World.map_from_json_file "testmap.json";
+    world = World.map_from_json_file "realmap.json";
     character = Character.init_character ();
     items =
       Item.init_item_list
         (Yojson.Basic.from_file "item.json")
         (Yojson.Basic.from_file "item_rep.json");
     gauges = Gauges.init_gauges (Yojson.Basic.from_file "gauges.json");
+    missions = Mission.init_mission ();
   }
 
 let draw t =
@@ -29,7 +32,8 @@ let draw t =
   World.draw_tiles t.world;
   Item.draw_all t.items;
   Character.draw t.character;
-  Gauges.draw t.gauges
+  Gauges.draw t.gauges;
+  Mission.draw_missions_window t.missions
 
 exception End
 
@@ -48,9 +52,8 @@ let in_game () =
             game_state.items <-
               Item.get_item game_state.items game_state.character;
             draw game_state
-        | _ ->
-            Character.move game_state.character s.Graphics.key;
-            draw game_state
+        | _ -> Character.move game_state.character s.Graphics.key
+      (* draw game_state *)
     done
   with End -> end_game ()
 
