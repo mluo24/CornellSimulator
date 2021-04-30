@@ -2,11 +2,15 @@
 (* open Position *)
 open Graphics
 open Yojson.Basic.Util
+open Drawable
 
 (** The abstract type of values representing an item *)
 type t
+
+include Drawable with type t := t
 (** The abstract type of values representing groups of items *)
 type ilist
+
 
 type effect
 

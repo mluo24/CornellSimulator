@@ -1,6 +1,8 @@
 open Yojson.Basic.Util
 open Graphics
+
 open ImageHandler
+
 
 (* animation loading tilesets *)
 
@@ -22,13 +24,8 @@ let x_dim = 800
 
 let y_dim = 560
 
-(* let tile_size = 16
-
-   let cols = failwith "Unimplemented"
-
-   let tile_size = failwith "Unimplemented"
-
-   let layers = 2 *)
+(* let tile_size = 16 let cols = failwith "Unimplemented" let tile_size =
+   failwith "Unimplemented" let layers = 2 *)
 
 let int_to_tile i =
   match i with 1 -> Grass | 2 -> Sidewalk | 3 -> Building | _ -> Blank
@@ -54,6 +51,7 @@ let get_cols map = map.cols
 
 let get_tile_size map = map.tile_size
 
+
 (* type info = {
     coords: int * int;
     wh:int * int
@@ -76,6 +74,7 @@ let get_image_from_tile tile tsize =
   | Grass -> ImageHandler.get_tileset_part 0 0 tsize tsize terrain_image
   | Sidewalk -> ImageHandler.get_tileset_part 256 0 tsize tsize street_image
   | Building -> ImageHandler.get_tileset_part 0 0 tsize tsize building_image
+
 
 let get_color_from_tile tile =
   match tile with

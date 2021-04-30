@@ -3,11 +3,14 @@ open Graphics
 open Position
 open Item
 open Character
+open Yojson.Basic
 
 type t = {
   world : World.t;
   character : Character.t;
   mutable items : Item.ilist;
+  (* mutable gauges: Gauges.t *)
+  mutable gauges : Gauges.t;
 }
 
 let init_game () =
@@ -18,13 +21,15 @@ let init_game () =
       Item.init_item_list
         (Yojson.Basic.from_file "item.json")
         (Yojson.Basic.from_file "item_rep.json");
+    gauges = Gauges.init_gauges (Yojson.Basic.from_file "gauges.json");
   }
 
 let draw t =
   Graphics.clear_graph ();
   World.draw_tiles t.world;
   Item.draw_all t.items;
-  Character.draw t.character
+  Character.draw t.character;
+  Gauges.draw t.gauges
 
 exception End
 
