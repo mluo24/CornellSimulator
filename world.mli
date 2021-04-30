@@ -5,9 +5,37 @@ type t
     finish the types of tiles that we may need *)
 type tile =
   | Blank
+  (** terrain.png *)
   | Grass
-  | Sidewalk
-  | Building
+  | TreeBot
+  | TreeTop
+  | Flower
+  | Bush
+  (** street.png *)
+  | Sidewalk_Curved_BotLeft
+  | Sidewalk_Curved_BotRight
+  | Sidewalk_Curved_TopLeft
+  | Sidewalk_Curved_TopRight
+  | Sidewalk_Horiz
+  | Sidewalk_Vert
+  (** building.png *)
+  | Building1_Left
+  | Building1_Mid
+  | Building1_Right
+  | Building2_Left
+  | Building2_Mid
+  | Building2_Right
+  | Roof
+  | Roof_BotLeft
+  | Roof_BotRight
+  | Roof_TopLeft
+  | Roof_TopRight
+  | Roof_TopEdge
+  | Roof_LeftEdge
+  | Roof_BotEdge
+  | Roof_RightEdge
+  | DoorTop
+  | DoorBot
 
 (** [x_dim] is the width of the graphics window *)
 val x_dim : int
@@ -47,17 +75,17 @@ val get_cols : t -> int
 val get_tile_size : t -> int
 
 (** *)
-val get_tile_image_x_y : Graphics.image array -> int -> int
+val get_assets : t -> Images.t array array
 
 (** *)
-val get_image_from_tile : tile -> int -> Graphics.image
+val get_image_from_tile : Images.t array array -> tile -> int -> Graphics.image
 
 (** *)
-val get_color_from_tile : tile -> Graphics.color
+(* val get_color_from_tile : tile -> Graphics.color *)
 
 (** *)
 val draw_tile : int -> int -> tile -> t -> unit
 
 (** *)
-val draw_tiles : t -> unit
+val draw_tiles : t  -> unit
 

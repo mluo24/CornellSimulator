@@ -3,6 +3,8 @@ open Graphics
 open Position
 open Item
 open Character
+open ImageHandler
+open World
 
 type t = {
   world : World.t;
@@ -26,12 +28,29 @@ let draw t =
   Item.draw_all t.items;
   Character.draw t.character
 
+(* let draw_with_assets t assets =
+  Graphics.clear_graph ();
+  World.draw_tiles t.world;
+  Item.draw_all t.items;
+  Character.draw t.character *)
+
 exception End
 
 let end_game () = failwith "unimplemented"
 
 let in_game () =
   let game_state = init_game () in
+  (* let tilesize = get_tile_size game_state.world in *)
+  (* let terrain_tileset = ImageHandler.load_tileset 
+    "assets/Terrain.png" tilesize in
+  let street_tileset = ImageHandler.load_tileset 
+    "assets/Street.png" tilesize in
+  let building_tileset = ImageHandler.load_tileset 
+    "assets/Building.png" tilesize in
+  let character_tileset = ImageHandler.load_tileset 
+    "assets/spr_player.png" tilesize in
+  let assets = [|terrain_tileset; street_tileset; building_tileset; character_tileset|] in *)
+  (* draw_with_assets game_state assets; *)
   draw game_state;
   try
     while true do
