@@ -1,8 +1,13 @@
 open Graphics
 
-type t = { mutable text : string }
+type t = {
+  mutable text : string;
+  mutable missions : string list;
+}
 
-let init_mission () = { text = "Here Are Your Missions:" }
+let missions_level_1 = []
+
+let init_mission () = { text = "Here Are Your Missions:"; missions = [] }
 
 let draw_missions_window t =
   Graphics.set_color Graphics.black;

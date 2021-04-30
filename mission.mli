@@ -1,4 +1,7 @@
-type t = { mutable text : string }
+type t = {
+  mutable text : string;
+  mutable missions : string list;
+}
 
 val init_mission : unit -> t
 
