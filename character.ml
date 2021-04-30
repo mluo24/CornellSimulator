@@ -28,34 +28,40 @@ let size = 16
 
 let player_sprites = ImageHandler.load_tileset "assets/spr_player.png" size
 
-let player_image_size_width = fst (Images.size 
-  (ImageHandler.get_entire_image "assets/spr_player.png")) / size
+let player_image_size_width =
+  fst (Images.size (ImageHandler.get_entire_image "assets/spr_player.png"))
+  / size
 
 let world = World.map_from_json_file "realmap.json"
 
 let get_person_image person =
   match person with
-  | Still -> ImageHandler.get_tile_image_x_y player_sprites 
-  player_image_size_width 1 1
-  | Up -> ImageHandler.get_tile_image_x_y player_sprites 
-  player_image_size_width 2 4
-  | Left -> ImageHandler.get_tile_image_x_y player_sprites 
-  player_image_size_width 2 2
-  | Right -> ImageHandler.get_tile_image_x_y player_sprites 
-  player_image_size_width 2 3
-  | Down -> ImageHandler.get_tile_image_x_y player_sprites 
-  player_image_size_width 2 1
-  (* | Still -> ImageHandler.get_tileset_part 16 16 15 17 player_sprites
-  | Up -> ImageHandler.get_tileset_part 50 64 15 16 player_sprites
-  | Left -> ImageHandler.get_tileset_part 50 32 15 17 player_sprites
-  | Right -> ImageHandler.get_tileset_part 50 48 15 17 player_sprites
-  | Down -> ImageHandler.get_tileset_part 48 16 15 17 player_sprites *)
+  | Still ->
+      ImageHandler.get_tile_image_x_y player_sprites player_image_size_width 1
+        1
+  | Up ->
+      ImageHandler.get_tile_image_x_y player_sprites player_image_size_width 2
+        4
+  | Left ->
+      ImageHandler.get_tile_image_x_y player_sprites player_image_size_width 2
+        2
+  | Right ->
+      ImageHandler.get_tile_image_x_y player_sprites player_image_size_width 2
+        3
+  | Down ->
+      ImageHandler.get_tile_image_x_y player_sprites player_image_size_width 2
+        1
+(* | Still -> ImageHandler.get_tileset_part 16 16 15 17 player_sprites | Up ->
+   ImageHandler.get_tileset_part 50 64 15 16 player_sprites | Left ->
+   ImageHandler.get_tileset_part 50 32 15 17 player_sprites | Right ->
+   ImageHandler.get_tileset_part 50 48 15 17 player_sprites | Down ->
+   ImageHandler.get_tileset_part 48 16 15 17 player_sprites *)
 
 let init_character () =
   {
     name = "bear";
     rep = get_person_image Still;
-    pos = { x = 160; y = 160 };
+    pos = { x = 160; y = 256 };
     speed = 16;
     tile_mem = World.get_tile 9 10 world;
     pos_mem = { x = 160; y = 160 };
