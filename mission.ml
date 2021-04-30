@@ -5,9 +5,11 @@ type t = {
   mutable missions : string list;
 }
 
-let missions_level_1 = []
+let missions_level_1 =
+  [ "- Catch 3 Camels"; "- Avoid the Bears"; "- Pass prelims" ]
 
-let init_mission () = { text = "Here Are Your Missions:"; missions = [] }
+let init_mission () =
+  { text = "Here Are Your Missions:"; missions = missions_level_1 }
 
 let draw_missions_window t =
   Graphics.set_color Graphics.black;
