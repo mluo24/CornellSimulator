@@ -3,11 +3,13 @@ open Graphics
 open Position
 open Item
 open Character
+open Mission
 
 type t = {
   world : World.t;
   character : Character.t;
   mutable items : Item.ilist;
+  mutable missions : Mission.t;
 }
 
 let init_game () =
@@ -18,13 +20,15 @@ let init_game () =
       Item.init_item_list
         (Yojson.Basic.from_file "item.json")
         (Yojson.Basic.from_file "item_rep.json");
+    missions = Mission.init_mission ();
   }
 
 let draw t =
   Graphics.clear_graph ();
   World.draw_tiles t.world;
   Item.draw_all t.items;
-  Character.draw t.character
+  Character.draw t.character;
+  Mission.draw_missions_window t.missions
 
 exception End
 
@@ -43,9 +47,8 @@ let in_game () =
             game_state.items <-
               Item.get_item game_state.items game_state.character;
             draw game_state
-        | _ ->
-            Character.move game_state.character s.Graphics.key;
-            draw game_state
+        | _ -> Character.move game_state.character s.Graphics.key
+      (* draw game_state *)
     done
   with End -> end_game ()
 
