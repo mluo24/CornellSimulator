@@ -87,5 +87,4 @@ val get_image_from_tile : Images.t array array -> tile -> int -> Graphics.image
 val draw_tile : int -> int -> tile -> t -> unit
 
 (** *)
-val draw_tiles : t  -> unit
-
+val draw_tiles : t -> unit

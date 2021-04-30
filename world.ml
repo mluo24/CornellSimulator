@@ -58,9 +58,6 @@ let y_dim = 560
 
 let int_to_tile i =
   match i with 
-  (* | 1 -> Grass 
-  | 2 -> Sidewalk 
-  | 3 -> Building  *)
   | 1 -> Grass
   | 2 -> TreeBot
   | 3 -> TreeTop
@@ -180,6 +177,11 @@ let get_image_from_tile assets tile tsize =
 
 
   (* | Grass -> ImageHandler.get_tile_image_x_y 0 0 tsize tsize terrain_image
+let get_image_from_tile tile tsize =
+  match tile with
+  | Blank ->
+      Graphics.make_image (Array.make_matrix tsize tsize Graphics.transp)
+  | Grass -> ImageHandler.get_tileset_part 0 0 tsize tsize terrain_image
   | Sidewalk -> ImageHandler.get_tileset_part 256 0 tsize tsize street_image
   | Building -> ImageHandler.get_tileset_part 0 0 tsize tsize building_image *)
 
