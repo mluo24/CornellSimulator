@@ -1,21 +1,10 @@
-{ "init item":[
-  {"name":"hw",
-    "init": 5,
-    "max": 300
-  }, 
-  {
-    "name":"water",
-    "init": 0,
-    "max": 10
 
-  }
-],
-  "type dict":
-  {"hw":{
+  {
+    "hw":{
     "name" : "homework",
     "description" : "homework to be done",
     "color" : {"r":200, "g":230, "b":20},
-    "size" : 20,
+    "size" : 10,
     "effect" :{"effect_dis":"do homework",
       "add": [
         {
@@ -37,7 +26,7 @@
     "name" : "water",
     "description" : "water",
     "color" : {"r":8, "g":200, "b":200},
-    "size" : 30,
+    "size" : 10,
     "effect" :{"effect_dis":"drink water",
       "add": [
         {
@@ -46,9 +35,16 @@
         }
       ],
       "subtract": []
+    }}, 
+    "sp":{"name" : "special",
+      "description" : "special",
+      "color" : {"r":100, "g":9, "b":4},
+      "size" : 10,
+      "effect" :{"effect_dis":"drink water"}
+
     }
+
     
 
-  }}
+  }
 
-}

@@ -12,6 +12,8 @@ module type Operationable = sig
   val subtract : t -> t -> t
 
   val minimum : t
+
+  val defualt : t
 end
 
 (* type for number value *)
@@ -74,6 +76,10 @@ module type GameGuagesDict = sig
 
   val change_gauges :
     key -> (game_value -> game_value -> game_value) -> game_value -> t -> t
+
+  val insert_add : key -> game_value -> t -> t
+
+  val format_string_lst : t -> string list
 end
 
 module MakeGameDict : functor

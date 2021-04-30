@@ -54,6 +54,8 @@ module IntPos : GameValue with type t = int = struct
 
   let minimum = 0
 
+  let defualt = 20
+
   let subtract i1 i2 =
     let num = i1 - i2 in
     if num < minimum then raise IllegalSubtraction else num

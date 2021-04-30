@@ -20,7 +20,7 @@ Requires:
     [item_rep_file] is a valide JSON item type representation 
     types present in [item_file] must match the key in [item_rep_file]
     *)
-val init_item_list : Yojson.Basic.t -> Yojson.Basic.t-> ilist 
+val init_item_list : Yojson.Basic.t -> Yojson.Basic.t -> Yojson.Basic.t-> ilist 
 
 (** [draw t] draws item [t] on the graphical interface*)
 val draw : t -> unit
@@ -35,7 +35,7 @@ type item_id = string
 type item_type = string
 
 
-
+val draw_bag: ilist -> unit
 
 (* Whether the item has been collected *)
 val acquired : t -> bool

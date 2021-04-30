@@ -4,6 +4,8 @@ open Position
 open Item
 open Character
 open Yojson.Basic
+open ImageHandler
+open World
 open Mission
 
 type t = {
@@ -22,7 +24,8 @@ let init_game () =
     items =
       Item.init_item_list
         (Yojson.Basic.from_file "item.json")
-        (Yojson.Basic.from_file "item_rep.json");
+        (Yojson.Basic.from_file "item_rep.json")
+        (Yojson.Basic.from_file "item_init.json");
     gauges = Gauges.init_gauges (Yojson.Basic.from_file "gauges.json");
     missions = Mission.init_mission ();
   }
@@ -32,8 +35,13 @@ let draw t =
   World.draw_tiles t.world;
   Item.draw_all t.items;
   Character.draw t.character;
+
+  Mission.draw_missions_window t.missions;
   Gauges.draw t.gauges;
-  Mission.draw_missions_window t.missions
+  Item.draw_bag t.items
+
+(* let draw_with_assets t assets = Graphics.clear_graph (); World.draw_tiles
+   t.world; Item.draw_all t.items; Character.draw t.character *)
 
 exception End
 
@@ -41,6 +49,15 @@ let end_game () = failwith "unimplemented"
 
 let in_game () =
   let game_state = init_game () in
+  (* let tilesize = get_tile_size game_state.world in *)
+  (* let terrain_tileset = ImageHandler.load_tileset "assets/Terrain.png"
+     tilesize in let street_tileset = ImageHandler.load_tileset
+     "assets/Street.png" tilesize in let building_tileset =
+     ImageHandler.load_tileset "assets/Building.png" tilesize in let
+     character_tileset = ImageHandler.load_tileset "assets/spr_player.png"
+     tilesize in let assets = [|terrain_tileset; street_tileset;
+     building_tileset; character_tileset|] in *)
+  (* draw_with_assets game_state assets; *)
   draw game_state;
   try
     while true do

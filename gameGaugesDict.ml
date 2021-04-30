@@ -13,6 +13,8 @@ module type Operationable = sig
   val subtract : t -> t -> t
 
   val minimum : t
+
+  val defualt : t
 end
 
 module type Key = sig
@@ -72,6 +74,10 @@ module type GameGuagesDict = sig
 
   val change_gauges :
     key -> (game_value -> game_value -> game_value) -> game_value -> t -> t
+
+  val insert_add : key -> game_value -> t -> t
+
+  val format_string_lst : t -> string list
 end
 
 (* module MakeValue: functor (GV: GameValue) -> struct module GameV = GV type
@@ -133,4 +139,19 @@ functor
             | _ -> (new_val, max)
           in
           D.insert name final_val dict
+
+    let insert_add key value dict =
+      try change_gauges key GameValue.add value dict
+      with InvalidEffect -> insert key value GameValue.defualt dict
+
+    let format_string_lst t =
+      let format_str key value init =
+        let str_g =
+          match value with
+          | v, max -> GameValue.to_string v ^ "/" ^ GameValue.to_string max
+        in
+        let str = Key.to_string key ^ ":" ^ str_g in
+        str :: init
+      in
+      fold format_str [] t
   end

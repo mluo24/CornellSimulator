@@ -1,0 +1,12 @@
+{ "init item":[
+  {"name":"hw",
+    "init": 5,
+    "max": 300
+  }, 
+  {
+    "name":"water",
+    "init": 0,
+    "max": 10
+
+  }
+]}
