@@ -5,8 +5,15 @@
 #require "camlimages.all";;
 #require "bisect_ppx.runtime";;
 #directory "_build";;
+#require "drawable";;
 #load "main.cmo";;
 #load "world.cmo";;
 #load "state.cmo";;
 #load "character.cmo";;
+<<<<<<< HEAD
+#load_rec "treeDictionary.cmo";;
+
+
+=======
 #load "imageHandler.cmo";;
+>>>>>>> 1855701462d8fbaf5d6895b86b7c90f5c280b5e4

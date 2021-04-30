@@ -1,8 +1,9 @@
 open Graphics
-
+open Drawable
 (** The abstract type of values representing character. *)
 type t
 
+include Drawable with type t := t
 (** [get_position t] is the position on graphical interface of character [t]*)
 val get_position : t -> Position.t
 

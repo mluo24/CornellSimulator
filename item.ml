@@ -2,6 +2,7 @@
 
 open Graphics
 open Yojson.Basic.Util
+open GameDataStructure
 
 (** The abstract type of values representing the items group *)
 open Position
@@ -31,7 +32,7 @@ type t = {
 
 type ilist = {
   items : t list;
-  aquired : t list;
+  aquired : GameDataStructure.GameIntDict.t;
 }
 
 let to_color json : Graphics.color =
@@ -64,13 +65,24 @@ let to_item item_rep_json json =
     rep = get_item_prop item_rep_json itype;
   }
 
+let insert_bag acc json =
+  let name = json |> member "name" |> to_string in
+  let max = json |> member "max" |> to_int in
+  let init = json |> member "init" |> to_int in
+  GameIntDict.insert name init max acc
+
+let init_bag json =
+  json |> member "init item" |> to_list
+  |> List.fold_left insert_bag GameIntDict.empty
+
 (* from json for now, contain id, position, item_type *)
-let init_item_list item_file item_rep_file =
+
+let init_item_list item_file item_rep_file bag_file =
   {
     items =
       item_file |> member "items" |> to_list
       |> List.map (to_item item_rep_file);
-    aquired = [];
+    aquired = init_bag bag_file;
   }
 
 let draw (item : t) : unit =
@@ -91,12 +103,28 @@ let get_item ilist (c : Character.t) : ilist =
     | h :: t ->
         let dist = Position.distance h.pos cpos in
         if dist < h.rep.size + csize then
-          find_item t acc (h :: rem_acc) cpos csize
+          find_item t acc
+            (GameIntDict.insert_add h.rep.name 1 rem_acc)
+            cpos csize
         else find_item t (h :: acc) rem_acc cpos csize
   in
   find_item ilist.items [] ilist.aquired
     (Character.get_position c)
     (Character.get_size c)
+
+let draw_bag bag =
+  Graphics.set_color white;
+  let rec draw_lst (pos : Position.t) line_height lst =
+    match lst with
+    | [] -> ()
+    | h :: t ->
+        Graphics.moveto pos.x pos.y;
+        Graphics.draw_string h;
+        pos.y <- pos.y - line_height;
+        draw_lst pos line_height t
+  in
+  draw_lst { x = 810; y = 200 } 20
+    ("bag" :: GameIntDict.format_string_lst bag.aquired)
 
 let description item = failwith "unimplemented"
 

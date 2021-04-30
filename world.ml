@@ -54,6 +54,8 @@ let x_dim = 800
 
 let y_dim = 560
 
+(* let tile_size = 16 let cols = failwith "Unimplemented" let tile_size =
+   failwith "Unimplemented" let layers = 2 *)
 (*  let layers = 2 *)
 
 let int_to_tile i =

@@ -7,6 +7,22 @@
     { "id":"2",
       "position":{"x":70, "y":200},
       "type":"hw"
-  }
+  },
+  { "id":"3",
+    "position":{"x":500, "y":20},
+    "type":"hw"
+},
+
+{ "id":"4",
+  "position":{"x":140, "y":90},
+  "type":"hw"
+}, 
+{
+   "id":"5",
+    "position":{"x":234, "y":400},
+    "type":"sp"
+  
+}
+  
   ]
 }

@@ -1,18 +1,50 @@
-{
-  "hw":{
-    "name" : "home work",
+
+  {
+    "hw":{
+    "name" : "homework",
     "description" : "homework to be done",
     "color" : {"r":200, "g":230, "b":20},
-    "size" : 20,
-    "effect" :{"effect_dis":"do homework"}
+    "size" : 10,
+    "effect" :{"effect_dis":"do homework",
+      "add": [
+        {
+          "name": "brain",
+          "by": 1
+        }
+      ],
+      "subtract": [
+        {
+          "name": "mental health",
+          "by": 10
+        }
+
+      ]
+    }
+    
   },
   "water":{
     "name" : "water",
     "description" : "water",
     "color" : {"r":8, "g":200, "b":200},
-    "size" : 30,
-    "effect" :{"effect_dis":"drink water"}
+    "size" : 10,
+    "effect" :{"effect_dis":"drink water",
+      "add": [
+        {
+          "name": "health",
+          "by": 10
+        }
+      ],
+      "subtract": []
+    }}, 
+    "sp":{"name" : "special",
+      "description" : "special",
+      "color" : {"r":100, "g":9, "b":4},
+      "size" : 10,
+      "effect" :{"effect_dis":"drink water"}
+
+    }
+
+    
 
   }
 
-}

@@ -1,4 +1,4 @@
-MODULES=main position state author world item gauges character imageHandler mission
+MODULES=main position gameGaugesDict gameDataStructure keyValueType drawable dictionary treeDictionary state author world item gauges character imageHandler mission
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -22,6 +22,10 @@ main:
 
 test:
 	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
+
+bisect-test:
+	BISECT_COVERAGE=YES $(OCAMLBUILD) -tag 'debug' $(TEST) \
+		&& ./$(TEST)
 
 play:
 	$(OCAMLBUILD) -tag 'debug' $(MAIN) && OCAMLRUNPARAM=b ./$(MAIN)
