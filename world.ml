@@ -54,10 +54,7 @@ let get_cols map = map.cols
 
 let get_tile_size map = map.tile_size
 
-(* type info = {
-    coords: int * int;
-    wh:int * int
-} *)
+(* type info = { coords: int * int; wh:int * int } *)
 
 let terrain_image = ImageHandler.get_entire_image "assets/Terrain.png"
 
@@ -65,14 +62,15 @@ let street_image = ImageHandler.get_entire_image "assets/Street.png"
 
 let building_image = ImageHandler.get_entire_image "assets/Buildings.png"
 
-(* let terrain_tiles = ImageHandler.load_tileset (ImageHandler.get_entire_image "assets/Terrain.png")  *)
+(* let terrain_tiles = ImageHandler.load_tileset
+   (ImageHandler.get_entire_image "assets/Terrain.png") *)
 
 let get_tile_image_x_y tileset x y = failwith "unimplemented"
 
-let get_image_from_tile tile tsize = 
-  match tile with 
-  | Blank -> Graphics.make_image 
-    (Array.make_matrix tsize tsize Graphics.transp)
+let get_image_from_tile tile tsize =
+  match tile with
+  | Blank ->
+      Graphics.make_image (Array.make_matrix tsize tsize Graphics.transp)
   | Grass -> ImageHandler.get_tileset_part 0 0 tsize tsize terrain_image
   | Sidewalk -> ImageHandler.get_tileset_part 256 0 tsize tsize street_image
   | Building -> ImageHandler.get_tileset_part 0 0 tsize tsize building_image

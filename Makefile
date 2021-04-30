@@ -1,4 +1,4 @@
-MODULES=main position state author world item gauges character imageHandler
+MODULES=main position state author world item gauges character imageHandler mission
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

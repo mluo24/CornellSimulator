@@ -42,19 +42,19 @@ let init_character () =
     rep = get_person_image Still;
     pos = { x = 160; y = 160 };
     speed = 16;
-    tile_mem = World.get_tile 10 10 world;
+    tile_mem = World.get_tile 9 10 world;
     pos_mem = { x = 160; y = 160 };
   }
 
 let draw t = Graphics.draw_image t.rep t.pos.x t.pos.y
 
 let move_up t =
-  if t.pos.y < World.y_dim then begin
+  if t.pos.y < World.y_dim - 16 then begin
     World.draw_tile t.pos.x t.pos.y t.tile_mem world;
     t.pos_mem <- t.pos;
     t.tile_mem <-
       World.get_tile
-        ((World.y_dim - t.pos.y + t.speed) / 16)
+        ((World.y_dim - t.pos.y + t.speed - 16) / 16)
         (t.pos.x / 16) world;
     t.pos.y <- t.pos.y + t.speed;
     t.rep <- get_person_image Up;
@@ -62,12 +62,12 @@ let move_up t =
   end
 
 let move_right t =
-  if t.pos.x < World.x_dim then begin
+  if t.pos.x < World.x_dim - 16 then begin
     World.draw_tile t.pos.x t.pos.y t.tile_mem world;
     t.pos_mem <- t.pos;
     t.tile_mem <-
       World.get_tile
-        ((World.y_dim - t.pos.y) / 16)
+        ((World.y_dim - t.pos.y - 16) / 16)
         ((t.pos.x + t.speed) / 16)
         world;
     t.pos.x <- t.pos.x + t.speed;
@@ -81,8 +81,8 @@ let move_down t =
     t.pos_mem <- t.pos;
     t.tile_mem <-
       World.get_tile
-        ((World.y_dim - t.pos.y - t.speed) / 16)
-        (t.pos.x / 15) world;
+        ((World.y_dim - t.pos.y - t.speed - 16) / 16)
+        (t.pos.x / 16) world;
     t.pos.y <- t.pos.y - t.speed;
     t.rep <- get_person_image Down;
     draw t
@@ -94,7 +94,7 @@ let move_left t =
     t.pos_mem <- t.pos;
     t.tile_mem <-
       World.get_tile
-        ((World.y_dim - t.pos.y) / 16)
+        ((World.y_dim - t.pos.y - 16) / 16)
         ((t.pos.x - t.speed) / 16)
         world;
     t.pos.x <- t.pos.x - t.speed;
