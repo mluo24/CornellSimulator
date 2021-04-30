@@ -15,7 +15,7 @@ type t = {
 
 let init_game () =
   {
-    world = World.map_from_json_file "testmap.json";
+    world = World.map_from_json_file "realmap.json";
     character = Character.init_character ();
     items =
       Item.init_item_list

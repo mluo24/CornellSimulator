@@ -1,6 +1,9 @@
 open Yojson.Basic.Util
 open Graphics
 
+open ImageHandler
+
+
 (* animation loading tilesets *)
 
 type tile =
@@ -48,6 +51,31 @@ let get_cols map = map.cols
 
 let get_tile_size map = map.tile_size
 
+
+(* type info = {
+    coords: int * int;
+    wh:int * int
+} *)
+
+let terrain_image = ImageHandler.get_entire_image "assets/Terrain.png"
+
+let street_image = ImageHandler.get_entire_image "assets/Street.png"
+
+let building_image = ImageHandler.get_entire_image "assets/Buildings.png"
+
+(* let terrain_tiles = ImageHandler.load_tileset (ImageHandler.get_entire_image "assets/Terrain.png")  *)
+
+let get_tile_image_x_y tileset x y = failwith "unimplemented"
+
+let get_image_from_tile tile tsize = 
+  match tile with 
+  | Blank -> Graphics.make_image 
+    (Array.make_matrix tsize tsize Graphics.transp)
+  | Grass -> ImageHandler.get_tileset_part 0 0 tsize tsize terrain_image
+  | Sidewalk -> ImageHandler.get_tileset_part 256 0 tsize tsize street_image
+  | Building -> ImageHandler.get_tileset_part 0 0 tsize tsize building_image
+
+
 let get_color_from_tile tile =
   match tile with
   | Blank -> Graphics.black
@@ -57,9 +85,7 @@ let get_color_from_tile tile =
 
 let draw_tile x y tile map =
   let tsize = get_tile_size map in
-  Graphics.set_color (get_color_from_tile tile);
-  Graphics.fill_rect x y tsize tsize;
-  Graphics.synchronize ()
+  Graphics.draw_image (get_image_from_tile tile tsize) x y
 
 let draw_tile_iter map i tile_t =
   let tsize = get_tile_size map in

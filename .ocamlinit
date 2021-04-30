@@ -11,5 +11,4 @@
 #load "state.cmo";;
 #load "character.cmo";;
 #load_rec "treeDictionary.cmo";;
-
-
+#load "imageHandler.cmo";;
