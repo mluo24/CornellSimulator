@@ -4,6 +4,21 @@ open Character
 open Position
 
 (********************************************************************
+   OUR APPROACH TO TESTING
+ ********************************************************************)
+(** 
+  Our approach to testing ...
+
+  The way we tested 
+  Some tests we omitted because they directly relate to the graphics panel,
+  which we do not believe we can really confirm through running unit tests.
+  Since we can easily confirm this visually, there is no need to write test
+  cases for this.
+
+*)
+
+
+(********************************************************************
    Helper functions testing set-like lists. (from A2)
  ********************************************************************)
 
@@ -39,29 +54,25 @@ let pp_list pp_elt lst =
 
 (* These tests demonstrate how to use [cmp_set_like_lists] and [pp_list] to
    get helpful output from OUnit. *)
-let cmp_demo =
+(* let cmp_demo =
   [
     ( "order is irrelevant" >:: fun _ ->
       assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list pp_string)
         [ "foo"; "bar" ] [ "bar"; "foo" ] );
-    (* Uncomment this test to see what happens when a test case fails.
+     Uncomment this test to see what happens when a test case fails.
        "duplicates not allowed" >:: (fun _ -> assert_equal
        ~cmp:cmp_set_like_lists ~printer:(pp_list pp_string) ["foo"; "foo"]
-       ["foo"]); *)
-  ]
+       ["foo"]);
+  ] *)
 
 (* HELPER FUNCTIONS/VALUES FOR MAKING TESTS *)
 
-(* let adventure_test_room_ids name (adv : Adventure.t) expected_output = name
-   >:: fun _ -> assert_equal ~cmp:cmp_set_like_lists expected_output (room_ids
-   adv) ~printer:(pp_list pp_string) *)
-
-let string_of_tile tile =
+(* let string_of_tile tile =
   match tile with
   | Blank -> "0"
   | Grass -> "G"
   | Sidewalk -> "S"
-  | Building -> "B"
+  | Building -> "B" *)
 
 let string_of_array pp_elt arr =
   let lst = Array.to_list arr in
@@ -74,7 +85,7 @@ let map = map_from_json_file "testmap.json"
 let world_test_get_tile_arr name map expected_output =
   name >:: fun _ ->
   assert_equal expected_output (get_tile_arr map)
-    ~printer:(string_of_array string_of_tile)
+    (* ~printer:(string_of_array string_of_tile) *)
 
 (******************************************************************** 
   End helper functions.
@@ -87,76 +98,13 @@ let world_tests =
     world_test_get_tile_arr "testmap.json" map
       (Array.map int_to_tile
          [|
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           3;
-           1;
-           3;
-           3;
-           3;
-           1;
-           1;
-           1;
-           3;
-           3;
-           3;
-           3;
-           3;
-           3;
-           3;
-           3;
-           1;
-           2;
-           2;
-           2;
-           2;
-           2;
-           2;
-           2;
-           2;
-           2;
-           2;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           2;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           2;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           1;
-           2;
-           1;
-           1;
-           1;
+          1;1;1;1;1;1;1;1;1;1;
+          1;1;1;3;1;3;3;3;1;1;
+          1;3;3;3;3;3;3;3;3;1;
+          2;2;2;2;2;2;2;2;2;2;
+          1;1;1;1;1;1;2;1;1;1;
+          1;1;1;1;1;1;2;1;1;1;
+          1;1;1;1;1;1;2;1;1;1
          |]);
   ]
 
