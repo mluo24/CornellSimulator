@@ -22,20 +22,21 @@ let draw gauges =
         draw_lst pos line_height t
   in
   draw_lst { x = 810; y = 340 } 20
-    ("gauges" :: GameIntDict.format_string_lst gauges)
+    (* ("gauges" :: GameIntDict.format_string_lst gauges) *)
+    [ "gauges"; "on maintainance" ]
 
 let add_to_init acc json =
   let name = json |> member "name" |> to_string in
   let max = json |> member "max" |> to_int in
   let init = json |> member "init" |> to_int in
-  GameIntDict.insert name init max acc
+  GameIntDict.insert name (init, max) acc
 
 let init_gauges json =
   json |> member "gauges" |> to_list
   |> List.fold_left add_to_init GameIntDict.empty
 
-let decrease_gauges name by_val =
-  GameIntDict.change_gauges name GameIntDict.GameValue.subtract by_val
+let decrease_gauges name by_val map = failwith "unimplemented"
 
-let increase_gauges name by_val =
-  GameIntDict.change_gauges name GameIntDict.GameValue.add by_val
+(* GameIntDict.change_gauges name GameIntDict.GameValue.subtract by_val map *)
+
+let increase_gauges name by_val map = GameIntDict.insert_add name by_val map

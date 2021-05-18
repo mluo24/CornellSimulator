@@ -69,7 +69,7 @@ let insert_bag acc json =
   let name = json |> member "name" |> to_string in
   let max = json |> member "max" |> to_int in
   let init = json |> member "init" |> to_int in
-  GameIntDict.insert name init max acc
+  GameIntDict.insert name (init, max) acc
 
 let init_bag json =
   json |> member "init item" |> to_list
@@ -124,7 +124,8 @@ let draw_bag bag =
         draw_lst pos line_height t
   in
   draw_lst { x = 810; y = 200 } 20
-    ("bag" :: GameIntDict.format_string_lst bag.aquired)
+    (* ("bag" :: GameIntDict.format_string_lst bag.aquired) *)
+    [ "bag"; " in the work" ]
 
 let description item = failwith "unimplemented"
 

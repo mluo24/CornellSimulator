@@ -1,0 +1,1 @@
+gauges.ml: GameDataStructure GameIntDict Graphics List Position Yojson
