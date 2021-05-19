@@ -1,1 +1,2 @@
-(* day, days elapsed, current hour & minute, time elapsed, days should be maybe 5 minutes long*)
+(* home, playing, game over *)
+(* change game state, check game state, reset? *)
