@@ -11,4 +11,4 @@ make build
 make play
 
 you can control movements with `w` `a` `s` `d`
-
+take items with `t`
