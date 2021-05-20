@@ -1,1 +1,0 @@
-gauges.mli: Drawable GameDataStructure GameGaugesDict GameIntDict Graphics Item Yojson
