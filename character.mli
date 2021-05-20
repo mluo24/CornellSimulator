@@ -1,7 +1,14 @@
 open Graphics
 open Drawable
 (** The abstract type of values representing character. *)
-type t
+type t = {
+    name : string;
+    mutable tile_mem : World.tile;
+    mutable pos_mem : Position.t;
+    mutable rep : Graphics.image;
+    pos : Position.t;
+    speed : int;
+  }
 
 include Drawable with type t := t
 (** [get_position t] is the position on graphical interface of character [t]*)

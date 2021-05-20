@@ -24,7 +24,7 @@ type tile =
   | Building1_Right
   | Building2_Left
   | Building2_Mid
-  | Building2_Right
+  | Building2_Right 
   | Roof
   | Roof_BotLeft
   | Roof_BotRight
