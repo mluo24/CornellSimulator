@@ -1,7 +1,6 @@
 (** [StringKey] provides the necessary definitions to use strings as keys in
     dictionaries. *)
 
-open Dictionary
 open GameGaugesDict
 
 module String : KeyType with type t = string = struct
