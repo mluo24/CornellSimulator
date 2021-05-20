@@ -1,1 +1,1 @@
-state.ml: Character Gauges Graphics ImageHandler Item Mission Position World Yojson
+state.ml: Character Gauges Graphics ImageHandler Item Mission Position Rect World Yojson

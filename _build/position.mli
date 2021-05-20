@@ -7,6 +7,13 @@ type t = {
 
 val from_json : Yojson.Basic.t -> t
 
+type direction =
+  | Still
+  | Up
+  | Left
+  | Right
+  | Down
+
 (** [distance pt1 pt2] is distance between pt1 and pt2 *)
 val distance : t -> t -> int
 

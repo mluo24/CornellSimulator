@@ -1,4 +1,4 @@
-MODULES=main position gameGaugesDict gameDataStructure keyValueType drawable state author world item gauges character imageHandler mission
+MODULES=main position gameGaugesDict gameDataStructure keyValueType drawable rect state author world item gauges character imageHandler mission
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

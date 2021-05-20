@@ -5,6 +5,13 @@ type t = {
   mutable y : int;
 }
 
+type direction =
+  | Still
+  | Up
+  | Left
+  | Right
+  | Down
+
 let from_json json =
   { x = json |> member "x" |> to_int; y = json |> member "y" |> to_int }
 

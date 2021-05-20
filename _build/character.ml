@@ -11,12 +11,7 @@ type t = {
   speed : int;
 }
 
-type person =
-  | Still
-  | Up
-  | Left
-  | Right
-  | Down
+type person = Position.direction
 
 let draw t = Graphics.draw_image t.rep t.pos.x t.pos.y
 
@@ -51,6 +46,7 @@ let get_person_image person =
   | Down ->
       ImageHandler.get_tile_image_x_y player_sprites player_image_size_width 2
         1
+
 (* | Still -> ImageHandler.get_tileset_part 16 16 15 17 player_sprites | Up ->
    ImageHandler.get_tileset_part 50 64 15 16 player_sprites | Left ->
    ImageHandler.get_tileset_part 50 32 15 17 player_sprites | Right ->

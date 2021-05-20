@@ -1,1 +1,1 @@
-item.ml: Character GameDataStructure GameIntDict Graphics List Position Yojson
+item.ml: Character GameDataStructure GameIntDict Graphics List Position Rect Yojson

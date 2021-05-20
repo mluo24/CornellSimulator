@@ -34,7 +34,7 @@ type item_id = string
 (* string representation of item type *)
 type item_type = string
 
-
+val inventory_area : Rect.t
 val draw_bag: ilist -> unit
 
 (* Whether the item has been collected *)
@@ -55,4 +55,7 @@ val item_effect: t -> effect
 
 (** [item_position t] is the position on the map of item [t]  *)
 val item_position: t -> Position.t
+
+(* Draw inventory representation  *)
+val draw_inventory: ilist -> unit
 
