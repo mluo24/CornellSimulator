@@ -1,12 +1,7 @@
-open Dictionary
-open TreeDictionary
-
 module type Operationable = sig
   type t
 
   exception IllegalSubtraction
-
-  include Dictionary.Comparable with type t := t
 
   val add : t -> t -> t
 
@@ -17,141 +12,88 @@ module type Operationable = sig
   val defualt : t
 end
 
-module type Key = sig
+module type GameNum = sig
   type t
-
-  include Dictionary.KeySig with type t := t
-
-  val to_string : t -> string
-end
-
-(* type for number value *)
-module type GameValue = sig
-  type t
-
-  include Dictionary.Comparable with type t := t
 
   include Operationable with type t := t
 
   val to_string : t -> string
 end
 
-(* value of the dictionary key sig *)
-module type GValue = sig
-  module GameValue : GameValue
-
+module type KeyType = sig
   type t
 
-  include Dictionary.ValueSig with type t := t
-
-  val to_string : t -> string
+  include Map.OrderedType with type t := t
 end
+
+(* value of the dictionary key sig *)
 
 module type GameGuagesDict = sig
   exception InvalidEffect
 
-  module Key : Key
+  module GameNum : GameNum
 
-  module GameValue : GameValue
+  module KeyType : KeyType
 
-  module Value : GValue
+  type game_value = GameNum.t * GameNum.t
 
-  module D : Dictionary
+  type key = KeyType.t
 
-  type game_value = GameValue.t
+  module GameMap : Map.S
 
-  type value = game_value * game_value
-
-  type key = Key.t
-
-  type t
+  type t = game_value GameMap.t
 
   val empty : t
 
-  val insert : key -> game_value -> game_value -> t -> t
+  type num_val = GameNum.t
 
-  val fold : (key -> value -> 'acc -> 'acc) -> 'acc -> t -> 'acc
+  val insert : key -> game_value -> t -> t
 
   val change_gauges :
-    key -> (game_value -> game_value -> game_value) -> game_value -> t -> t
+    key -> (game_value option -> game_value option) -> t -> t
 
-  val insert_add : key -> game_value -> t -> t
-
-  val format_string_lst : t -> string list
+  val insert_add : key -> num_val -> t -> t
 end
 
 (* module MakeValue: functor (GV: GameValue) -> struct module GameV = GV type
-   t = (GameValue.t * GameValue.t) let format = failwith "unimplemented"
-
-   end *)
+   t = (GameValue.t * GameValue.t) let format = failwith "unimplemented" end *)
 
 module MakeGameDict =
 functor
-  (GV : GameValue)
-  (K : Key)
-  (DM : DictionaryMaker)
+  (GN : GameNum)
+  (K : KeyType)
   ->
   struct
-    module GameValue = GV
-    module Key = K
-
-    type game_value = GameValue.t
-
-    module Value = struct
-      module GameValue = GameValue
-
-      type t = game_value * game_value
-
-      let to_string t =
-        match t with
-        | v, max -> GameValue.to_string v ^ "/" ^ GameValue.to_string max
-
-      let format fmt t =
-        Format.fprintf fmt "\"%s\""
-          (Stdlib.String.lowercase_ascii (to_string t))
-    end
+    module GameNum = GN
+    module KeyType = K
 
     exception InvalidEffect
 
-    type value = Value.t
+    module GameMap = Map.Make (KeyType)
 
-    type key = Key.t
+    type num_val = GameNum.t
 
-    module D = DM (Key) (Value)
+    type key = KeyType.t
 
-    type t = D.t
+    type game_value = GameNum.t * GameNum.t
 
-    let empty = D.empty
+    type t = game_value GameMap.t
 
-    let insert k init max dict = D.insert k (init, max) dict
+    let empty = GameMap.empty
 
-    let fold fuc acc dict = D.fold fuc acc dict
+    let insert k value dict = GameMap.add k value dict
 
-    let change_gauges name func value dict =
-      let cur_val = D.find name dict in
-      match cur_val with
-      | None -> raise InvalidEffect
-      | Some (v, max) ->
-          let new_val = func v value in
-          let final_val =
-            match GameValue.compare new_val max with
-            | GT -> (max, max)
-            | _ -> (new_val, max)
-          in
-          D.insert name final_val dict
+    let add (new_val : num_val) (ol_val : game_value option) :
+        game_value option =
+      match ol_val with
+      | Some (num, max) ->
+          let add_val = GameNum.add num new_val in
+          if add_val > max then Some (num, max) else Some (add_val, max)
+      | None -> None
+
+    let change_gauges name func dict = GameMap.update name func dict
 
     let insert_add key value dict =
-      try change_gauges key GameValue.add value dict
-      with InvalidEffect -> insert key value GameValue.defualt dict
-
-    let format_string_lst t =
-      let format_str key value init =
-        let str_g =
-          match value with
-          | v, max -> GameValue.to_string v ^ "/" ^ GameValue.to_string max
-        in
-        let str = Key.to_string key ^ ":" ^ str_g in
-        str :: init
-      in
-      fold format_str [] t
+      try change_gauges key (add value) dict
+      with InvalidEffect -> failwith "uniplemented"
   end
