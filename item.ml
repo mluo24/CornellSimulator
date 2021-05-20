@@ -108,9 +108,7 @@ let get_item ilist (c : Character.t) : ilist =
             cpos csize
         else find_item t (h :: acc) rem_acc cpos csize
   in
-  find_item ilist.items [] ilist.aquired
-    (Character.get_position c)
-    (Character.get_size c)
+  find_item ilist.items [] ilist.aquired c.pos (Character.get_size c)
 
 let draw_bag bag =
   Graphics.set_color white;
