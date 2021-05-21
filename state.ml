@@ -7,6 +7,8 @@ open Yojson.Basic
 open ImageHandler
 open World
 open Mission
+open Rect
+open GameState
 
 type t = {
   world : World.t;
@@ -32,17 +34,13 @@ let init_game () =
 
 let draw t =
   Graphics.clear_graph ();
-  World.draw_tiles t.world;
-  Item.draw_all t.items;
-  Character.draw t.character;
 
   Mission.draw_missions_window t.missions;
   Gauges.draw t.gauges;
-  Item.draw_bag t.items;
-  (* just to see how bear looks*)
-  let bear_sprite = ImageHandler.load_tileset "assets/bear.png" 32 in
-  let bear_image = ImageHandler.get_tile_image_x_y bear_sprite 1 0 0 in
-  Graphics.draw_image bear_image 64 64
+  World.draw_tiles t.world;
+  Item.draw_all t.items;
+  Character.draw t.character;
+  Item.draw_bag t.items
 
 (* let draw_with_assets t assets = Graphics.clear_graph (); World.draw_tiles
    t.world; Item.draw_all t.items; Character.draw t.character *)
@@ -73,7 +71,12 @@ let in_game () =
             game_state.items <-
               Item.get_item game_state.items game_state.character;
             draw game_state
-        | _ -> Character.move game_state.character s.Graphics.key
+        | _ ->
+            if
+              not
+                (Rect.will_enter_rect game_state.character.pos
+                   Item.inventory_area c 16)
+            then Character.move game_state.character s.Graphics.key
       (* draw game_state *)
     done
   with End -> end_game ()

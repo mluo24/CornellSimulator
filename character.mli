@@ -21,12 +21,7 @@ type t = {
 
 (** The type representing the different positions of the character
     corresponding to movements in different directions*)
-type person =
-  | Still
-  | Up
-  | Left
-  | Right
-  | Down
+type person = Position.direction
 
 (** [draw t] is draws the character [t]*)
 include Drawable with type t := t

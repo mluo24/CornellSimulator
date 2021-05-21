@@ -1,11 +1,7 @@
-open Dictionary
-
 module type Operationable = sig
   type t
 
   exception IllegalSubtraction
-
-  include Dictionary.Comparable with type t := t
 
   val add : t -> t -> t
 
@@ -16,34 +12,18 @@ module type Operationable = sig
   val defualt : t
 end
 
-(* type for number value *)
-module type GameValue = sig
+module type GameNum = sig
   type t
-
-  include Dictionary.Comparable with type t := t
 
   include Operationable with type t := t
 
   val to_string : t -> string
 end
 
-(* value of the dictionary key sig *)
-module type GValue = sig
-  module GameValue : GameValue
-
+module type KeyType = sig
   type t
 
-  include Dictionary.ValueSig with type t := t
-
-  val to_string : t -> string
-end
-
-module type Key = sig
-  type t
-
-  include Dictionary.KeySig with type t := t
-
-  val to_string : t -> string
+  include Map.OrderedType with type t := t
 end
 
 (* module MakeValue : functor (GV : GameValue) -> GValue with module GameValue
@@ -52,38 +32,29 @@ end
 module type GameGuagesDict = sig
   exception InvalidEffect
 
-  module Key : Key
+  module GameNum : GameNum
 
-  module GameValue : GameValue
+  module KeyType : KeyType
 
-  module Value : GValue
+  type game_value = GameNum.t * GameNum.t
 
-  module D : Dictionary
+  type key = KeyType.t
 
-  type game_value = GameValue.t
+  type num_val = GameNum.t
 
-  type value = game_value * game_value
+  module GameMap : Map.S
 
-  type key = Key.t
-
-  type t
+  type t = game_value GameMap.t
 
   val empty : t
 
-  val insert : key -> game_value -> game_value -> t -> t
-
-  val fold : (key -> value -> 'acc -> 'acc) -> 'acc -> t -> 'acc
+  val insert : key -> game_value -> t -> t
 
   val change_gauges :
-    key -> (game_value -> game_value -> game_value) -> game_value -> t -> t
+    key -> (game_value option -> game_value option) -> t -> t
 
-  val insert_add : key -> game_value -> t -> t
-
-  val format_string_lst : t -> string list
+  val insert_add : key -> num_val -> t -> t
 end
 
-module MakeGameDict : functor
-  (GV : GameValue)
-  (K : Key)
-  (DM : DictionaryMaker)
-  -> GameGuagesDict with module GameValue = GV and module Key = K
+module MakeGameDict : functor (GN : GameNum) (K : KeyType) ->
+  GameGuagesDict with module GameNum = GN and module KeyType = K
