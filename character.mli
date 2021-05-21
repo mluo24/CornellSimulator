@@ -41,9 +41,9 @@ val get_size : t -> int
     representations in [t.reps]*)
 val player_sprites : Images.t array
 
-(** [player_image_side_width] is width of the image, measured in unit tile
+(** [player_image_size_width] is width of the image, measured in unit tile
     lengths*)
-val player_image_side_width : int
+val player_image_size_width : int
 
 (** [world] is the World.t type of the json data used to represent the map
     referenced as the character moves*)
@@ -54,7 +54,7 @@ val world : World.t
 val get_person_image : person -> Graphics.image
 
 (** [init_character] initializes the character [t]*)
-val init_character : t
+val init_character : unit -> t
 
 (** [move_up t] implements the animation of the character's up movement.*)
 val move_up : t -> unit

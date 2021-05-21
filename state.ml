@@ -38,7 +38,11 @@ let draw t =
 
   Mission.draw_missions_window t.missions;
   Gauges.draw t.gauges;
-  Item.draw_bag t.items
+  Item.draw_bag t.items;
+  (* just to see how bear looks*)
+  let bear_sprite = ImageHandler.load_tileset "assets/bear.png" 32 in
+  let bear_image = ImageHandler.get_tile_image_x_y bear_sprite 1 0 0 in
+  Graphics.draw_image bear_image 64 64
 
 (* let draw_with_assets t assets = Graphics.clear_graph (); World.draw_tiles
    t.world; Item.draw_all t.items; Character.draw t.character *)
