@@ -37,6 +37,7 @@ let draw t =
 
   Mission.draw_missions_window t.missions;
   Gauges.draw t.gauges;
+  (** CHANGE THIS TO DRAW THE SPECIFIC LAYERS *)
   World.draw_tiles t.world;
   Item.draw_all t.items;
   Character.draw t.character;
@@ -63,6 +64,7 @@ let in_game () =
   draw game_state;
   try
     while true do
+      (** POSSIBLY FIX THIS SO THE KEY EVENTS WORK*)
       let s = Graphics.wait_next_event [ Graphics.Key_pressed ] in
       if s.Graphics.keypressed then
         let c = s.Graphics.key in

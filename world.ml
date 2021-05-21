@@ -49,7 +49,6 @@ let x_dim = 800
 
 let y_dim = 560
 
-
 (*  let layers = 2 *)
 
 let int_to_tile i =
