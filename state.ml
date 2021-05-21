@@ -32,12 +32,12 @@ let init_game () =
 
 let draw t =
   Graphics.clear_graph ();
-  World.draw_tiles t.world;
-  Item.draw_all t.items;
-  Character.draw t.character;
 
   Mission.draw_missions_window t.missions;
   Gauges.draw t.gauges;
+  World.draw_tiles t.world;
+  Item.draw_all t.items;
+  Character.draw t.character;
   Item.draw_bag t.items
 
 (* let draw_with_assets t assets = Graphics.clear_graph (); World.draw_tiles
@@ -69,7 +69,12 @@ let in_game () =
             game_state.items <-
               Item.get_item game_state.items game_state.character;
             draw game_state
-        | _ -> Character.move game_state.character s.Graphics.key
+        | _ ->
+            if
+              not
+                (Rect.will_enter_rect game_state.character.pos
+                   Item.inventory_area c 16)
+            then Character.move game_state.character s.Graphics.key
       (* draw game_state *)
     done
   with End -> end_game ()

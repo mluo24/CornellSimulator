@@ -1,4 +1,4 @@
-MODULES=main position gameGaugesDict gameDataStructure keyValueType drawable dictionary treeDictionary state author world item gauges character imageHandler mission
+MODULES=main position gameGaugesDict gameDataStructure keyValueType drawable rect state author world item gauges character imageHandler mission
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -12,10 +12,10 @@ default: build
 
 build:
 	# $(OCAMLBUILD) $(OBJECTS) && js_of_ocaml +graphics.js $(MAIN)
-	 $(OCAMLBUILD) $(OBJECTS)
+	$(OCAMLBUILD) $(OBJECTS)
 
-build1:
-	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
+# build1:
+# 	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
 
 main: 
 	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)

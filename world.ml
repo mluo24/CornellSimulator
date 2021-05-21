@@ -3,10 +3,6 @@ open Graphics
 open ImageHandler
 open Images
 
-(* animation loading tilesets 
- * use hashtables?
-*)
-
 type tile =
   | Blank
   (** terrain.png *)
@@ -28,7 +24,7 @@ type tile =
   | Building1_Right
   | Building2_Left
   | Building2_Mid
-  | Building2_Right
+  | Building2_Right 
   | Roof
   | Roof_BotLeft
   | Roof_BotRight
@@ -49,13 +45,11 @@ type t = {
   assets : Images.t array array;
 }
 
-(** possibly make this in the type of the map *)
 let x_dim = 800
 
 let y_dim = 560
 
-(* let tile_size = 16 let cols = failwith "Unimplemented" let tile_size =
-   failwith "Unimplemented" let layers = 2 *)
+
 (*  let layers = 2 *)
 
 let int_to_tile i =
@@ -177,22 +171,6 @@ let get_image_from_tile assets tile tsize =
   | DoorTop -> get_building_tile 10 7
   | DoorBot -> get_building_tile 10 8
 
-
-  (* | Grass -> ImageHandler.get_tile_image_x_y 0 0 tsize tsize terrain_image
-let get_image_from_tile tile tsize =
-  match tile with
-  | Blank ->
-      Graphics.make_image (Array.make_matrix tsize tsize Graphics.transp)
-  | Grass -> ImageHandler.get_tileset_part 0 0 tsize tsize terrain_image
-  | Sidewalk -> ImageHandler.get_tileset_part 256 0 tsize tsize street_image
-  | Building -> ImageHandler.get_tileset_part 0 0 tsize tsize building_image *)
-
-(* let get_color_from_tile tile =
-  match tile with
-  | Blank -> Graphics.black
-  | Grass -> Graphics.green
-  | Sidewalk -> Graphics.yellow
-  | Building -> Graphics.rgb 100 100 100 *)
 
 let draw_tile x y tile map =
   let tsize = get_tile_size map in
