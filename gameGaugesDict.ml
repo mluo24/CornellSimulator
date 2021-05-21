@@ -10,7 +10,7 @@ end
 
 (* value of the dictionary key sig *)
 
-module type GameGuagesDict = sig
+module type GameDict = sig
   exception InvalidEffect
 
   module GameVal : GameVal
