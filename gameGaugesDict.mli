@@ -1,23 +1,5 @@
-module type Operationable = sig
+module type GameVal = sig
   type t
-
-  exception IllegalSubtraction
-
-  val add : t -> t -> t
-
-  val subtract : t -> t -> t
-
-  val minimum : t
-
-  val defualt : t
-end
-
-module type GameNum = sig
-  type t
-
-  include Operationable with type t := t
-
-  val to_string : t -> string
 end
 
 module type KeyType = sig
@@ -26,21 +8,16 @@ module type KeyType = sig
   include Map.OrderedType with type t := t
 end
 
-(* module MakeValue : functor (GV : GameValue) -> GValue with module GameValue
-   = GV *)
-
 module type GameGuagesDict = sig
   exception InvalidEffect
 
-  module GameNum : GameNum
+  module GameVal : GameVal
 
   module KeyType : KeyType
 
-  type game_value = GameNum.t * GameNum.t
+  type game_value = GameVal.t
 
   type key = KeyType.t
-
-  type num_val = GameNum.t
 
   module GameMap : Map.S
 
@@ -50,11 +27,14 @@ module type GameGuagesDict = sig
 
   val insert : key -> game_value -> t -> t
 
-  val change_gauges :
-    key -> (game_value option -> game_value option) -> t -> t
+  val update : key -> (game_value option -> game_value option) -> t -> t
 
-  val insert_add : key -> num_val -> t -> t
+  val get_size : t -> int
+
+  val get_bindings : t -> (key * game_value) list
+
+  val get_key_of : game_value -> t -> key
 end
 
-module MakeGameDict : functor (GN : GameNum) (K : KeyType) ->
-  GameGuagesDict with module GameNum = GN and module KeyType = K
+module MakeGameDict : functor (GVal : GameVal) (K : KeyType) ->
+  GameGuagesDict with module GameVal = GVal and module KeyType = K

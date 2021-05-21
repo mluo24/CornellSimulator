@@ -1,6 +1,7 @@
 open Graphics
 open Yojson.Basic.Util
 open GameDataStructure
+open GraphicHelper
 
 (** The abstract type of values representing the items group *)
 open Position
@@ -13,6 +14,7 @@ type effect = { effect_dis : string }
 type item_id = string
 
 (* string representation of item type *)
+
 type item_type = string
 
 type item_prop = {
@@ -38,12 +40,6 @@ type ilist = {
   inventory : Rect.t;
 }
 
-let to_color json : Graphics.color =
-  Graphics.rgb
-    (json |> member "r" |> to_int)
-    (json |> member "g" |> to_int)
-    (json |> member "b" |> to_int)
-
 let to_effect json : effect =
   { effect_dis = json |> member "effect_dis" |> to_string }
 
@@ -51,7 +47,7 @@ let to_item_prop json : item_prop =
   {
     name = json |> member "name" |> to_string;
     description = json |> member "description" |> to_string;
-    color = json |> member "color" |> to_color;
+    color = json |> member "color" |> GraphicHelper.to_color;
     size = json |> member "size" |> to_int;
     effect = json |> member "effect" |> to_effect;
   }
@@ -72,7 +68,7 @@ let insert_bag acc json =
   let name = json |> member "name" |> to_string in
   let max = json |> member "max" |> to_int in
   let init = json |> member "init" |> to_int in
-  GameIntDict.insert name (init, max) acc
+  GameIntDict.insert name { value = init; max; color = Graphics.black } acc
 
 let init_bag json =
   json |> member "init item" |> to_list
@@ -104,6 +100,7 @@ let draw_all (item_lst : ilist) =
 let acquired item = failwith "unimplemented"
 
 (* item name *)
+
 let name item = failwith "unimplemented"
 
 let get_item ilist (c : Character.t) : ilist =
@@ -112,11 +109,10 @@ let get_item ilist (c : Character.t) : ilist =
     | [] -> { items = acc; aquired = rem_acc; inventory = inven }
     | h :: t ->
         let dist = Position.distance h.pos cpos in
-        if dist < h.rep.size + csize then
-          find_item t acc
-            (GameIntDict.insert_add h.rep.name 1 rem_acc)
-            cpos csize inven
-        else find_item t (h :: acc) rem_acc cpos csize inven
+        (* if dist < h.rep.size + csize then find_item t acc
+           (GameIntDict.insert_add h.rep.name 1 rem_acc) cpos csize inven else
+           find_item t (h :: acc) rem_acc cpos csize inven *)
+        find_item t (h :: acc) rem_acc cpos csize inven
   in
   find_item ilist.items [] ilist.aquired c.pos (Character.get_size c)
     ilist.inventory
@@ -134,11 +130,12 @@ let draw_bag bag =
   in
   draw_lst { x = 810; y = 200 } 20
     (* ("bag" :: GameIntDict.format_string_lst bag.aquired) *)
-    [ "bag"; " in the work" ]
+    [ "bag"; " in\n   the work" ]
 
 let description item = failwith "unimplemented"
 
 (* effect *)
+
 let item_effect item = failwith "unimplemented"
 
 let item_position item = failwith "unimplemented"

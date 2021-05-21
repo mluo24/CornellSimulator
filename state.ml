@@ -36,12 +36,13 @@ let draw t =
   Graphics.clear_graph ();
 
   Mission.draw_missions_window t.missions;
-  Gauges.draw t.gauges;
+ 
   (** CHANGE THIS TO DRAW THE SPECIFIC LAYERS *)
   World.draw_tiles t.world;
   Item.draw_all t.items;
   Character.draw t.character;
-  Item.draw_bag t.items
+  Item.draw_bag t.items;
+  Gauges.draw t.gauges;
 
 (* let draw_with_assets t assets = Graphics.clear_graph (); World.draw_tiles
    t.world; Item.draw_all t.items; Character.draw t.character *)
