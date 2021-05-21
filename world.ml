@@ -107,7 +107,9 @@ let map_from_json_file filename =
 
 let get_tile_arr map = map.tiles
 
-let get_tile row col map = map.tiles.((row * map.cols) + col)
+let get_tile row col map = 
+  try map.tiles.((row * map.cols) + col) with
+    | Invalid_argument x -> Blank
 
 let get_rows map = map.rows
 
@@ -130,11 +132,14 @@ let get_image_from_tile assets tile tsize =
   let terrain_tileset = assets.(0) in
   let street_tileset = assets.(1)  in
   let building_tileset = assets.(2)  in
-  let get_terrain_tile x y = ImageHandler.get_tile_image_x_y terrain_tileset 
+  let get_terrain_tile x y = 
+    ImageHandler.get_tile_image_x_y terrain_tileset 
   (terrain_image_width / tsize) x y in
-  let get_street_tile x y = ImageHandler.get_tile_image_x_y street_tileset 
+  let get_street_tile x y = 
+    ImageHandler.get_tile_image_x_y street_tileset 
   (street_image_width / tsize) x y in
-  let get_building_tile x y = ImageHandler.get_tile_image_x_y building_tileset 
+  let get_building_tile x y = 
+    ImageHandler.get_tile_image_x_y building_tileset 
   (building_image_width / tsize) x y in
   match tile with 
   | Blank -> Graphics.make_image 

@@ -50,6 +50,11 @@ exception End
 
 let end_game () = failwith "unimplemented"
 
+let rec flush_keypress () = 
+  if Graphics.key_pressed () 
+  then (ignore (read_key ()); flush_keypress ();)
+  else () 
+
 let in_game () =
   let game_state = init_game () in
   (* let tilesize = get_tile_size game_state.world in *)
@@ -64,7 +69,6 @@ let in_game () =
   draw game_state;
   try
     while true do
-      (** POSSIBLY FIX THIS SO THE KEY EVENTS WORK*)
       let s = Graphics.wait_next_event [ Graphics.Key_pressed ] in
       if s.Graphics.keypressed then
         let c = s.Graphics.key in
@@ -83,6 +87,8 @@ let in_game () =
     done
   with End -> end_game ()
 
+
+  
 (* type t_pos = { mutable x : int; mutable y : int; } *)
 
 (* { character: Character; world: time: } *)
