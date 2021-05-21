@@ -14,7 +14,7 @@ open Position
   Testing was rather difficult because of the fact that a lot of the functions
   heavily relied on the graphics window being open, and most of the operations
   done there. Therefore, the tests would likely fail due to needing to open the 
-  graphics screen.
+  graphics screen. As well, especially in the ImageHandler module, *** POSSIBLY CHANGE THIS
 
   Partially as a result of that, some tests we omitted because they directly 
   relate to the graphics panel, which we do not believe we can really confirm 
@@ -103,11 +103,11 @@ let world_test_get_tile_arr name map expected_output =
   assert_equal expected_output (get_tile_arr map)
     (* ~printer:(string_of_array string_of_tile) *)
 
-
-
 (******************************************************************** 
   End helper functions.
   ********************************************************************)
+
+  (** test almost everything in world *)
 
 let world_tests =
   [
