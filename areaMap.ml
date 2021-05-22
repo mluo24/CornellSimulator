@@ -44,7 +44,7 @@ type coords = {
 
 type tiletype =
   | StandardTile of tile
-  | ItemTile of Item.t * tile
+  | ItemTile of string * tile
   | SolidTile of tile
   | DoorTile of string * coords * tile
 
