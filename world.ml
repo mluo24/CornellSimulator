@@ -37,10 +37,14 @@ type tile =
   | DoorTop
   | DoorBot
 
+(** areamap, current areamap *)
+
 type t = {
   cols : int;
   rows : int;
   tile_size : int;
+  (** layer1 *)
+  (** layer2 *)
   tiles : tile array;
   assets : Images.t array array;
 }
@@ -48,6 +52,9 @@ type t = {
 let x_dim = 800
 
 let y_dim = 560
+
+(** for 32x32 *)
+(** let y_dim = 576 *)
 
 (*  let layers = 2 *)
 

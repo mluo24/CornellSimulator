@@ -45,10 +45,15 @@ val y_dim : int
     loads and returns the data into the a World type. It also adds the field
     [assets] to the World type, which is a matrix of images.
 
-    Requires: file must be a json with the following fields: [tile_size] ->
-    size in pixels of a square tile [cols] -> how many columns of tiles in the
-    map [rows] -> how many rows of tiles in the map [tiles] -> a 1D array of
-    the tile configuration, in integers *)
+    Requires: file must be a json with the following fields:
+
+    [tile_size] -> size in pixels of a square tile (must be >= 0)
+
+    [cols] -> how many columns of tiles in the map
+
+    [rows] -> how many rows of tiles in the map
+
+    [tiles] -> a 1D array of the tile configuration, in integers *)
 val map_from_json_file : string -> t
 
 (** [int_to_tile i] matches an integer to a specified tile. Arbitrarily, the
@@ -83,7 +88,7 @@ val get_image_from_tile :
   Images.t array array -> tile -> int -> Graphics.image
 
 (** [draw_tile x y tile map] draws [tile] at position ([x], [y]) on the
-    graphics screen. *)
+    graphics screen. In OCaml, (0, 0) starts on the bottom left *)
 val draw_tile : int -> int -> tile -> t -> unit
 
 (** [draw_tile map] draws the tiles of [map] on the graphics screen. *)

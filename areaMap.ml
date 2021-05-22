@@ -37,6 +37,21 @@ type tile =
   | DoorTop
   | DoorBot
 
+type coords = {
+  x : int;
+  y : int
+}
+
+type tiletype = 
+  | StandardTile of tile
+  | ItemTile of Item.t * tile
+  | SolidTile of tile
+  | DoorTile of string * coords * tile
+
+(** redraw tile function *)
+
+(** stringname, visual name *)
+
 type t = {
   cols : int;
   rows : int;
