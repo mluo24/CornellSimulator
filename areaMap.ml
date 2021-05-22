@@ -5,26 +5,26 @@ open Images
 
 type tile =
   | Blank
-  (** terrain.png *)
+  (* terrain.png *)
   | Grass
   | TreeBot
   | TreeTop
   | Flower
   | Bush
-  (** street.png *)
+  (* street.png *)
   | Sidewalk_Curved_BotLeft
   | Sidewalk_Curved_BotRight
   | Sidewalk_Curved_TopLeft
   | Sidewalk_Curved_TopRight
   | Sidewalk_Horiz
   | Sidewalk_Vert
-  (** building.png *)
+  (* building.png *)
   | Building1_Left
   | Building1_Mid
   | Building1_Right
   | Building2_Left
   | Building2_Mid
-  | Building2_Right 
+  | Building2_Right
   | Roof
   | Roof_BotLeft
   | Roof_BotRight
@@ -39,18 +39,18 @@ type tile =
 
 type coords = {
   x : int;
-  y : int
+  y : int;
 }
 
-type tiletype = 
+type tiletype =
   | StandardTile of tile
   | ItemTile of Item.t * tile
   | SolidTile of tile
   | DoorTile of string * coords * tile
 
-(** redraw tile function *)
+(* redraw tile function *)
 
-(** stringname, visual name *)
+(* stringname, visual name *)
 
 type t = {
   cols : int;
@@ -64,24 +64,23 @@ let x_dim = 800
 
 let y_dim = 560
 
-
-(*  let layers = 2 *)
+let layers = 2
 
 let int_to_tile i =
-  match i with 
+  match i with
   | 1 -> Grass
   | 2 -> TreeBot
   | 3 -> TreeTop
   | 4 -> Flower
   | 5 -> Bush
-  (** street.png *)
+  (* street.png *)
   | 6 -> Sidewalk_Curved_BotLeft
   | 7 -> Sidewalk_Curved_BotRight
   | 8 -> Sidewalk_Curved_TopLeft
   | 9 -> Sidewalk_Curved_TopRight
   | 10 -> Sidewalk_Horiz
   | 11 -> Sidewalk_Vert
-  (** building.png *)
+  (* building.png *)
   | 12 -> Building1_Left
   | 13 -> Building1_Mid
   | 14 -> Building1_Right
@@ -103,14 +102,17 @@ let int_to_tile i =
 
 let map_from_json_file filename =
   let json = Yojson.Basic.from_file filename in
-  let tile_size = json |> member "tile_size" |> to_int in 
-  let terrain_tileset = ImageHandler.load_tileset 
-    "assets/Terrain.png" tile_size in
-  let street_tileset = ImageHandler.load_tileset 
-    "assets/Street.png" tile_size in
-  let building_tileset = ImageHandler.load_tileset 
-    "assets/Buildings.png" tile_size in
-  let assets = [|terrain_tileset; street_tileset; building_tileset;|] in
+  let tile_size = json |> member "tile_size" |> to_int in
+  let terrain_tileset =
+    ImageHandler.load_tileset "assets/Terrain.png" tile_size
+  in
+  let street_tileset =
+    ImageHandler.load_tileset "assets/Street.png" tile_size
+  in
+  let building_tileset =
+    ImageHandler.load_tileset "assets/Buildings.png" tile_size
+  in
+  let assets = [| terrain_tileset; street_tileset; building_tileset |] in
   {
     cols = json |> member "cols" |> to_int;
     rows = json |> member "rows" |> to_int;
@@ -118,7 +120,7 @@ let map_from_json_file filename =
     tiles =
       json |> member "tiles" |> to_list |> List.map to_int
       |> List.map int_to_tile |> Array.of_list;
-    assets = assets
+    assets;
   }
 
 let get_tile_arr map = map.tiles
@@ -133,41 +135,50 @@ let get_tile_size map = map.tile_size
 
 let get_assets map = map.assets
 
-let terrain_image_width = fst (Images.size 
-  (ImageHandler.get_entire_image "assets/Terrain.png"))
+let terrain_image_width =
+  fst (Images.size (ImageHandler.get_entire_image "assets/Terrain.png"))
 
-let street_image_width = fst (Images.size 
-  (ImageHandler.get_entire_image "assets/Street.png"))
+let street_image_width =
+  fst (Images.size (ImageHandler.get_entire_image "assets/Street.png"))
 
-let building_image_width = fst (Images.size 
-  (ImageHandler.get_entire_image "assets/Buildings.png"))
+let building_image_width =
+  fst (Images.size (ImageHandler.get_entire_image "assets/Buildings.png"))
 
-let get_image_from_tile assets tile tsize = 
+let get_image_from_tile assets tile tsize =
   let terrain_tileset = assets.(0) in
-  let street_tileset = assets.(1)  in
-  let building_tileset = assets.(2)  in
-  let get_terrain_tile x y = ImageHandler.get_tile_image_x_y terrain_tileset 
-  (terrain_image_width / tsize) x y in
-  let get_street_tile x y = ImageHandler.get_tile_image_x_y street_tileset 
-  (street_image_width / tsize) x y in
-  let get_building_tile x y = ImageHandler.get_tile_image_x_y building_tileset 
-  (building_image_width / tsize) x y in
-  match tile with 
-  | Blank -> Graphics.make_image 
-    (Array.make_matrix tsize tsize Graphics.transp)
+  let street_tileset = assets.(1) in
+  let building_tileset = assets.(2) in
+  let get_terrain_tile x y =
+    ImageHandler.get_tile_image_x_y terrain_tileset
+      (terrain_image_width / tsize)
+      x y
+  in
+  let get_street_tile x y =
+    ImageHandler.get_tile_image_x_y street_tileset
+      (street_image_width / tsize)
+      x y
+  in
+  let get_building_tile x y =
+    ImageHandler.get_tile_image_x_y building_tileset
+      (building_image_width / tsize)
+      x y
+  in
+  match tile with
+  | Blank ->
+      Graphics.make_image (Array.make_matrix tsize tsize Graphics.transp)
   | Grass -> get_terrain_tile 0 0
   | TreeBot -> get_terrain_tile 1 1
   | TreeTop -> get_terrain_tile 1 0
   | Flower -> get_terrain_tile 2 1
   | Bush -> get_terrain_tile 2 0
-  (** street.png *)
+  (* street.png *)
   | Sidewalk_Curved_BotLeft -> get_street_tile 17 4
   | Sidewalk_Curved_BotRight -> get_street_tile 21 4
   | Sidewalk_Curved_TopLeft -> get_street_tile 17 0
   | Sidewalk_Curved_TopRight -> get_street_tile 21 0
   | Sidewalk_Horiz -> get_street_tile 18 0
   | Sidewalk_Vert -> get_street_tile 17 1
-  (** building.png *)
+  (* building.png *)
   | Building1_Left -> get_building_tile 0 0
   | Building1_Mid -> get_building_tile 1 0
   | Building1_Right -> get_building_tile 2 0
@@ -186,7 +197,6 @@ let get_image_from_tile assets tile tsize =
   | DoorTop -> get_building_tile 10 7
   | DoorBot -> get_building_tile 10 8
 
-
 let draw_tile x y tile map =
   let tsize = get_tile_size map in
   Graphics.draw_image (get_image_from_tile (get_assets map) tile tsize) x y
@@ -199,3 +209,5 @@ let draw_tile_iter map i tile_t =
   draw_tile x y tile_t map
 
 let draw_tiles map = Array.iteri (draw_tile_iter map) (get_tile_arr map)
+
+let draw_layer map layer = failwith "unimplemented"

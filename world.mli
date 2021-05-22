@@ -93,3 +93,5 @@ val draw_tile : int -> int -> tile -> t -> unit
 
 (** [draw_tile map] draws the tiles of [map] on the graphics screen. *)
 val draw_tiles : t -> unit
+
+val get_map : t -> string -> AreaMap.t
