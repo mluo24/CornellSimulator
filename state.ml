@@ -19,10 +19,10 @@ type t = {
   mutable missions : Mission.t;
 }
 
-let init_game () =
+let init_game name png =
   {
     world = World.map_from_json_file "realmap.json";
-    character = Character.init_character ();
+    character = Character.init_character name png;
     items =
       Item.init_item_list
         (Yojson.Basic.from_file "item.json")
@@ -49,8 +49,8 @@ exception End
 
 let end_game () = failwith "unimplemented"
 
-let in_game () =
-  let game_state = init_game () in
+let in_game name png =
+  let game_state = init_game name png in
   (* let tilesize = get_tile_size game_state.world in *)
   (* let terrain_tileset = ImageHandler.load_tileset "assets/Terrain.png"
      tilesize in let street_tileset = ImageHandler.load_tileset

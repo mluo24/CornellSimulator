@@ -13,8 +13,9 @@ open Images
     - [speed] : number of pixels the character moves per keyboard input *)
 type t = {
   name : string;
-  mutable tile_mem : World.tile;
+  mutable tile_mem : Graphics.image;
   mutable rep : Graphics.image;
+  png : string;
   pos : Position.t;
   speed : int;
 }
@@ -32,10 +33,6 @@ val get_user_name : t -> string
 (** [get_size t ] is the size of character [t] in graphical interface unit*)
 val get_size : t -> int
 
-(** [player_sprites] is an array of the images, used for character image
-    representations in [t.reps]*)
-val player_sprites : Images.t array
-
 (** [player_image_size_width] is width of the image, measured in unit tile
     lengths*)
 val player_image_size_width : int
@@ -46,10 +43,10 @@ val world : World.t
 
 (** [get_person_image person] matches [person] to an image representing the
     character in the pose of the direction of the character's movement*)
-val get_person_image : person -> Graphics.image
+val get_person_image : string -> Position.direction -> Graphics.image
 
 (** [init_character] initializes the character [t]*)
-val init_character : unit -> t
+val init_character : string -> string -> t
 
 (** [move_up t] implements the animation of the character's up movement.*)
 val move_up : t -> unit
