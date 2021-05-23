@@ -96,16 +96,17 @@ let in_game () =
     while true do
       draw ();
       let s = Graphics.wait_next_event [ Graphics.Button_down ] in
-      if s.Graphics.button then
-        let x = fst (Graphics.mouse_pos ()) in
-        let y = snd (Graphics.mouse_pos ()) in
-        match (x, y) with
-        | x, y when match_student engineer x y ->
-            State.in_game engineer.name engineer.png_file
-        | x, y when match_student premed x y ->
-            State.in_game premed.name premed.png_file
-        | x, y when match_student undecided x y ->
-            State.in_game undecided.name undecided.png_file
-        | _, _ -> ()
+      if s.Graphics.button then Graphics.moveto 500 500;
+      Graphics.draw_string "HELLLOOOOO";
+      let x = fst (Graphics.mouse_pos ()) in
+      let y = snd (Graphics.mouse_pos ()) in
+      match (x, y) with
+      | x, y when match_student engineer x y ->
+          State.in_game engineer.name engineer.png_file
+      | x, y when match_student premed x y ->
+          State.in_game premed.name premed.png_file
+      | x, y when match_student undecided x y ->
+          State.in_game undecided.name undecided.png_file
+      | _, _ -> ()
     done
   with End -> end_game ()

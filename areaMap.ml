@@ -49,6 +49,7 @@ let x_dim = 800
 
 let y_dim = 560
 
+
 (*  let layers = 2 *)
 
 let int_to_tile i =
@@ -183,7 +184,3 @@ let draw_tile_iter map i tile_t =
   draw_tile x y tile_t map
 
 let draw_tiles map = Array.iteri (draw_tile_iter map) (get_tile_arr map)
-
-let draw_layer map layer = failwith "unimplemented"
-
-let get_map world name = failwith "unimplemented"
