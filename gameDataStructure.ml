@@ -70,4 +70,46 @@ module GaugesValue : GaugesValue = struct
   }
 end
 
+module type ItemTypeInfo = sig
+  type t = {
+    name : string;
+    description : string;
+    image : Graphics.image;
+    effect : Effect.t;
+    dmax : int;
+  }
+
+  include GameVal with type t := t
+end
+
+module type ItemInventory = sig
+  type t = {
+    value : int;
+    max : int;
+    item_type : string;
+  }
+
+  include GameVal with type t := t
+end
+
+module ItemInventory : ItemInventory = struct
+  type t = {
+    value : int;
+    max : int;
+    item_type : string;
+  }
+end
+
+module ItemTypeInfo : ItemTypeInfo = struct
+  type t = {
+    name : string;
+    description : string;
+    image : Graphics.image;
+    effect : Effect.t;
+    dmax : int;
+  }
+end
+
 module GameIntDict = MakeGameDict (GaugesValue) (CaselessString)
+module ItemTypeDict = MakeGameDict (ItemTypeInfo) (CaselessString)
+module InventoryDict = MakeGameDict (ItemInventory) (CaselessString)

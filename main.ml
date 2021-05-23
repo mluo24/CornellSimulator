@@ -15,7 +15,7 @@ let main () =
   try
     Graphics.open_graph "";
     set_window_title "Cornell Simulator";
-    resize_window (World.x_dim + 200) World.y_dim;
+    resize_window (World.x_dim + 200) (World.y_dim + Item.inventory_height);
     State.in_game ();
     (* let imgs = ImageHandler.load_tileset "assets/Buildings.png" 16 in
        Array.iteri (fun i img -> Graphics.draw_image img (i * 16) 0) imgs; *)

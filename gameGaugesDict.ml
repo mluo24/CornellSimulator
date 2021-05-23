@@ -36,6 +36,8 @@ module type GameDict = sig
   val get_bindings : t -> (key * game_value) list
 
   val get_key_of : game_value -> t -> key
+
+  val get_value_of : key -> t -> game_value option
 end
 
 (* module MakeValue: functor (GV: GameValue) -> struct module GameV = GV type
@@ -80,6 +82,8 @@ functor
       let new_map = GameMap.filter_map filter_func dict in
       let key, _ = GameMap.min_binding new_map in
       key
+
+    let get_value_of key (dict : t) = GameMap.find_opt key dict
 
     (* let insert_add key value dict = try change_gauges key (add value) dict
        with InvalidEffect -> failwith "uniplemented" *)
