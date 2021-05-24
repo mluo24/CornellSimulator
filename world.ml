@@ -51,6 +51,8 @@ type t = {
   assets : Images.t array array;
 }
 
+let asset_names = [ "" ]
+
 let x_dim = 800
 
 let y_dim = 560
