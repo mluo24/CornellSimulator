@@ -5,6 +5,11 @@ type t = {
   mutable missions : string list;
 }
 
+(* end of mission -> transition to another mission json file (pass in prev
+   score)*)
+
+(* make a seperate endofstate file *)
+
 let missions_level_1 =
   [ "- Catch 3 Camels"; "- Avoid the Bears"; "- Pass prelims" ]
 

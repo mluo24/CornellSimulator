@@ -8,7 +8,6 @@ open ImageHandler
 open World
 open Mission
 open Rect
-open GameState
 
 type t = {
   world : World.t;
@@ -37,8 +36,7 @@ let eval_key key =
   | _ -> NoModule
 
 
-
-let init_game name png :t=
+let init_game name png =
 
   {
     world = World.map_from_json_file "realmap.json";

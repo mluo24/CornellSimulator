@@ -21,30 +21,33 @@ let premed_name = "Science Student"
 
 let premed_des = "Pre-Med"
 
+let draw_texts text x y =
+  Graphics.moveto x y;
+  Graphics.draw_string text
+
 let draw () =
   let img =
     ImageHandler.get_entire_image "assets/character/starterpagedemo.png"
   in
   let graphics_img = ImageHandler.get_tileset_part 0 0 1000 560 img in
   Graphics.draw_image graphics_img 0 0;
-  Graphics.moveto 360 510;
-  Graphics.draw_string introduction_line1;
-  Graphics.moveto 260 470;
-  Graphics.draw_string introduction_line2;
-  Graphics.moveto 235 330;
-  Graphics.draw_string undecided_name;
-  Graphics.moveto 235 305;
-  Graphics.draw_string undecided_des_1;
-  Graphics.moveto 235 290;
-  Graphics.draw_string undecided_des_2;
-  Graphics.moveto 445 330;
-  Graphics.draw_string engineer_name;
-  Graphics.moveto 430 305;
-  Graphics.draw_string engineer_des;
-  Graphics.moveto 655 330;
-  Graphics.draw_string premed_name;
-  Graphics.moveto 670 305;
-  Graphics.draw_string premed_des
+  draw_texts introduction_line1 360 510;
+  draw_texts introduction_line2 260 470;
+  draw_texts undecided_name 235 330;
+  draw_texts undecided_des_1 235 305;
+  draw_texts undecided_des_2 235 290;
+  draw_texts engineer_name 445 330;
+  draw_texts engineer_des 430 305;
+  draw_texts premed_name 655 330;
+  draw_texts premed_des 670 305
+(* Graphics.moveto 260 470; Graphics.draw_string introduction_line2;
+   Graphics.moveto 235 330; Graphics.draw_string undecided_name;
+   Graphics.moveto 235 305; Graphics.draw_string undecided_des_1;
+   Graphics.moveto 235 290; Graphics.draw_string undecided_des_2;
+   Graphics.moveto 445 330; Graphics.draw_string engineer_name;
+   Graphics.moveto 430 305; Graphics.draw_string engineer_des; Graphics.moveto
+   655 330; Graphics.draw_string premed_name; Graphics.moveto 670 305;
+   Graphics.draw_string premed_des *)
 
 type button = {
   x_min : int;
