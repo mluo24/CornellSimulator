@@ -4,7 +4,8 @@ open Graphics
 open Yojson.Basic.Util
 open Drawable
 
-(** The abstract type of values representing groups of items *)
+(** [t] is type of item containing information on available item type, their
+    effects, and the current inventory storing user item *)
 type t = {
   mutable inventory : GameDataStructure.InventoryDict.t;
   item_type : GameDataStructure.ItemTypeDict.t;
