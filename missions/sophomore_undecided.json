@@ -1,0 +1,76 @@
+{
+  "gauges": [
+    {
+      "name": "health",
+      "max": 100,
+      "init": 100,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "slip day",
+      "max": 5,
+      "init": 0,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "brain",
+      "max": 100,
+      "init": 5,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "mental health",
+      "max": 100,
+      "init": 80,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    }
+  ],
+  "missions": [
+    {
+      "name": "MATH 2000",
+      "max": 15,
+      "init": 0,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "ENGL 2000",
+      "max": 15,
+      "init": 0,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "SOC 2000",
+      "max": 15,
+      "init": 0,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    }
+  ]
+}

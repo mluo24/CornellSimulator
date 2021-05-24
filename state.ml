@@ -16,8 +16,7 @@ type t = {
   character : Character.t;
   mutable items : Item.t;
   (* mutable gauges: Gauges.t *)
-  mutable gauges : Gauges.t;
-  mutable missions : Mission.t;
+  mutable gauges : Gauges.t; (* mutable missions : Mission.t; *)
 }
 
 type key_module =
@@ -37,7 +36,7 @@ let eval_key key =
   | 'u' -> Gauges
   | _ -> NoModule
 
-let init_game name png =
+let init_game name png level level_png points =
   let world = World.load_world "worldmaps" in
   {
     world;
@@ -47,14 +46,15 @@ let init_game name png =
       Item.init_item
         (Yojson.Basic.from_file "item_type.json")
         (Yojson.Basic.from_file "item_init.json");
-    gauges = Gauges.init_gauges (Yojson.Basic.from_file "gauges.json");
-    missions = Mission.init_mission ();
+    gauges =
+      Gauges.init_gauges (Yojson.Basic.from_file level_png)
+      (* missions = Mission.init_mission (); *);
   }
 
 let draw t =
   Graphics.clear_graph ();
 
-  Mission.draw_missions_window t.missions;
+  (* Mission.draw_missions_window t.missions; *)
   Item.draw t.items;
 
   (* CHANGE THIS TO DRAW THE SPECIFIC LAYERS *)
@@ -72,8 +72,8 @@ exception End
 
 let end_game () = failwith "unimplemented"
 
-let in_game name png =
-  let game_state = init_game name png in
+let in_game name png level level_png points =
+  let game_state = init_game name png level level_png points in
   (* let tilesize = get_tile_size game_state.world in *)
   (* let terrain_tileset = ImageHandler.load_tileset "assets/Terrain.png"
      tilesize in let street_tileset = ImageHandler.load_tileset
