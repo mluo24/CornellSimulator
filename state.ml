@@ -8,7 +8,6 @@ open ImageHandler
 open World
 open Mission
 open Rect
-open GameState
 
 type t = {
   world : World.t;
