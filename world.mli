@@ -1,10 +1,9 @@
 (** The abstract type for a game world. *)
 type t
 
-type coords = {
-  x : int;
-  y : int;
-}
+(* type coords = { x : int; y : int; } *)
+
+type coords = Position.t
 
 (** [load_world dir] loads in all of the json files within the direction of
     [dir] and loads each one in as an area map.

@@ -6,10 +6,16 @@
       "image": "assets/items/book.png",
       "effect": {
         "description": "decrease health",
-        "effects": [
+        "gauges": [
           {
-            "gauge": "health",
+            "name": "health",
             "value": -10
+          }
+        ], 
+        "mission": [
+          {
+            "name": "class1",
+            "value": 10
           }
         ]
       },
@@ -21,12 +27,17 @@
       "image": "assets/items/cup.png",
       "effect": {
         "description": "increase health",
-        "effects": [
+        "gauges": [
           {
-            "gauge": "health",
+            "name": "health",
             "value": 10
           }
-        ]
+        ], 
+        "mission": [
+          {
+            "name": "class2",
+            "value": 10
+          }]
       },
       "dmax": 1
     },
@@ -36,12 +47,14 @@
       "image": "assets/items/liq.png",
       "effect": {
         "description": "increase health",
-        "effects": [
+        "gauges": [
           {
-            "gauge": "health",
+            "name": "health",
             "value": 10
           }
-        ]
+        ], 
+        "mission": [
+         ]
       },
       "dmax": 1
     },
@@ -51,12 +64,19 @@
       "image": "assets/items/book.png",
       "effect": {
         "description": "",
-        "effects": [
+        "gauges": [
           {
-            "gauge": "class1",
+            "name": "health",
+            "value": 15
+          }
+        ], 
+        "mission": [
+          {
+            "name": "class1",
             "value": 15
           }
         ]
+
       },
       "dmax": 15
     },
@@ -66,12 +86,18 @@
       "image": "assets/items/book.png",
       "effect": {
         "description": "",
-        "effects": [
+        "gauges": [
           {
-            "gauge": "class2",
-            "value": 20
+            "name": "health",
+            "value": -20
           }
-        ]
+        ],
+        "mission": [
+          {
+            "name": "class1",
+            "value": 15
+          }
+        ] 
       },
       "dmax": 15
     },
@@ -81,12 +107,18 @@
       "image": "assets/items/book.png",
       "effect": {
         "description": "",
-        "effects": [
+        "gauges": [
           {
-            "gauge": "class3",
+            "name": "health",
             "value": 10
           }
-        ]
+        ],
+        "mission": [
+          {
+            "name": "class1",
+            "value": 15
+          }
+        ] 
       },
       "dmax": 15
     }

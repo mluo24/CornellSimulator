@@ -4,10 +4,7 @@ open ImageHandler
 open Images
 open AreaMap
 
-type coords = {
-  x : int;
-  y : int;
-}
+type coords = Position.t
 
 (* areamaps, current areamap *)
 

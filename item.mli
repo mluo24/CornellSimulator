@@ -26,10 +26,11 @@ type is_legal =
 
 (** [init_item_list item_file item_rep_file] is lists of items in [item_file]
     which belong to different item type in [item_rep_file]. The type determine
-    the graphical representation and effects of the item. Requires:
-    [item_file] is a valid JSON item representation [item_rep_file] is a
-    valide JSON item type representation types present in [item_file] must
-    match the key in [item_rep_file] *)
+    the graphical representation and effects of the item.
+
+    Requires: [item_file] is a valid JSON item representation [item_rep_file]
+    is a valide JSON item type representation types present in [item_file]
+    must match the key in [item_rep_file] *)
 val init_item : Yojson.Basic.t -> Yojson.Basic.t -> t
 
 (** [draw t] draws item [t] on the graphical interface*)
