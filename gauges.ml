@@ -8,7 +8,7 @@ open Item
 
 exception Invalid_Gauge_Name
 
-exception Negative_Gauge
+exception Negative_Gauge of int
 
 type t = {
   mutable general : GameDict.t;
@@ -20,7 +20,7 @@ type gauge_type =
   | General
   | Mission
 
-let get_score l_type gauges = failwith "Unimplemented"
+(* let get_score l_type gauges = failwith "Unimplemented" *)
 
 let text_height_space = 16
 
@@ -141,7 +141,7 @@ let update_a_gauge state gdict nvpair =
     | None -> raise Invalid_Gauge_Name
     | Some { value; max; color } ->
         let v = nvalue + value in
-        if v < 0 then TransitionState.in_game 1 "undecided" 100
+        if v < 0 then raise (Negative_Gauge 10)
         else Some { value = v; max; color }
   in
   let n_dict = GameIntDict.update name (update state nvalue) gdict in

@@ -21,7 +21,7 @@ include Drawable with type t := t
 
 (** [get_score g_type key state] is a ratio of current gauge value and max
     value of gauge of type [g_type] with name [key] in [state] *)
-val get_score : t -> float
+(* val get_score : t -> float *)
 
 
 (** [init_gauges json_file] is the initial state of gauges levels coresponding
@@ -37,7 +37,7 @@ val init_gauges : Yojson.Basic.t -> int -> t
 
 
 (** [update_gauge g_type lst state] update the gauge type [g_type] in [state.gauges] by incrementing or decrementing gauge name specified in [lst] by a value  *)
-val update_gauge: gauge_type-> (GameDataStructure.GameIntDict.key * int) list-> t -> Item.t -> unit
+val update_gauge: gauge_type-> (GameDataStructure.GameIntDict.key * int) list-> t -> Item.t ->  unit
 
 val use_item : Item.t -> t -> unit 
 
