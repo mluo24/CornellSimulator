@@ -19,7 +19,27 @@ type t = {
   mutable missions : Mission.t;
 }
 
+
+type key_module = 
+| Item
+| Character
+| NoModule
+
+let eval_key key = 
+  match key with
+  | 'a' -> Character
+  | 's' -> Character
+  | 'd' -> Character
+  | 'w' -> Character
+  | 'j' -> Item
+  | 'l' -> Item 
+  | 'k' -> Item
+  | _ -> NoModule
+
+
+=======
 let init_game name png =
+
   {
     world = World.map_from_json_file "realmap.json";
     character = Character.init_character name png;
@@ -37,6 +57,7 @@ let draw t =
   Graphics.clear_graph ();
 
   Mission.draw_missions_window t.missions;
+  Item.draw t.items;
  
   (** CHANGE THIS TO DRAW THE SPECIFIC LAYERS *)
   World.draw_tiles t.world;
@@ -69,18 +90,13 @@ let in_game name png =
       let s = Graphics.wait_next_event [ Graphics.Key_pressed ] in
       if s.Graphics.keypressed then
         let c = s.Graphics.key in
-        match c with
-        | 't' ->
-            game_state.items <-
-              failwith "unimplemented"
-        | _ ->
-            (* if
-              not
-                (Rect.will_enter_rect game_state.character.pos
-                   Item.inventory_area c 16)
-            then  *)
-              
+        match eval_key c with
+        | Character -> 
               Character.move game_state.character s.Graphics.key
+        | Item -> Item.item_command game_state.items c 
+        | NoModule -> ()
+        
+
       (* draw game_state *)
     done
   with End -> end_game ()
