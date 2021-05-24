@@ -19,6 +19,7 @@ type t = {
   mutable missions : Mission.t;
 }
 
+
 type key_module = 
 | Item
 | Character
@@ -35,10 +36,13 @@ let eval_key key =
   | 'k' -> Item
   | _ -> NoModule
 
-let init_game () =
+
+=======
+let init_game name png =
+
   {
     world = World.map_from_json_file "realmap.json";
-    character = Character.init_character ();
+    character = Character.init_character name png;
     items =
       Item.init_item
 
@@ -69,8 +73,8 @@ exception End
 
 let end_game () = failwith "unimplemented"
 
-let in_game () =
-  let game_state = init_game () in
+let in_game name png =
+  let game_state = init_game name png in
   (* let tilesize = get_tile_size game_state.world in *)
   (* let terrain_tileset = ImageHandler.load_tileset "assets/Terrain.png"
      tilesize in let street_tileset = ImageHandler.load_tileset
@@ -83,7 +87,6 @@ let in_game () =
   draw game_state;
   try
     while true do
-      (** POSSIBLY FIX THIS SO THE KEY EVENTS WORK*)
       let s = Graphics.wait_next_event [ Graphics.Key_pressed ] in
       if s.Graphics.keypressed then
         let c = s.Graphics.key in
@@ -98,6 +101,8 @@ let in_game () =
     done
   with End -> end_game ()
 
+
+  
 (* type t_pos = { mutable x : int; mutable y : int; } *)
 
 (* { character: Character; world: time: } *)

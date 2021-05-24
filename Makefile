@@ -1,4 +1,4 @@
-MODULES=main position gameGaugesDict gameDataStructure drawable graphicHelper rect state author world item effect gauges  character imageHandler mission
+MODULES=main introState position gameGaugesDict gameDataStructure drawable graphicHelper rect state author world item effect gauges character imageHandler mission
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -30,8 +30,8 @@ bisect-test:
 play:
 	$(OCAMLBUILD) -tag 'debug' $(MAIN) && OCAMLRUNPARAM=b ./$(MAIN)
 
-tiles:
-	$(OCAMLBUILD) imgdemo.byte && ./imgdemo.byte
+# tiles:
+# 	$(OCAMLBUILD) imgdemo.byte && ./imgdemo.byte
 
 # check:
 # 	@bash check.sh
