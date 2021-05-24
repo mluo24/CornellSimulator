@@ -26,7 +26,7 @@ let main () =
     | "fatal I/O error" -> print_endline "Goodbye."
     | _ ->
         print_endline
-          (x ^ "Run export DISPLAY=:0 and make sure X server is running."))
+          (x ^ "Run export DISPLAY=:0 and make sure X server is running.") )
 
 (** Runs the game. *)
 let () = main ()
