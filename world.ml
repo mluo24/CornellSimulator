@@ -52,6 +52,19 @@ let load_tilesets tile_size =
     interior_tileset;
   |]
 
+let add_exits maps =
+  Hashtbl.iter
+    (fun map_name map ->
+      let exits = get_exits map in
+      Hashtbl.iter
+        (fun exit_name (pos : Position.t) ->
+          let col = pos.x in
+          let row = pos.y in
+          replace_tiletype map col row 1 exit_name
+            (get_spawn (Hashtbl.find maps exit_name)))
+        exits)
+    maps
+
 let load_world dir =
   let area_maps = Hashtbl.create (List.length (load_files dir)) in
   List.iter
@@ -69,8 +82,6 @@ let load_world dir =
     start_map = Hashtbl.find area_maps start_map_key;
     assets;
   }
-
-(**** HERE WE GO ****)
 
 let get_map world name = Hashtbl.find world.maps name
 

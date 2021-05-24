@@ -7,18 +7,18 @@ type t
 
 (** [tile] is the type of a tile *)
 type tile =
-  | Blank  (** terrain.png *)
+  | Blank (* terrain.png *)
   | Grass
   | TreeBot
   | TreeTop
   | Flower
-  | Bush  (** street.png *)
+  | Bush (* street.png *)
   | Sidewalk_Curved_BotLeft
   | Sidewalk_Curved_BotRight
   | Sidewalk_Curved_TopLeft
   | Sidewalk_Curved_TopRight
   | Sidewalk_Horiz
-  | Sidewalk_Vert  (** building.png *)
+  | Sidewalk_Vert (* building.png *)
   | Building1_Left
   | Building1_Mid
   | Building1_Right
@@ -36,10 +36,12 @@ type tile =
   | Roof_RightEdge
   | DoorTop
   | DoorBot
+  | Book
+  | Food
 
 type tiletype =
   | StandardTile of tile
-  | ItemTile of string * tile
+  | ItemTile of Item.t * tile
   | SolidTile of tile
   | DoorTile of string * Position.t * tile
 
@@ -88,6 +90,12 @@ val get_cols : t -> int
 (** [get_tile_size map] returns the size of the tiles [map] has. *)
 val get_tile_size : t -> int
 
+val get_exits : t -> (string, Position.t) Hashtbl.t
+
+val get_spawn : t -> Position.t
+
+val replace_tiletype : t -> int -> int -> int -> string -> Position.t -> unit
+
 (** [get_image_from_tile assets tile tsize] returns the Graphics image
     representation of an image from [assets] given a specific [tile] and the
     tile's tile size [tsize]. *)
@@ -108,3 +116,5 @@ val draw_layer : t -> int -> Images.t array array -> unit
 
 (** *)
 val is_solid_tile : t -> int -> int -> bool
+
+val is_door_tile : t -> int -> int -> bool

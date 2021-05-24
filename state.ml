@@ -12,7 +12,7 @@ open Rect
 
 type t = {
   world : World.t;
-  current_area : AreaMap.t;
+  mutable current_area : AreaMap.t;
   character : Character.t;
   mutable items : Item.t;
   mutable gauges : Gauges.t;
@@ -70,6 +70,17 @@ exception End
 
 let end_game () = failwith "unimplemented"
 
+let y_offset row =
+  let height = Position.y_dim / 32 in
+  height - row - 1
+
+let change_room state world tiletype =
+  match tiletype with
+  | DoorTile (exitname, pos, tile) ->
+      state.current_area <- get_map world exitname;
+      draw state
+  | _ -> failwith "not possible"
+
 let in_game name png =
   let game_state = init_game name png in
   (* let tilesize = get_tile_size game_state.world in *)
@@ -91,7 +102,14 @@ let in_game name png =
         | Character ->
             Character.move game_state.character s.Graphics.key
               game_state.current_area
-              (get_assets game_state.world)
+              (get_assets game_state.world);
+            let x = game_state.character.pos.x in
+            let y = game_state.character.pos.y in
+            if is_door_tile game_state.current_area x y then
+              let col = x / 32 in
+              let row = y_offset (y / 32) in
+              change_room game_state game_state.world
+                (get_tile row col 1 game_state.current_area)
         | Item -> Item.item_command game_state.items c
         | NoModule -> ()
       (* draw game_state *)
