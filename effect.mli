@@ -2,7 +2,8 @@
 
 type t = {
   description : string;
-  effects : (string * int) list;
+  gauges : (string * int) list;
+  mission : (string * int) list;
 }
 
 val from_json : Yojson.Basic.t -> t

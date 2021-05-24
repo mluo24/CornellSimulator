@@ -40,9 +40,6 @@ module type GameDict = sig
   val get_value_of : key -> t -> game_value option
 end
 
-(* module MakeValue: functor (GV: GameValue) -> struct module GameV = GV type
-   t = (GameValue.t * GameValue.t) let format = failwith "unimplemented" end *)
-
 module MakeGameDict =
 functor
   (GVal : GameVal)

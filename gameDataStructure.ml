@@ -113,3 +113,4 @@ end
 module GameIntDict = MakeGameDict (GaugesValue) (CaselessString)
 module ItemTypeDict = MakeGameDict (ItemTypeInfo) (CaselessString)
 module InventoryDict = MakeGameDict (ItemInventory) (CaselessString)
+module ClassMapping = MakeGameDict (String) (CaselessString)

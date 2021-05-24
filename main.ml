@@ -2,6 +2,7 @@ open Graphics
 open Images
 open State
 open World
+open Position
 open Item
 open ImageHandler
 open Unix
@@ -15,8 +16,10 @@ let rec loop () = loop ()
 let main () =
   try
     Graphics.open_graph "";
+    Graphics.clear_graph ();
     set_window_title "Cornell Simulator";
-    resize_window (World.x_dim + 200) (World.y_dim + Item.inventory_height);
+    resize_window (Position.x_dim + 200)
+      (Position.y_dim + Item.inventory_height);
     IntroState.in_game ();
     (* let imgs = ImageHandler.load_tileset "assets/Buildings.png" 16 in
        Array.iteri (fun i img -> Graphics.draw_image img (i * 16) 0) imgs; *)

@@ -49,6 +49,7 @@ module type GameDict = sig
   (** [get_key_of value] is the first key that bound to [value]  *)
   val get_key_of : game_value -> t -> key
 
+  (** [get_value_of key dict] is the value bound to key if key exist and none if key is not bound*)
   val get_value_of : key -> t ->  game_value option
 
 end
