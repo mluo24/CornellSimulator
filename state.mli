@@ -25,4 +25,4 @@ val init_game : string -> string -> string -> string -> int -> t
 val draw : t -> unit
 
 (** [in_game] updates state of the game based on user input *)
-val in_game : string -> string -> int -> string -> int -> unit
+val in_game : string -> string -> int -> int -> unit

@@ -13,6 +13,7 @@ exception Negative_Gauge
 type t = {
   mutable general : GameDict.t;
   mutable mission : GameIntDict.t;
+  mutable level : int;
 }
 
 type gauge_type =
@@ -119,7 +120,7 @@ let add_to_init acc json =
   let color = json |> member "color" |> GraphicHelper.to_color in
   GameIntDict.insert name { value = init; max; color } acc
 
-let init_gauges json =
+let init_gauges json level =
   {
     general =
       json |> member "gauges" |> to_list
@@ -127,6 +128,7 @@ let init_gauges json =
     mission =
       json |> member "missions" |> to_list
       |> List.fold_left add_to_init GameIntDict.empty;
+    level;
   }
 
 let end_game t = ()
@@ -139,7 +141,8 @@ let update_a_gauge state gdict nvpair =
     | None -> raise Invalid_Gauge_Name
     | Some { value; max; color } ->
         let v = nvalue + value in
-        if v < 0 then raise Negative_Gauge else Some { value = v; max; color }
+        if v < 0 then TransitionState.in_game 1 "undecided" 100
+        else Some { value = v; max; color }
   in
   let n_dict = GameIntDict.update name (update state nvalue) gdict in
   n_dict

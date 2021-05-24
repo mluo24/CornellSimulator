@@ -47,7 +47,7 @@ let init_game name png level level_png points =
         (Yojson.Basic.from_file "item_type.json")
         (Yojson.Basic.from_file "item_init.json");
     gauges =
-      Gauges.init_gauges (Yojson.Basic.from_file level_png)
+      Gauges.init_gauges (Yojson.Basic.from_file level_png) level
       (* missions = Mission.init_mission (); *);
   }
 
@@ -72,7 +72,7 @@ exception End
 
 let end_game () = failwith "unimplemented"
 
-let in_game name png level level_png points =
+let in_game name png level points =
   let game_state = init_game name png level level_png points in
   (* let tilesize = get_tile_size game_state.world in *)
   (* let terrain_tileset = ImageHandler.load_tileset "assets/Terrain.png"
