@@ -38,10 +38,11 @@ let eval_key key =
 
 let init_game name png =
   let world = World.load_world "worldmaps" in
+  let current_area = World.get_start_map world in
   {
     world;
-    current_area = World.get_start_map world;
-    character = Character.init_character name png;
+    current_area;
+    character = Character.init_character name png current_area;
     items =
       Item.init_item
         (Yojson.Basic.from_file "item_type.json")
@@ -89,7 +90,10 @@ let in_game name png =
       if s.Graphics.keypressed then
         let c = s.Graphics.key in
         match eval_key c with
-        | Character -> Character.move game_state.character s.Graphics.key
+        | Character ->
+            Character.move game_state.character s.Graphics.key
+              game_state.current_area
+              (get_assets game_state.world)
         | Item -> Item.item_command game_state.items c
         | NoModule -> ()
       (* draw game_state *)

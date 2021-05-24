@@ -42,9 +42,7 @@ type tiletype =
   | StandardTile of tile
   | ItemTile of string * tile
   | SolidTile of tile
-  | DoorTile of string * (int * int) * tile
-
-(* redraw tile function *)
+  | DoorTile of string * Position.t * tile
 
 (* stringname, visual name *)
 
@@ -212,7 +210,5 @@ let draw_layer map layer assets =
   Array.iteri (draw_tile_iter map assets) (get_layer map layer)
 
 let is_solid_tile map x y = failwith "unimplemented"
-
-let is_door_tile map x y = failwith "unimplemented"
 
 let tile_effect tile = failwith "unimplemented"
