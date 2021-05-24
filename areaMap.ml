@@ -51,8 +51,8 @@ type t = {
   cols : int;
   rows : int;
   tile_size : int;
-  layer1 : tile array;
-  layer2 : tile array;
+  layer1 : tiletype array;
+  layer2 : tiletype array;
 }
 
 let layers = 2
@@ -91,7 +91,27 @@ let int_to_tile i =
   | 28 -> DoorBot
   | _ -> Blank
 
-let tile_type_of_tile tile = failwith "unimplemented"
+let tile_type_of_tile tile =
+  match tile with
+  | Grass | TreeTop | Flower | Sidewalk_Curved_BotLeft
+  | Sidewalk_Curved_BotRight | Sidewalk_Curved_TopLeft
+  | Sidewalk_Curved_TopRight | Sidewalk_Horiz | Roof_TopLeft | Roof_TopRight
+  | Roof_TopEdge | Blank ->
+      StandardTile tile
+  | Bush | TreeBot | Building1_Left | Building1_Mid | Building1_Right
+  | Building2_Left | Building2_Mid | Building2_Right | Roof | Roof_BotLeft
+  | Roof_BotRight | Roof_LeftEdge | Roof_BotEdge | Roof_RightEdge ->
+      SolidTile tile
+  | _ -> StandardTile tile
+
+(* unimplemented *)
+
+let tile_of_tile_type tiletype =
+  match tiletype with
+  | StandardTile tile -> tile
+  | ItemTile (_, tile) -> tile
+  | SolidTile tile -> tile
+  | DoorTile (_, _, tile) -> tile
 
 let map_from_json_file filename =
   let json = Yojson.Basic.from_file filename in
@@ -103,24 +123,36 @@ let map_from_json_file filename =
     tile_size;
     layer1 =
       json |> member "layer1" |> to_list |> List.map to_int
-      |> List.map int_to_tile |> Array.of_list;
+      |> List.map int_to_tile
+      |> List.map tile_type_of_tile
+      |> Array.of_list;
     layer2 =
       json |> member "layer2" |> to_list |> List.map to_int
-      |> List.map int_to_tile |> Array.of_list;
+      |> List.map int_to_tile
+      |> List.map tile_type_of_tile
+      |> Array.of_list;
   }
 
 let get_tile_arrs map = [| map.layer1; map.layer2 |]
 
 let get_layer map layer = if layer = 1 then map.layer1 else map.layer2
 
+let get_layer_as_tiles map layer =
+  Array.map tile_of_tile_type (get_layer map layer)
+
 (* let get_tile row col map = try map.tiles.((row * map.cols) + col) with
    Invalid_argument x -> Blank *)
 
 let get_tile row col layer map =
   if layer = 1 then
-    try map.layer1.((row * map.cols) + col) with Invalid_argument x -> Blank
+    try map.layer1.((row * map.cols) + col)
+    with Invalid_argument x -> StandardTile Blank
   else
-    try map.layer2.((row * map.cols) + col) with Invalid_argument x -> Blank
+    try map.layer2.((row * map.cols) + col)
+    with Invalid_argument x -> StandardTile Blank
+
+let get_tile_as_tile row col layer map =
+  tile_of_tile_type (get_tile row col layer map)
 
 let get_rows map = map.rows
 
@@ -207,8 +239,19 @@ let draw_tile_iter map assets i tile_t =
    (get_layer map layer) *)
 
 let draw_layer map layer assets =
-  Array.iteri (draw_tile_iter map assets) (get_layer map layer)
+  Array.iteri (draw_tile_iter map assets) (get_layer_as_tiles map layer)
 
-let is_solid_tile map x y = failwith "unimplemented"
+let y_offset row =
+  let height = Position.y_dim / 32 in
+  height - row - 1
+
+let is_solid_tile map x y =
+  let col = x / 32 in
+  let row = y_offset (y / 32) in
+  let tile1 = get_tile row col 1 map in
+  let tile2 = get_tile row col 2 map in
+  match tile1 with
+  | SolidTile _ -> true
+  | _ -> ( match tile2 with SolidTile _ -> true | _ -> false )
 
 let tile_effect tile = failwith "unimplemented"

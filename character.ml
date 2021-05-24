@@ -58,27 +58,30 @@ let y_offset row =
 let get_tile_from_coords x y layer map =
   let col = x / 32 in
   let row = y_offset (y / 32) in
-  get_tile row col layer map
+  get_tile_as_tile row col layer map
+
+let initial_spawn = { x = 352; y = 416 }
 
 let init_character name png map =
   {
     name;
     rep = get_person_image png Still;
-    pos = { x = 288; y = 416 };
+    pos = initial_spawn;
     speed = 32;
     png;
-    layer1_tile_mem = get_tile_from_coords 288 416 1 map;
+    layer1_tile_mem =
+      get_tile_from_coords initial_spawn.x initial_spawn.y 1 map;
     layer2_tile_mem =
-      get_tile_from_coords 288 416 2 map
+      get_tile_from_coords initial_spawn.x initial_spawn.y 2 map
       (* TO DOOOOO: this needs to be fixed after tiles are adjusted 32 by 32*);
   }
 
 let move_up t map assets =
-  if t.pos.y < Position.y_dim - 32 && not (is_solid_tile map t.pos.x t.pos.y)
+  let new_pos = t.pos.y + t.speed in
+  if t.pos.y < Position.y_dim - 32 && not (is_solid_tile map t.pos.x new_pos)
   then begin
     draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
     draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
-    let new_pos = t.pos.y + t.speed in
     (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
     (* t.tile_mem <- World.get_tile ((World.y_dim - t.pos.y - 16) / 16)
        (t.pos.x / 16) world; *)
@@ -91,11 +94,11 @@ let move_up t map assets =
   end
 
 let move_right t map assets =
-  if t.pos.x < Position.x_dim - 32 && not (is_solid_tile map t.pos.x t.pos.y)
+  let new_pos = t.pos.x + t.speed in
+  if t.pos.x < Position.x_dim - 32 && not (is_solid_tile map new_pos t.pos.y)
   then begin
     draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
     draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
-    let new_pos = t.pos.x + t.speed in
     (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
     (* t.tile_mem <- World.get_tile ((World.y_dim - t.pos.y - 16) / 16)
        (t.pos.x / 16) world; *)
@@ -110,10 +113,10 @@ let move_right t map assets =
   end
 
 let move_down t map assets =
-  if t.pos.y > 0 && not (is_solid_tile map t.pos.x t.pos.y) then begin
+  let new_pos = t.pos.y - t.speed in
+  if t.pos.y > 0 && not (is_solid_tile map t.pos.x new_pos) then begin
     draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
     draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
-    let new_pos = t.pos.y - t.speed in
     (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
     (* t.tile_mem <- World.get_tile ((World.y_dim - t.pos.y - 16) / 16)
        (t.pos.x / 16) world; *)
@@ -126,10 +129,10 @@ let move_down t map assets =
   end
 
 let move_left t map assets =
-  if t.pos.x > 0 && not (is_solid_tile map t.pos.x t.pos.y) then begin
+  let new_pos = t.pos.x - t.speed in
+  if t.pos.x > 0 && not (is_solid_tile map new_pos t.pos.y) then begin
     draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
     draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
-    let new_pos = t.pos.x - t.speed in
     (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
     (* t.tile_mem <- World.get_tile ((World.y_dim - t.pos.y - 16) / 16)
        (t.pos.x / 16) world; *)

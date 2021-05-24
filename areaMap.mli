@@ -37,6 +37,12 @@ type tile =
   | DoorTop
   | DoorBot
 
+type tiletype =
+  | StandardTile of tile
+  | ItemTile of string * tile
+  | SolidTile of tile
+  | DoorTile of string * Position.t * tile
+
 (** [map_from_json_file filename] takes the name of a file [filename] and
     loads and returns the data into the a World type. It also adds the field
     [assets] to the World type, which is a matrix of images.
@@ -58,13 +64,20 @@ val map_from_json_file : string -> t
 val int_to_tile : int -> tile
 
 (** [get_tile_arr world map] returns the array of tiles of [map] *)
-val get_tile_arrs : t -> tile array array
 
-val get_layer : t -> int -> tile array
+(* val get_tile_arrs : t -> tile array array *)
+
+(** [get_layer] returns the array of tiles of [map] *)
+val get_layer : t -> int -> tiletype array
+
+(** [get_layer_as_tiles] returns the array of tiles of [map] *)
+val get_layer_as_tiles : t -> int -> tile array
 
 (** [get_tile row col map] returns the tile at row [row] and column [col] from
     the tile array in [map]. *)
-val get_tile : int -> int -> int -> t -> tile
+val get_tile : int -> int -> int -> t -> tiletype
+
+val get_tile_as_tile : int -> int -> int -> t -> tile
 
 (** [get_rows map] returns the number of rows [map] has. *)
 val get_rows : t -> int
@@ -93,4 +106,5 @@ val draw_tile : int -> int -> tile -> t -> Images.t array array -> unit
     corresponding to the correct layer in [map] on the graphics screen. *)
 val draw_layer : t -> int -> Images.t array array -> unit
 
+(** *)
 val is_solid_tile : t -> int -> int -> bool
