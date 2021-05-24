@@ -1,5 +1,6 @@
 open ImageHandler
 open IntroState
+open EndState
 
 (* type level = | Sophomore = {} | Junior | Senior
 
@@ -24,10 +25,24 @@ let level_to_next level_num acc_points name =
         points = acc_points;
         name;
       }
+  | 3, "undecided" ->
+      {
+        json = "missions/junior_undecided.json";
+        level = level_num;
+        points = acc_points;
+        name;
+      }
+  | 4, "undecided" ->
+      {
+        json = "missions/senior_undecided.json";
+        level = level_num;
+        points = acc_points;
+        name;
+      }
   | _, _ ->
       {
         json = "missions/sophomore_undecided.json";
-        level = level_num;
+        level = 0;
         points = acc_points;
         name;
       }
@@ -43,7 +58,7 @@ exception End
 
 let end_game () = failwith "unimplemented"
 
-let in_game level name points =
+let in_game level_num name points =
   try
     while true do
       draw ();
@@ -57,8 +72,11 @@ let in_game level name points =
              && x < next_level_button.x_max
              && y > next_level_button.y_min
              && y < next_level_button.y_max ->
-          let next_level = level_student_mission level name in
-          State.in_game engineer.name engineer.png_file next_level points
+          let next_level = level_to_next level_num points name in
+          if next_level.level > 0 then
+            State.in_game engineer.name engineer.png_file next_level.level
+              next_level.json points
+          else EndState.in_game points
       | _, _ -> ()
     done
   with End -> end_game ()

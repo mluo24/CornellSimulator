@@ -82,8 +82,8 @@ let change_room state world tiletype =
       draw state
   | _ -> failwith "not possible"
 
-let in_game name png level level_png points =
-  let game_state = init_game name png level level_png points in
+let in_game name png level level_json points =
+  let game_state = init_game name png level level_json points in
   (* let tilesize = get_tile_size game_state.world in *)
   (* let terrain_tileset = ImageHandler.load_tileset "assets/Terrain.png"
      tilesize in let street_tileset = ImageHandler.load_tileset

@@ -43,8 +43,8 @@
   ],
   "missions": [
     {
-      "name": "class1",
-      "max": 100,
+      "name": "MATH 2000",
+      "max": 15,
       "init": 0,
       "color": {
         "r": 8,
@@ -53,8 +53,8 @@
       }
     },
     {
-      "name": "class2",
-      "max": 100,
+      "name": "ENGL 2000",
+      "max": 15,
       "init": 0,
       "color": {
         "r": 8,
@@ -63,18 +63,8 @@
       }
     },
     {
-      "name": "class3",
-      "max": 100,
-      "init": 0,
-      "color": {
-        "r": 8,
-        "g": 200,
-        "b": 200
-      }
-    },
-    {
-      "name": "class4",
-      "max": 100,
+      "name": "SOC 2000",
+      "max": 15,
       "init": 0,
       "color": {
         "r": 8,
