@@ -8,9 +8,12 @@ open Drawable
 type t = {
   mutable inventory : GameDataStructure.InventoryDict.t;
   item_type : GameDataStructure.ItemTypeDict.t;
+  mutable selected : int;
 }
 
 val inventory_height : int
+
+val item_command : t -> char -> unit
 
 include Drawable with type t := t
 

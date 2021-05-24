@@ -13,3 +13,5 @@ let from_json json =
     description = json |> member "description" |> to_string;
     effects = json |> member "effects" |> to_list |> List.map to_effect;
   }
+
+let execute_effect t = ()

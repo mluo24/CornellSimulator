@@ -50,6 +50,7 @@ module type GameDict = sig
   val get_key_of : game_value -> t -> key
 
   val get_value_of : key -> t ->  game_value option
+
 end
 
 (** A [MakeGameDict] is a functor that makes a [GameDict] out of
