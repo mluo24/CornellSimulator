@@ -6,7 +6,8 @@ let x_dim = 800
 let y_dim = 576
 
 (** for 16x16 *)
-let y_dim = 560
+
+(* let y_dim = 560 *)
 
 type t = {
   mutable x : int;

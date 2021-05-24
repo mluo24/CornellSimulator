@@ -57,9 +57,10 @@ let draw t =
   Item.draw t.items;
 
   (* CHANGE THIS TO DRAW THE SPECIFIC LAYERS *)
-  AreaMap.draw_tiles t.current_area (get_assets t.world);
+  AreaMap.draw_layer t.current_area 1 (get_assets t.world);
   (* Item.draw t.items; *)
   Character.draw t.character;
+  AreaMap.draw_layer t.current_area 2 (get_assets t.world);
   (* Item.draw t.items; *)
   Gauges.draw t.gauges
 

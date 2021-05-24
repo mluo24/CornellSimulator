@@ -58,11 +58,13 @@ val map_from_json_file : string -> t
 val int_to_tile : int -> tile
 
 (** [get_tile_arr world map] returns the array of tiles of [map] *)
-val get_tile_arr : t -> tile array
+val get_tile_arrs : t -> tile array array
+
+val get_layer : t -> int -> tile array
 
 (** [get_tile row col map] returns the tile at row [row] and column [col] from
     the tile array in [map]. *)
-val get_tile : int -> int -> t -> tile
+val get_tile : int -> int -> int -> t -> tile
 
 (** [get_rows map] returns the number of rows [map] has. *)
 val get_rows : t -> int
@@ -84,8 +86,9 @@ val get_image_from_tile :
 val draw_tile : int -> int -> tile -> t -> Images.t array array -> unit
 
 (** [draw_tile map assets] draws the tiles of [map] on the graphics screen. *)
-val draw_tiles : t -> Images.t array array -> unit
 
-(** [draw_layer map layer] draws the tiles belonging to layer [layer]
+(* val draw_tiles : t -> Images.t array array -> unit *)
+
+(** [draw_layer map layer assets] draws the tiles belonging to layer [layer]
     corresponding to the correct layer in [map] on the graphics screen. *)
-val draw_layer : t -> int -> unit
+val draw_layer : t -> int -> Images.t array array -> unit

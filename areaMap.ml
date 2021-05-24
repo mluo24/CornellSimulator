@@ -38,18 +38,23 @@ type tile =
   | DoorTop
   | DoorBot
 
-(* type tiletype = | StandardTile of tile | ItemTile of string * tile |
-   SolidTile of tile | DoorTile of string * World.coords * tile *)
+type tiletype =
+  | StandardTile of tile
+  | ItemTile of string * tile
+  | SolidTile of tile
+  | DoorTile of string * (int * int) * tile
 
 (* redraw tile function *)
 
 (* stringname, visual name *)
 
 type t = {
+  name : string;
   cols : int;
   rows : int;
   tile_size : int;
-  tiles : tile array;
+  layer1 : tile array;
+  layer2 : tile array;
 }
 
 let layers = 2
@@ -88,21 +93,36 @@ let int_to_tile i =
   | 28 -> DoorBot
   | _ -> Blank
 
+let tile_type_of_tile tile = failwith "unimplemented"
+
 let map_from_json_file filename =
   let json = Yojson.Basic.from_file filename in
   let tile_size = json |> member "tile_size" |> to_int in
   {
+    name = json |> member "name" |> to_string;
     cols = json |> member "cols" |> to_int;
     rows = json |> member "rows" |> to_int;
     tile_size;
-    tiles =
-      json |> member "tiles" |> to_list |> List.map to_int
+    layer1 =
+      json |> member "layer1" |> to_list |> List.map to_int
+      |> List.map int_to_tile |> Array.of_list;
+    layer2 =
+      json |> member "layer2" |> to_list |> List.map to_int
       |> List.map int_to_tile |> Array.of_list;
   }
 
-let get_tile_arr map = map.tiles
+let get_tile_arrs map = [| map.layer1; map.layer2 |]
 
-let get_tile row col map = map.tiles.((row * map.cols) + col)
+let get_layer map layer = if layer = 1 then map.layer1 else map.layer2
+
+(* let get_tile row col map = try map.tiles.((row * map.cols) + col) with
+   Invalid_argument x -> Blank *)
+
+let get_tile row col layer map =
+  if layer = 1 then
+    try map.layer1.((row * map.cols) + col) with Invalid_argument x -> Blank
+  else
+    try map.layer2.((row * map.cols) + col) with Invalid_argument x -> Blank
 
 let get_rows map = map.rows
 
@@ -185,7 +205,14 @@ let draw_tile_iter map assets i tile_t =
   let y = y_dim - tsize - (i / cols * tsize) in
   draw_tile x y tile_t map assets
 
-let draw_tiles map assets =
-  Array.iteri (draw_tile_iter map assets) (get_tile_arr map)
+(* let draw_tiles map assets layer = Array.iteri (draw_tile_iter map assets)
+   (get_layer map layer) *)
 
-let draw_layer map layer = failwith "unimplemented"
+let draw_layer map layer assets =
+  Array.iteri (draw_tile_iter map assets) (get_layer map layer)
+
+let is_solid_tile map x y = failwith "unimplemented"
+
+let is_door_tile map x y = failwith "unimplemented"
+
+let tile_effect tile = failwith "unimplemented"
