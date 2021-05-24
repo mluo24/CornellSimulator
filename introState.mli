@@ -11,6 +11,8 @@ type button = {
   y_max : int;
 }
 
+val draw_texts : string -> int -> int -> unit
+
 type choose_student = {
   button : button;
   png_file : string;

@@ -43,8 +43,8 @@
   ],
   "missions": [
     {
-      "name": "FWS",
-      "max": 10,
+      "name": "MATH 3000",
+      "max": 20,
       "init": 0,
       "color": {
         "r": 8,
@@ -53,8 +53,8 @@
       }
     },
     {
-      "name": "MATH 1110",
-      "max": 10,
+      "name": "PSYCH 2000",
+      "max": 20,
       "init": 0,
       "color": {
         "r": 8,
@@ -63,8 +63,8 @@
       }
     },
     {
-      "name": "HISTORY 1110",
-      "max": 10,
+      "name": "ECON 4000",
+      "max": 20,
       "init": 0,
       "color": {
         "r": 8,
