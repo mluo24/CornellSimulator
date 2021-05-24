@@ -37,8 +37,8 @@ let eval_key key =
   | _ -> NoModule
 
 
-=======
-let init_game name png =
+
+let init_game name png :t=
 
   {
     world = World.map_from_json_file "realmap.json";
