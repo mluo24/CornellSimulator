@@ -37,7 +37,6 @@ let eval_key key =
   | _ -> NoModule
 
 
-=======
 let init_game name png =
 
   {
