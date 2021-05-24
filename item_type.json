@@ -1,21 +1,126 @@
-{"type":[
-  {"name":"hw",
-  "description":"Todo Homework",
-  "image":"assets/items/book.png",
-  "effect": {"description": "decrease health", "effects":
-    [{"gauge":"health", "value":-10}]},
-  "dmax": 10
- },
- {"name":"Healthy Food",
-  "description":"Food is important for body function",
-  "image":"assets/items/cup.png",
-  "effect": {"description": "increase health", "effects":[{"gauge":"health", "value":10}]},
-  "dmax": 1
- },
- {"name":"water",
-  "description":"Water is crucual for body function",
-  "image":"assets/items/liq.png",
-  "effect": {"description": "increase health", "effects":[{"gauge":"health", "value":10}]},
-  "dmax": 1
- }
-]}
+{
+  "type": [
+    {
+      "name": "hw",
+      "description": "Todo Homework",
+      "image": "assets/items/book.png",
+      "effect": {
+        "description": "decrease health",
+        "gauges": [
+          {
+            "name": "health",
+            "value": -10
+          }
+        ], 
+        "mission": [
+          {
+            "name": "class1",
+            "value": 10
+          }
+        ]
+      },
+      "dmax": 10
+    },
+    {
+      "name": "Healthy Food",
+      "description": "Food is important for body function",
+      "image": "assets/items/cup.png",
+      "effect": {
+        "description": "increase health",
+        "gauges": [
+          {
+            "name": "health",
+            "value": 10
+          }
+        ], 
+        "mission": [
+          {
+            "name": "class2",
+            "value": 10
+          }]
+      },
+      "dmax": 1
+    },
+    {
+      "name": "water",
+      "description": "Water is crucual for body function",
+      "image": "assets/items/liq.png",
+      "effect": {
+        "description": "increase health",
+        "gauges": [
+          {
+            "name": "health",
+            "value": 10
+          }
+        ], 
+        "mission": [
+         ]
+      },
+      "dmax": 1
+    },
+    {
+      "name": "red_book",
+      "description": "Todo Homework",
+      "image": "assets/items/book.png",
+      "effect": {
+        "description": "",
+        "gauges": [
+          {
+            "name": "health",
+            "value": 15
+          }
+        ], 
+        "mission": [
+          {
+            "name": "class1",
+            "value": 15
+          }
+        ]
+
+      },
+      "dmax": 15
+    },
+    {
+      "name": "yellow_book",
+      "description": "Todo Homework",
+      "image": "assets/items/book.png",
+      "effect": {
+        "description": "",
+        "gauges": [
+          {
+            "name": "health",
+            "value": -20
+          }
+        ],
+        "mission": [
+          {
+            "name": "class1",
+            "value": 15
+          }
+        ] 
+      },
+      "dmax": 15
+    },
+    {
+      "name": "green_book",
+      "description": "Todo Homework",
+      "image": "assets/items/book.png",
+      "effect": {
+        "description": "",
+        "gauges": [
+          {
+            "name": "health",
+            "value": 10
+          }
+        ],
+        "mission": [
+          {
+            "name": "class1",
+            "value": 15
+          }
+        ] 
+      },
+      "dmax": 15
+    }
+  ]
+}

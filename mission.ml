@@ -1,15 +1,26 @@
 open Graphics
+open GameDataStructure
 
 type t = {
   mutable text : string;
   mutable missions : string list;
+  mutable class_key_map : ClassMapping.t;
 }
+
+(* end of mission -> transition to another mission json file (pass in prev
+   score)*)
+
+(* make a seperate endofstate file *)
 
 let missions_level_1 =
   [ "- Catch 3 Camels"; "- Avoid the Bears"; "- Pass prelims" ]
 
 let init_mission () =
-  { text = "Here Are Your Missions:"; missions = missions_level_1 }
+  {
+    text = "Here Are Your Missions:";
+    missions = missions_level_1;
+    class_key_map = ClassMapping.empty;
+  }
 
 let rec draw_missions_list missions y =
   match missions with
