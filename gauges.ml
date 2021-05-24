@@ -4,10 +4,15 @@ open Graphics
 open World
 module GameDict = GameDataStructure.GameIntDict
 open Position
+open Item
+
+exception Invalid_Gauge_Name
+
+exception Negative_Gauge
 
 type t = {
-  general : GameDict.t;
-  mission : GameIntDict.t;
+  mutable general : GameDict.t;
+  mutable mission : GameIntDict.t;
 }
 
 type gauge_type =
@@ -124,8 +129,44 @@ let init_gauges json =
       |> List.fold_left add_to_init GameIntDict.empty;
   }
 
-let decrease_gauges name by_val map = failwith "unimplemented"
+let end_game t = ()
 
-(* GameIntDict.change_gauges name GameIntDict.GameValue.subtract by_val map *)
+let update_a_gauge state gdict nvpair =
+  let name, nvalue = nvpair in
+  let update state n (ol : GameIntDict.game_value option) :
+      GameIntDict.game_value option =
+    match ol with
+    | None -> raise Invalid_Gauge_Name
+    | Some { value; max; color } ->
+        let v = nvalue + value in
+        if v < 0 then raise Negative_Gauge else Some { value = v; max; color }
+  in
+  let n_dict = GameIntDict.update name (update state nvalue) gdict in
+  n_dict
 
-let increase_gauges name by_val map = failwith "unimplemented"
+let update_gauge gtype lst (gauges : t) item_t =
+  let dict =
+    match gtype with General -> gauges.general | Mission -> gauges.mission
+  in
+  init_pos.x <- 0;
+  init_pos.y <- 0;
+  let new_dict = List.fold_left (update_a_gauge item_t) dict lst in
+  match gtype with
+  | General ->
+      gauges.general <- new_dict;
+      draw gauges
+  | Mission ->
+      gauges.mission <- new_dict;
+      draw gauges
+
+let use_item item_t gauge =
+  let type_str = Item.use_item item_t in
+  match type_str with
+  | None -> ()
+  | Some v -> (
+      let info = Item.get_effect item_t v in
+      match info with
+      | None -> raise Item.TypeNotFound
+      | Some i ->
+          update_gauge General i.gauges gauge item_t;
+          update_gauge Mission i.mission gauge item_t)

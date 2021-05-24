@@ -4,11 +4,12 @@ open Yojson.Basic.Util
 open Drawable
 open GameDataStructure
 open Effect
+open Item
 
 (** [t] is the state of all game's guages. [t] gives information on the current gauges value  *)
 type t = {
-  general : GameIntDict.t;
-  mission : GameIntDict.t;
+  mutable general : GameIntDict.t;
+  mutable mission : GameIntDict.t;
 }
 (** [gauge_type] is the type of gauge: General and Mission for mission specific gauges *)
 type gauge_type =
@@ -32,8 +33,14 @@ val get_score : gauge_type -> GameIntDict.key -> t -> float
     gauge level *)
 val init_gauges : Yojson.Basic.t -> t
 
-val decrease_gauges : GameIntDict.key -> GameIntDict.game_value -> t -> t
 
-val increase_gauges : GameIntDict.key -> int -> t -> t
+(** [update_gauge g_type lst state] update the gauge type [g_type] in [state.gauges] by incrementing or decrementing gauge name specified in [lst] by a value  *)
+val update_gauge: gauge_type-> (GameDataStructure.GameIntDict.key * int) list-> t -> Item.t -> unit
 
-val consume_item : t -> Item.t -> t
+val use_item : Item.t -> t -> unit 
+
+
+
+
+
+

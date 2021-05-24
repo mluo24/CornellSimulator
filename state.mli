@@ -6,7 +6,15 @@
     - world: the state of the map
     - character:the state of the user
     - items : the state of items on the map *)
-type t
+type t = {
+  world : World.t;
+  current_area : AreaMap.t;
+  character : Character.t;
+  mutable items : Item.t;
+  (* mutable gauges: Gauges.t *)
+  mutable gauges : Gauges.t;
+  mutable missions : Mission.t;
+}
 
 (* { character: Character; world: time: } *)
 

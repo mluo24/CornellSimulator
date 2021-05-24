@@ -24,6 +24,7 @@ type key_module =
   | Item
   | Character
   | NoModule
+  | Gauges
 
 let eval_key key =
   match key with
@@ -33,7 +34,7 @@ let eval_key key =
   | 'w' -> Character
   | 'j' -> Item
   | 'l' -> Item
-  | 'k' -> Item
+  | 'u' -> Gauges
   | _ -> NoModule
 
 let init_game name png =
@@ -89,8 +90,12 @@ let in_game name png =
       if s.Graphics.keypressed then
         let c = s.Graphics.key in
         match eval_key c with
-        | Character -> Character.move game_state.character s.Graphics.key
+        | Character ->
+            Gauges.update_gauge General [ ("health", -10) ] game_state.gauges
+              game_state.items;
+            Character.move game_state.character s.Graphics.key
         | Item -> Item.item_command game_state.items c
+        | Gauges -> Gauges.use_item game_state.items game_state.gauges
         | NoModule -> ()
       (* draw game_state *)
     done

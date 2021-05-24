@@ -179,8 +179,7 @@ let item_select_redraw t ol n =
       | None ->
           draw_box t { x = x_pos_new; y = start_pos_y } None selected_col
       | Some (k, v) ->
-          draw_box t { x = x_pos_new; y = start_pos_y } (Some v) selected_col
-      )
+          draw_box t { x = x_pos_new; y = start_pos_y } (Some v) selected_col)
 
 let move_select_left t =
   let ol = t.selected in
@@ -231,18 +230,19 @@ let use_item t =
         let new_val = v - 1 in
         if new_val <= 0 then (
           if t.selected > 0 then t.selected <- t.selected - 1;
-          None )
+          None)
         else Some { value = new_val; max; item_type }
   in
 
   let lst = InventoryDict.get_bindings t.inventory in
   let v = List.nth_opt lst t.selected in
   match v with
-  | None -> ()
+  | None -> None
   | Some (key, { value; max; item_type }) ->
       let nInv = InventoryDict.update key (remove t) t.inventory in
       t.inventory <- nInv;
-      draw t
+      draw t;
+      Some item_type
 
 let draw_inventory item = failwith "unimplement"
 
@@ -252,7 +252,6 @@ let item_command t c =
   match c with
   | 'j' -> move_select_left t
   | 'l' -> move_select_right t
-  | 'k' -> use_item t
   | _ -> ()
 
 let acquire item_state str_type =
@@ -293,3 +292,9 @@ let description item = failwith "unimplemented"
 let item_effect item = failwith "unimplemented"
 
 let item_position item = failwith "unimplemented"
+
+let get_item_info t str = ItemTypeDict.get_value_of str t.item_type
+
+let get_effect t str =
+  let info = get_item_info t str in
+  match info with None -> None | Some fo -> Some fo.effect
