@@ -1,0 +1,76 @@
+{
+  "gauges": [
+    {
+      "name": "health",
+      "max": 100,
+      "init": 100,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "slip day",
+      "max": 5,
+      "init": 0,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "brain",
+      "max": 100,
+      "init": 5,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "mental health",
+      "max": 100,
+      "init": 80,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    }
+  ],
+  "missions": [
+    {
+      "name": "class1",
+      "max": 100,
+      "init": 0,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "class2",
+      "max": 100,
+      "init": 0,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "class3",
+      "max": 100,
+      "init": 0,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    }
+  ]
+}

@@ -15,8 +15,8 @@ type t = {
   mutable current_area : AreaMap.t;
   character : Character.t;
   mutable items : Item.t;
-  mutable gauges : Gauges.t;
-  mutable missions : Mission.t;
+  (* mutable gauges: Gauges.t *)
+  mutable gauges : Gauges.t; (* mutable missions : Mission.t; *)
 }
 
 type key_module =
@@ -35,7 +35,7 @@ let eval_key key =
   | 'k' -> Item
   | _ -> NoModule
 
-let init_game name png =
+let init_game name png level level_png points =
   let world = World.load_world "worldmaps" in
   let current_area = World.get_start_map world in
   {
@@ -46,14 +46,15 @@ let init_game name png =
       Item.init_item
         (Yojson.Basic.from_file "item_type.json")
         (Yojson.Basic.from_file "item_init.json");
-    gauges = Gauges.init_gauges (Yojson.Basic.from_file "gauges.json");
-    missions = Mission.init_mission ();
+    gauges =
+      Gauges.init_gauges (Yojson.Basic.from_file level_png)
+      (* missions = Mission.init_mission (); *);
   }
 
 let draw t =
   Graphics.clear_graph ();
 
-  Mission.draw_missions_window t.missions;
+  (* Mission.draw_missions_window t.missions; *)
   Item.draw t.items;
 
   AreaMap.draw_layer t.current_area 1 (get_assets t.world);
@@ -81,8 +82,8 @@ let change_room state world tiletype =
       draw state
   | _ -> failwith "not possible"
 
-let in_game name png =
-  let game_state = init_game name png in
+let in_game name png level level_png points =
+  let game_state = init_game name png level level_png points in
   (* let tilesize = get_tile_size game_state.world in *)
   (* let terrain_tileset = ImageHandler.load_tileset "assets/Terrain.png"
      tilesize in let street_tileset = ImageHandler.load_tileset
