@@ -106,12 +106,23 @@ let in_game name png level level_png points =
               (get_assets game_state.world);
             let x = game_state.character.pos.x in
             let y = game_state.character.pos.y in
-            if is_door_tile game_state.current_area x y then
+            if is_door_tile game_state.current_area x y then (
               let col = x / 32 in
               let row = y_offset (y / 32) in
               change_room game_state game_state.world
-                (get_tile row col 1 game_state.current_area)
-        | Item -> Item.item_command game_state.items c
+                (get_tile row col 1 game_state.current_area);
+              refresh_character game_state.character game_state.current_area
+                (get_assets game_state.world) )
+        | Item ->
+            let x = game_state.character.pos.x in
+            let y = game_state.character.pos.y in
+            let col = x / 32 in
+            let row = y_offset (y / 32) in
+            Item.item_command game_state.items c game_state.current_area row
+              col
+              (get_tile row col 2 game_state.current_area);
+            refresh_character game_state.character game_state.current_area
+              (get_assets game_state.world)
         | NoModule -> ()
       (* draw game_state *)
     done

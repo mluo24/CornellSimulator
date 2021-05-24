@@ -47,9 +47,14 @@ let load_tilesets tile_size =
   let interior_tileset =
     ImageHandler.load_tileset "assets/Interiors_free_32x32.png" tile_size
   in
+  let book_tileset =
+    ImageHandler.load_tileset "assets/items/books.png" tile_size
+  in
+  let pizza = ImageHandler.load_tileset "assets/items/pizza.png" tile_size in
+  let liq = ImageHandler.load_tileset "assets/items/liq.png" tile_size in
   [|
     terrain_tileset; street_tileset; building_tileset; room_tileset;
-    interior_tileset;
+    interior_tileset; book_tileset; pizza; liq;
   |]
 
 let add_exits maps =

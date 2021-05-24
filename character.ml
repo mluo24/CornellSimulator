@@ -144,6 +144,13 @@ let move_left t map assets =
     t.layer1_tile_mem <- get_tile_from_coords t.pos.x t.pos.y 1 map
   end
 
+let refresh_character t map assets =
+  t.layer1_tile_mem <- get_tile_from_coords t.pos.x t.pos.y 1 map;
+  t.layer2_tile_mem <- get_tile_from_coords t.pos.x t.pos.y 2 map;
+  draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
+  draw t;
+  draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets
+
 let move (t : t) c map assets =
   match c with
   | 'w' -> move_up t map assets

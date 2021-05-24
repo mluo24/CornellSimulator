@@ -37,12 +37,17 @@ type tile =
   | Roof_RightEdge
   | DoorTop
   | DoorBot
-  | Book
-  | Food
+  | Food of string
+  | Water of string
+  | RedBook of string
+  | YellowBook of string
+  | GreenBook of string
+  | BlueBook
+  | PurpleBook of string
 
 type tiletype =
   | StandardTile of tile
-  | ItemTile of Item.t * tile
+  | ItemTile of string * tile
   | SolidTile of tile
   | DoorTile of string * Position.t * tile
 
@@ -93,8 +98,13 @@ let int_to_tile i =
   | 26 -> Roof_RightEdge
   | 27 -> DoorTop
   | 28 -> DoorBot
-  | 29 -> Book
-  | 30 -> Food
+  | 29 -> Food "Healthy Food"
+  | 30 -> Water "water"
+  | 31 -> RedBook "red_book"
+  | 32 -> YellowBook "yellow_book"
+  | 33 -> GreenBook "green_book"
+  | 34 -> BlueBook
+  | 35 -> PurpleBook "hw"
   | _ -> Blank
 
 let tile_type_of_tile tile =
@@ -109,6 +119,9 @@ let tile_type_of_tile tile =
   | Roof_BotRight | Roof_LeftEdge | Roof_BotEdge | Roof_RightEdge ->
       SolidTile tile
   | DoorTop | DoorBot -> DoorTile ("north", { x = 0; y = 0 }, tile)
+  | Food x | Water x | RedBook x | YellowBook x | GreenBook x | PurpleBook x
+    ->
+      ItemTile (x, tile)
   | _ -> StandardTile tile
 
 (* unimplemented *)
@@ -168,6 +181,9 @@ let replace_tiletype map x y layer exit_name spawn_pos =
     let tile = tile_of_tile_type map.layer2.((x * map.cols) + y) in
     map.layer2.((x * map.cols) + y) <- DoorTile (exit_name, spawn_pos, tile)
 
+let remove_item_tile map x y =
+  map.layer2.((x * map.cols) + y) <- StandardTile Blank
+
 let get_tile_arrs map = [| map.layer1; map.layer2 |]
 
 let get_layer map layer = if layer = 1 then map.layer1 else map.layer2
@@ -210,6 +226,25 @@ let street_image_width =
 let building_image_width =
   fst (Images.size (ImageHandler.get_entire_image "assets/Buildings32.png"))
 
+let room_image_width =
+  fst
+    (Images.size
+       (ImageHandler.get_entire_image "assets/Room_Builder_free_32x32.png"))
+
+let interior_image_width =
+  fst
+    (Images.size
+       (ImageHandler.get_entire_image "assets/Interiors_free_32x32.png"))
+
+let book_image_width =
+  fst (Images.size (ImageHandler.get_entire_image "assets/items/books.png"))
+
+let pizza_width =
+  fst (Images.size (ImageHandler.get_entire_image "assets/items/pizza.png"))
+
+let liq_width =
+  fst (Images.size (ImageHandler.get_entire_image "assets/items/liq.png"))
+
 let get_terrain_tile x y tsize assets =
   let terrain_tileset = assets.(0) in
   ImageHandler.get_tile_image_x_y terrain_tileset
@@ -227,6 +262,24 @@ let get_building_tile x y tsize assets =
   ImageHandler.get_tile_image_x_y building_tileset
     (building_image_width / tsize)
     x y
+
+let get_room_tile x y tsize assets =
+  let room_tileset = assets.(3) in
+  ImageHandler.get_tile_image_x_y room_tileset
+    (building_image_width / tsize)
+    x y
+
+let get_book_tile x y tsize assets =
+  let book_tileset = assets.(5) in
+  ImageHandler.get_tile_image_x_y book_tileset (book_image_width / tsize) x y
+
+let get_pizza_tile x y tsize assets =
+  let pizza = assets.(5) in
+  ImageHandler.get_tile_image_x_y pizza (pizza_width / tsize) x y
+
+let get_liq_tile x y tsize assets =
+  let liq = assets.(5) in
+  ImageHandler.get_tile_image_x_y liq (liq_width / tsize) x y
 
 let get_image_from_tile assets tile tsize =
   match tile with
@@ -262,7 +315,13 @@ let get_image_from_tile assets tile tsize =
   | Roof_RightEdge -> get_building_tile 6 1 tsize assets
   | DoorTop -> get_building_tile 10 7 tsize assets
   | DoorBot -> get_building_tile 10 8 tsize assets
-  | _ -> failwith "unimplemented"
+  | BlueBook -> get_book_tile 3 0 tsize assets
+  | Food _ -> get_pizza_tile 0 0 tsize assets
+  | Water _ -> get_liq_tile 0 0 tsize assets
+  | RedBook _ -> get_book_tile 0 0 tsize assets
+  | YellowBook _ -> get_book_tile 1 0 tsize assets
+  | GreenBook _ -> get_book_tile 2 0 tsize assets
+  | PurpleBook _ -> get_book_tile 4 0 tsize assets
 
 let draw_tile x y tile map assets =
   let tsize = get_tile_size map in
@@ -302,5 +361,8 @@ let is_door_tile map x y =
   match tile1 with
   | DoorTile _ -> true
   | _ -> ( match tile2 with DoorTile _ -> true | _ -> false )
+
+let is_item_tile tiletype =
+  match tiletype with ItemTile _ -> true | _ -> false
 
 let tile_effect tile = failwith "unimplemented"

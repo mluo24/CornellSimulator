@@ -64,6 +64,8 @@ val move_down : t -> AreaMap.t -> Images.t array array -> unit
 (** [move_left t] implements the animation of the character's right movement.*)
 val move_left : t -> AreaMap.t -> Images.t array array -> unit
 
+val refresh_character : t -> AreaMap.t -> Images.t array array -> unit
+
 (** [move t ch] matches character [t] to the animation in the direction
     specified by character [ch] based on the character current speed Require:
     ch must be 'w', 'a', 's', 'd' which represent up, left, down, right

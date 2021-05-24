@@ -14,7 +14,8 @@ type t = {
 
 val inventory_height : int
 
-val item_command : t -> char -> unit
+val item_command :
+  t -> char -> AreaMap.t -> int -> int -> AreaMap.tiletype -> unit
 
 include Drawable with type t := t
 
