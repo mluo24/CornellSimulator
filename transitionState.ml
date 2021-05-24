@@ -75,7 +75,7 @@ let in_game level_num name points =
           let next_level = level_to_next level_num points name in
           if next_level.level > 0 then
             State.in_game engineer.name engineer.png_file next_level.level
-              points
+              next_level.json points
           else EndState.in_game points
       | _, _ -> ()
     done
