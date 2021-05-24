@@ -49,9 +49,9 @@ let start_x tol_width i_size inv_size padding =
   let tol_gap = tol_width - width in
   if tol_gap < 0 then raise NotEnoughSpace else tol_gap / 2
 
-let start_pos_x = start_x World.x_dim item_size inventory_size padding
+let start_pos_x = start_x Position.x_dim item_size inventory_size padding
 
-let start_pos_y = World.y_dim
+let start_pos_y = Position.y_dim
 
 let start_pos () = { x = start_pos_x; y = start_pos_y }
 
@@ -179,7 +179,8 @@ let item_select_redraw t ol n =
       | None ->
           draw_box t { x = x_pos_new; y = start_pos_y } None selected_col
       | Some (k, v) ->
-          draw_box t { x = x_pos_new; y = start_pos_y } (Some v) selected_col)
+          draw_box t { x = x_pos_new; y = start_pos_y } (Some v) selected_col
+      )
 
 let move_select_left t =
   let ol = t.selected in
@@ -215,7 +216,7 @@ let draw (item : t) : unit =
   let sp = start_pos () in
   draw_background
     { x = 0; y = start_pos_y }
-    World.x_dim inventory_height inventory_bg;
+    Position.x_dim inventory_height inventory_bg;
   let size = InventoryDict.get_size item.inventory in
   let lst = InventoryDict.get_bindings item.inventory in
   List.iteri (draw_box_itter item sp) lst;
@@ -230,7 +231,7 @@ let use_item t =
         let new_val = v - 1 in
         if new_val <= 0 then (
           if t.selected > 0 then t.selected <- t.selected - 1;
-          None)
+          None )
         else Some { value = new_val; max; item_type }
   in
 

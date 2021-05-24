@@ -2,6 +2,7 @@ open Yojson.Basic.Util
 open Graphics
 open ImageHandler
 open Images
+open Position
 
 type tile =
   | Blank
@@ -37,16 +38,8 @@ type tile =
   | DoorTop
   | DoorBot
 
-type coords = {
-  x : int;
-  y : int;
-}
-
-type tiletype =
-  | StandardTile of tile
-  | ItemTile of string * tile
-  | SolidTile of tile
-  | DoorTile of string * coords * tile
+(* type tiletype = | StandardTile of tile | ItemTile of string * tile |
+   SolidTile of tile | DoorTile of string * World.coords * tile *)
 
 (* redraw tile function *)
 
@@ -57,12 +50,7 @@ type t = {
   rows : int;
   tile_size : int;
   tiles : tile array;
-  assets : Images.t array array;
 }
-
-let x_dim = 800
-
-let y_dim = 560
 
 let layers = 2
 
@@ -103,24 +91,13 @@ let int_to_tile i =
 let map_from_json_file filename =
   let json = Yojson.Basic.from_file filename in
   let tile_size = json |> member "tile_size" |> to_int in
-  let terrain_tileset =
-    ImageHandler.load_tileset "assets/Terrain.png" tile_size
-  in
-  let street_tileset =
-    ImageHandler.load_tileset "assets/Street.png" tile_size
-  in
-  let building_tileset =
-    ImageHandler.load_tileset "assets/Buildings.png" tile_size
-  in
-  let assets = [| terrain_tileset; street_tileset; building_tileset |] in
   {
     cols = json |> member "cols" |> to_int;
     rows = json |> member "rows" |> to_int;
-    tile_size = json |> member "tile_size" |> to_int;
+    tile_size;
     tiles =
       json |> member "tiles" |> to_list |> List.map to_int
       |> List.map int_to_tile |> Array.of_list;
-    assets;
   }
 
 let get_tile_arr map = map.tiles
@@ -133,16 +110,16 @@ let get_cols map = map.cols
 
 let get_tile_size map = map.tile_size
 
-let get_assets map = map.assets
+(* let get_assets map = map.assets *)
 
 let terrain_image_width =
-  fst (Images.size (ImageHandler.get_entire_image "assets/Terrain.png"))
+  fst (Images.size (ImageHandler.get_entire_image "assets/nature.png"))
 
 let street_image_width =
-  fst (Images.size (ImageHandler.get_entire_image "assets/Street.png"))
+  fst (Images.size (ImageHandler.get_entire_image "assets/Street32.png"))
 
 let building_image_width =
-  fst (Images.size (ImageHandler.get_entire_image "assets/Buildings.png"))
+  fst (Images.size (ImageHandler.get_entire_image "assets/Buildings32.png"))
 
 let get_image_from_tile assets tile tsize =
   let terrain_tileset = assets.(0) in
@@ -166,11 +143,11 @@ let get_image_from_tile assets tile tsize =
   match tile with
   | Blank ->
       Graphics.make_image (Array.make_matrix tsize tsize Graphics.transp)
-  | Grass -> get_terrain_tile 0 0
-  | TreeBot -> get_terrain_tile 1 1
-  | TreeTop -> get_terrain_tile 1 0
-  | Flower -> get_terrain_tile 2 1
-  | Bush -> get_terrain_tile 2 0
+  | Grass -> get_terrain_tile 0 2
+  | TreeBot -> get_terrain_tile 0 1
+  | TreeTop -> get_terrain_tile 0 0
+  | Flower -> get_terrain_tile 3 1
+  | Bush -> get_terrain_tile 1 1
   (* street.png *)
   | Sidewalk_Curved_BotLeft -> get_street_tile 17 4
   | Sidewalk_Curved_BotRight -> get_street_tile 21 4
@@ -197,17 +174,18 @@ let get_image_from_tile assets tile tsize =
   | DoorTop -> get_building_tile 10 7
   | DoorBot -> get_building_tile 10 8
 
-let draw_tile x y tile map =
+let draw_tile x y tile map assets =
   let tsize = get_tile_size map in
-  Graphics.draw_image (get_image_from_tile (get_assets map) tile tsize) x y
+  Graphics.draw_image (get_image_from_tile assets tile tsize) x y
 
-let draw_tile_iter map i tile_t =
+let draw_tile_iter map assets i tile_t =
   let tsize = get_tile_size map in
   let cols = get_cols map in
   let x = i mod cols * tsize in
   let y = y_dim - tsize - (i / cols * tsize) in
-  draw_tile x y tile_t map
+  draw_tile x y tile_t map assets
 
-let draw_tiles map = Array.iteri (draw_tile_iter map) (get_tile_arr map)
+let draw_tiles map assets =
+  Array.iteri (draw_tile_iter map assets) (get_tile_arr map)
 
 let draw_layer map layer = failwith "unimplemented"
