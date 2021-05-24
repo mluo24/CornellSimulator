@@ -15,7 +15,6 @@ type t = {
   current_area : AreaMap.t;
   character : Character.t;
   mutable items : Item.t;
-  (* mutable gauges: Gauges.t *)
   mutable gauges : Gauges.t;
   mutable missions : Mission.t;
 }
@@ -57,7 +56,6 @@ let draw t =
   Mission.draw_missions_window t.missions;
   Item.draw t.items;
 
-  (* CHANGE THIS TO DRAW THE SPECIFIC LAYERS *)
   AreaMap.draw_layer t.current_area 1 (get_assets t.world);
   (* Item.draw t.items; *)
   Character.draw t.character;

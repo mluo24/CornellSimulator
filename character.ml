@@ -74,7 +74,8 @@ let init_character name png map =
   }
 
 let move_up t map assets =
-  if t.pos.y < Position.y_dim - 32 then begin
+  if t.pos.y < Position.y_dim - 32 && not (is_solid_tile map t.pos.x t.pos.y)
+  then begin
     draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
     draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
     let new_pos = t.pos.y + t.speed in
@@ -90,7 +91,8 @@ let move_up t map assets =
   end
 
 let move_right t map assets =
-  if t.pos.x < Position.x_dim - 32 then begin
+  if t.pos.x < Position.x_dim - 32 && not (is_solid_tile map t.pos.x t.pos.y)
+  then begin
     draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
     draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
     let new_pos = t.pos.x + t.speed in
@@ -108,7 +110,7 @@ let move_right t map assets =
   end
 
 let move_down t map assets =
-  if t.pos.y > 0 then begin
+  if t.pos.y > 0 && not (is_solid_tile map t.pos.x t.pos.y) then begin
     draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
     draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
     let new_pos = t.pos.y - t.speed in
@@ -124,7 +126,7 @@ let move_down t map assets =
   end
 
 let move_left t map assets =
-  if t.pos.x > 0 then begin
+  if t.pos.x > 0 && not (is_solid_tile map t.pos.x t.pos.y) then begin
     draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
     draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
     let new_pos = t.pos.x - t.speed in

@@ -92,3 +92,5 @@ val draw_tile : int -> int -> tile -> t -> Images.t array array -> unit
 (** [draw_layer map layer assets] draws the tiles belonging to layer [layer]
     corresponding to the correct layer in [map] on the graphics screen. *)
 val draw_layer : t -> int -> Images.t array array -> unit
+
+val is_solid_tile : t -> int -> int -> bool
