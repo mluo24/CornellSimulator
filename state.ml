@@ -6,11 +6,13 @@ open Character
 open Yojson.Basic
 open ImageHandler
 open World
+open AreaMap
 open Mission
 open Rect
 
 type t = {
   world : World.t;
+  current_area : AreaMap.t;
   character : Character.t;
   mutable items : Item.t;
   (* mutable gauges: Gauges.t *)
@@ -18,35 +20,32 @@ type t = {
   mutable missions : Mission.t;
 }
 
+type key_module =
+  | Item
+  | Character
+  | NoModule
 
-type key_module = 
-| Item
-| Character
-| NoModule
-
-let eval_key key = 
+let eval_key key =
   match key with
   | 'a' -> Character
   | 's' -> Character
   | 'd' -> Character
   | 'w' -> Character
   | 'j' -> Item
-  | 'l' -> Item 
+  | 'l' -> Item
   | 'k' -> Item
   | _ -> NoModule
 
-
 let init_game name png =
-
+  let world = World.load_world "worldmaps" in
   {
-    world = World.map_from_json_file "realmap.json";
+    world;
+    current_area = World.get_start_map world;
     character = Character.init_character name png;
     items =
       Item.init_item
-
         (Yojson.Basic.from_file "item_type.json")
-        (Yojson.Basic.from_file "item_init.json")
-        ;
+        (Yojson.Basic.from_file "item_init.json");
     gauges = Gauges.init_gauges (Yojson.Basic.from_file "gauges.json");
     missions = Mission.init_mission ();
   }
@@ -56,13 +55,14 @@ let draw t =
 
   Mission.draw_missions_window t.missions;
   Item.draw t.items;
- 
-  (** CHANGE THIS TO DRAW THE SPECIFIC LAYERS *)
-  World.draw_tiles t.world;
+
+  (* CHANGE THIS TO DRAW THE SPECIFIC LAYERS *)
+  AreaMap.draw_layer t.current_area 1 (get_assets t.world);
   (* Item.draw t.items; *)
   Character.draw t.character;
+  AreaMap.draw_layer t.current_area 2 (get_assets t.world);
   (* Item.draw t.items; *)
-  Gauges.draw t.gauges;
+  Gauges.draw t.gauges
 
 (* let draw_with_assets t assets = Graphics.clear_graph (); World.draw_tiles
    t.world; Item.draw_all t.items; Character.draw t.character *)
@@ -89,18 +89,13 @@ let in_game name png =
       if s.Graphics.keypressed then
         let c = s.Graphics.key in
         match eval_key c with
-        | Character -> 
-              Character.move game_state.character s.Graphics.key
-        | Item -> Item.item_command game_state.items c 
+        | Character -> Character.move game_state.character s.Graphics.key
+        | Item -> Item.item_command game_state.items c
         | NoModule -> ()
-        
-
       (* draw game_state *)
     done
   with End -> end_game ()
 
-
-  
 (* type t_pos = { mutable x : int; mutable y : int; } *)
 
 (* { character: Character; world: time: } *)

@@ -24,7 +24,12 @@ let player_image_size_width =
   fst (Images.size (ImageHandler.get_entire_image "assets/spr_player.png"))
   / 16
 
-let world = World.map_from_json_file "realmap.json"
+let world =
+  let json = Yojson.Basic.from_file "world_init.json" in
+  AreaMap.map_from_json_file
+    ( "worldmaps/"
+    ^ (json |> Yojson.Basic.Util.member "start" |> Yojson.Basic.Util.to_string)
+    ^ ".json" )
 
 let get_person_pose x y w h png =
   ImageHandler.get_tileset_part x y w h (ImageHandler.get_entire_image png)
@@ -50,7 +55,7 @@ let init_character name png =
   }
 
 let move_up t =
-  if t.pos.y < World.y_dim - 16 then begin
+  if t.pos.y < Position.y_dim - 16 then begin
     Graphics.draw_image t.tile_mem t.pos.x t.pos.y;
     (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
     t.pos.y <- t.pos.y + t.speed;
@@ -62,7 +67,7 @@ let move_up t =
   end
 
 let move_right t =
-  if t.pos.x < World.x_dim - 16 then begin
+  if t.pos.x < Position.x_dim - 16 then begin
     Graphics.draw_image t.tile_mem t.pos.x t.pos.y;
     (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
     t.pos.x <- t.pos.x + t.speed;

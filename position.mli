@@ -5,6 +5,12 @@ type t = {
   mutable y : int;
 }
 
+(** [x_dim] is the width of the graphics window *)
+val x_dim : int
+
+(** [y_dim] is the height of the graphics window *)
+val y_dim : int
+
 val from_json : Yojson.Basic.t -> t
 
 type direction =

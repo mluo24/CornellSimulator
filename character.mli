@@ -1,13 +1,14 @@
 open Graphics
 open Drawable
 open World
+open AreaMap
 open Position
 open Images
 
 (** The type of values representing character. Record fields include:
 
     - [name] : name of the character,
-    - [tile_mem] : mutable World.tile that the character is over,
+    - [tile_mem] : mutable AreaMap.tile that the character is over,
     - [rep] : mutable character image,
     - [pos] : mutable Position.t of the character
     - [speed] : number of pixels the character moves per keyboard input *)
@@ -30,16 +31,16 @@ include Drawable with type t := t
 (** [get_user_name t] is the name of the character [t]*)
 val get_user_name : t -> string
 
-(** [get_size t ] is the size of character [t] in graphical interface unit*)
+(** [get_size t] is the size of character [t] in graphical interface unit*)
 val get_size : t -> int
 
 (** [player_image_size_width] is width of the image, measured in unit tile
     lengths*)
 val player_image_size_width : int
 
-(** [world] is the World.t type of the json data used to represent the map
+(** [world] is the AreaMap.t type of the json data used to represent the map
     referenced as the character moves*)
-val world : World.t
+val world : AreaMap.t
 
 (** [get_person_image person] matches [person] to an image representing the
     character in the pose of the direction of the character's movement*)
