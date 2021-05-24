@@ -38,16 +38,7 @@ let draw () =
   draw_texts undecided_des_2 235 290;
   draw_texts engineer_name 445 330;
   draw_texts engineer_des 430 305;
-  draw_texts premed_name 655 330;
-  draw_texts premed_des 670 305
-(* Graphics.moveto 260 470; Graphics.draw_string introduction_line2;
-   Graphics.moveto 235 330; Graphics.draw_string undecided_name;
-   Graphics.moveto 235 305; Graphics.draw_string undecided_des_1;
-   Graphics.moveto 235 290; Graphics.draw_string undecided_des_2;
-   Graphics.moveto 445 330; Graphics.draw_string engineer_name;
-   Graphics.moveto 430 305; Graphics.draw_string engineer_des; Graphics.moveto
-   655 330; Graphics.draw_string premed_name; Graphics.moveto 670 305;
-   Graphics.draw_string premed_des *)
+  draw_texts premed_name 655 330
 
 type button = {
   x_min : int;
@@ -102,15 +93,16 @@ let in_game () =
       if s.Graphics.button then Graphics.moveto 500 200;
       let x = fst (Graphics.mouse_pos ()) in
       let y = snd (Graphics.mouse_pos ()) in
-      Graphics.draw_string
-        ("x :" ^ string_of_int x ^ ", y: " ^ string_of_int y);
       match (x, y) with
       | x, y when match_student engineer x y ->
-          State.in_game engineer.name engineer.png_file
+          State.in_game engineer.name engineer.png_file 1
+            "missions/freshman_undecided.json" 0
       | x, y when match_student premed x y ->
-          State.in_game premed.name premed.png_file
+          State.in_game premed.name premed.png_file 1
+            "missions/freshman_undecided.json" 0
       | x, y when match_student undecided x y ->
-          State.in_game undecided.name undecided.png_file
+          State.in_game undecided.name undecided.png_file 1
+            "missions/freshman_undecided.json" 0
       | _, _ -> ()
     done
   with End -> end_game ()
