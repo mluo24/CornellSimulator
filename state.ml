@@ -13,21 +13,22 @@ open GameState
 type t = {
   world : World.t;
   character : Character.t;
-  mutable items : Item.ilist;
+  mutable items : Item.t;
   (* mutable gauges: Gauges.t *)
   mutable gauges : Gauges.t;
   mutable missions : Mission.t;
 }
 
-let init_game () =
+let init_game name png =
   {
     world = World.map_from_json_file "realmap.json";
-    character = Character.init_character ();
+    character = Character.init_character name png;
     items =
-      Item.init_item_list
-        (Yojson.Basic.from_file "item.json")
-        (Yojson.Basic.from_file "item_rep.json")
-        (Yojson.Basic.from_file "item_init.json");
+      Item.init_item
+
+        (Yojson.Basic.from_file "item_type.json")
+        (Yojson.Basic.from_file "item_init.json")
+        ;
     gauges = Gauges.init_gauges (Yojson.Basic.from_file "gauges.json");
     missions = Mission.init_mission ();
   }
@@ -36,12 +37,13 @@ let draw t =
   Graphics.clear_graph ();
 
   Mission.draw_missions_window t.missions;
-  Gauges.draw t.gauges;
+ 
   (** CHANGE THIS TO DRAW THE SPECIFIC LAYERS *)
   World.draw_tiles t.world;
-  Item.draw_all t.items;
+  (* Item.draw t.items; *)
   Character.draw t.character;
-  Item.draw_bag t.items
+  (* Item.draw t.items; *)
+  Gauges.draw t.gauges;
 
 (* let draw_with_assets t assets = Graphics.clear_graph (); World.draw_tiles
    t.world; Item.draw_all t.items; Character.draw t.character *)
@@ -50,8 +52,8 @@ exception End
 
 let end_game () = failwith "unimplemented"
 
-let in_game () =
-  let game_state = init_game () in
+let in_game name png =
+  let game_state = init_game name png in
   (* let tilesize = get_tile_size game_state.world in *)
   (* let terrain_tileset = ImageHandler.load_tileset "assets/Terrain.png"
      tilesize in let street_tileset = ImageHandler.load_tileset
@@ -71,14 +73,15 @@ let in_game () =
         match c with
         | 't' ->
             game_state.items <-
-              Item.get_item game_state.items game_state.character;
-            draw game_state
+              failwith "unimplemented"
         | _ ->
-            if
+            (* if
               not
                 (Rect.will_enter_rect game_state.character.pos
                    Item.inventory_area c 16)
-            then Character.move game_state.character s.Graphics.key
+            then  *)
+              
+              Character.move game_state.character s.Graphics.key
       (* draw game_state *)
     done
   with End -> end_game ()
