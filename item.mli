@@ -4,58 +4,45 @@ open Graphics
 open Yojson.Basic.Util
 open Drawable
 
-(** The abstract type of values representing an item *)
-type t
+(** The abstract type of values representing groups of items *)
+type t = {
+  mutable inventory : GameDataStructure.InventoryDict.t;
+  item_type : GameDataStructure.ItemTypeDict.t;
+}
+
+val inventory_height : int
 
 include Drawable with type t := t
-(** The abstract type of values representing groups of items *)
-type ilist
 
+(** The type [is_legal] represents a respond to user request to collect the
+    item on the map. *)
+type is_legal =
+  | Legal
+  | Illegal
 
-type effect
-
-(** [init_item_list item_file item_rep_file] is lists of items in [item_file] which belong to different item type in [item_rep_file]. The type determine the graphical representation and effects of the item. 
-Requires: 
-    [item_file] is a valid JSON item representation
-    [item_rep_file] is a valide JSON item type representation 
-    types present in [item_file] must match the key in [item_rep_file]
-    *)
-val init_item_list : Yojson.Basic.t -> Yojson.Basic.t -> Yojson.Basic.t-> ilist 
+(** [init_item_list item_file item_rep_file] is lists of items in [item_file]
+    which belong to different item type in [item_rep_file]. The type determine
+    the graphical representation and effects of the item. Requires:
+    [item_file] is a valid JSON item representation [item_rep_file] is a
+    valide JSON item type representation types present in [item_file] must
+    match the key in [item_rep_file] *)
+val init_item : Yojson.Basic.t -> Yojson.Basic.t -> t
 
 (** [draw t] draws item [t] on the graphical interface*)
 val draw : t -> unit
 
-(** [draw_all t_lst] draws all items in [t_lst] on the graphical interface*)
-val draw_all : ilist -> unit
+(** [acquire item_state type_name] modify [item_state] and return [Legal] if
+    the item with [type_name] can be collected into the inventory.
+    [acquire item_state type_name] is Illegal if the inventory is full or
+    exception has occured during the process *)
+val acquire : t -> string -> is_legal
 
-(** The type of item identifiers -unique. *)
-type item_id = string
+val get_item_image : t -> string -> Graphics.image
 
-(* string representation of item type *)
-type item_type = string
+(* (** [get_item item_lst character] remove item from the list of item on the
+   map and add item the aquired item list if [character] is located within
+   range of the item. *) val get_item : ilist -> Character.t -> ilist *)
 
-val inventory_area : Rect.t
-val draw_bag: ilist -> unit
+(** [item_position t] is the position on the map of item [t] *)
 
-(* Whether the item has been collected *)
-val acquired : t -> bool
-
-(** [get_item item_lst character] remove item from the list of item on the map and add item the aquired item list if [character] is located within range of the item.
-    *)
-val get_item : ilist -> Character.t ->
-  ilist
-
-(** [name t] is the string representation of item [t]  *)
-val name: t -> string
-(** [description t] is the description of item [t]  *)
-val description: t -> string
-
-(* effect *)
-val item_effect: t -> effect
-
-(** [item_position t] is the position on the map of item [t]  *)
-val item_position: t -> Position.t
-
-(* Draw inventory representation  *)
-val draw_inventory: ilist -> unit
-
+(* val item_position : t -> -> Position.t *)

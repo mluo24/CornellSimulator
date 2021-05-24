@@ -45,6 +45,9 @@ let will_enter_rect pos rect dir offset =
 
 let make_rect top left right bottom = { left; right; top; bottom }
 
+let make_rect_wh (pos : Position.t) w h =
+  { left = pos.x; right = pos.x + w; top = pos.y + h; bottom = pos.y }
+
 let draw rect =
   Graphics.fill_rect rect.left rect.bottom (rect.right - rect.left)
     (rect.top - rect.bottom)

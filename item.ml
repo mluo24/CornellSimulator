@@ -1,144 +1,135 @@
 open Graphics
 open Yojson.Basic.Util
 open GameDataStructure
+open GraphicHelper
 
 (** The abstract type of values representing the items group *)
 open Position
 
 (* 288 224 *)
 
-type effect = { effect_dis : string }
-
 (** The type of item identifiers -unique. *)
-type item_id = string
 
 (* string representation of item type *)
-type item_type = string
 
-type item_prop = {
-  name : string;
-  description : string;
-  color : Graphics.color;
-  size : int;
-  effect : effect;
-}
+exception SizeExceed of string
 
-let inventory_area = Rect.make_rect 88 288 512 0
+exception TypeNotFound
 
 type t = {
-  id : item_id;
-  pos : Position.t;
-  itype : item_type;
-  rep : item_prop;
+  mutable inventory : GameDataStructure.InventoryDict.t;
+  item_type : GameDataStructure.ItemTypeDict.t;
 }
 
-type ilist = {
-  items : t list;
-  aquired : GameDataStructure.GameIntDict.t;
-  inventory : Rect.t;
-}
+let inventory_size = 10
 
-let to_color json : Graphics.color =
-  Graphics.rgb
-    (json |> member "r" |> to_int)
-    (json |> member "g" |> to_int)
-    (json |> member "b" |> to_int)
+type is_legal =
+  | Legal
+  | Illegal
 
-let to_effect json : effect =
-  { effect_dis = json |> member "effect_dis" |> to_string }
-
-let to_item_prop json : item_prop =
+let to_item_prop json : GameDataStructure.ItemTypeDict.game_value =
   {
     name = json |> member "name" |> to_string;
     description = json |> member "description" |> to_string;
-    color = json |> member "color" |> to_color;
-    size = json |> member "size" |> to_int;
-    effect = json |> member "effect" |> to_effect;
+    image =
+      json |> member "image" |> to_string |> ImageHandler.get_graphic_image;
+    effect = json |> member "effect" |> Effect.from_json;
+    dmax = json |> member "dmax" |> to_int;
   }
 
-let get_item_prop item_prop_json itype =
-  item_prop_json |> member itype |> to_item_prop
-
-let to_item item_rep_json json =
-  let itype = json |> member "type" |> to_string in
+let to_inventory json : GameDataStructure.InventoryDict.game_value =
   {
-    id = json |> member "id" |> to_string;
-    pos = json |> member "position" |> Position.from_json;
-    itype;
-    rep = get_item_prop item_rep_json itype;
+    value = json |> member "init" |> to_int;
+    max = json |> member "max" |> to_int;
+    item_type = json |> member "name" |> to_string;
   }
 
-let insert_bag acc json =
-  let name = json |> member "name" |> to_string in
-  let max = json |> member "max" |> to_int in
-  let init = json |> member "init" |> to_int in
-  GameIntDict.insert name (init, max) acc
+let inventory_height = 100
 
-let init_bag json =
-  json |> member "init item" |> to_list
-  |> List.fold_left insert_bag GameIntDict.empty
+type item = InventoryDict.game_value
+
+let init_item type_file inventory_file =
+  let add_to_type dict json =
+    GameDataStructure.ItemTypeDict.insert
+      (json |> member "name" |> to_string)
+      (to_item_prop json) dict
+  in
+  let add_to_inventory dict json =
+    GameDataStructure.InventoryDict.insert
+      (json |> member "name" |> to_string)
+      (to_inventory json) dict
+  in
+  let type_dict =
+    type_file |> member "type" |> to_list
+    |> List.fold_left add_to_type GameDataStructure.ItemTypeDict.empty
+  in
+  let inv_dict =
+    inventory_file |> member "init item" |> to_list
+    |> List.fold_left add_to_inventory GameDataStructure.InventoryDict.empty
+  in
+  let size = InventoryDict.get_size inv_dict in
+  if size > inventory_size then
+    raise (SizeExceed "too many starting item in json file")
+  else { item_type = type_dict; inventory = inv_dict }
+
+(* let init_bag json = json |> member "init item" |> to_list |> List.fold_left
+   insert_bag GameIntDict.empty *)
 
 (* from json for now, contain id, position, item_type *)
 
-let init_item_list item_file item_rep_file bag_file =
-  {
-    items =
-      item_file |> member "items" |> to_list
-      |> List.map (to_item item_rep_file);
-    aquired = init_bag bag_file;
-    inventory = Rect.make_rect 88 288 512 0;
-  }
+(* let init_item_list item_file item_rep_file bag_file = { items = item_file
+   |> member "items" |> to_list |> List.map (to_item item_rep_file); aquired =
+   init_bag bag_file; inventory = Rect.make_rect 88 288 512 0; } *)
 
-let draw (item : t) : unit =
-  Graphics.set_color item.rep.color;
-  Graphics.fill_circle item.pos.x item.pos.y item.rep.size
+let draw (item : t) : unit = failwith "unimplemented"
 
-let draw_inventory item =
-  Graphics.set_color black;
-  Rect.draw inventory_area
+let draw_inventory item = failwith "unimplement"
 
-let draw_all (item_lst : ilist) =
-  List.iter draw item_lst.items;
-  draw_inventory item_lst
+let draw_all (item_state : t) = failwith "unimplement"
 
-let acquired item = failwith "unimplemented"
+let get_type_info state name : ItemTypeDict.game_value =
+  match ItemTypeDict.get_value_of name state.item_type with
+  | Some { name; description; image; effect; dmax } ->
+      { name; description; image; effect; dmax }
+  | None -> raise TypeNotFound
+
+let get_item_image state name =
+  let info = get_type_info state name in
+  info.image
+
+let acquire item_state str_type =
+  let update state name (olv : InventoryDict.game_value option) :
+      InventoryDict.game_value option =
+    match olv with
+    | Some { value; max; item_type } ->
+        let nv = value + 1 in
+        if nv <= max then Some { value = nv; max; item_type }
+        else Some { value; max; item_type }
+    | None ->
+        let size = InventoryDict.get_size state.inventory in
+        if size < inventory_size then
+          let info = get_type_info state name in
+          Some { value = 1; max = info.dmax; item_type = info.name }
+        else None
+  in
+  try
+    let update_dict =
+      InventoryDict.update str_type
+        (update item_state str_type)
+        item_state.inventory
+    in
+    item_state.inventory <- update_dict;
+    Legal
+  with TypeNotFound -> Illegal
 
 (* item name *)
+
 let name item = failwith "unimplemented"
-
-let get_item ilist (c : Character.t) : ilist =
-  let rec find_item lst acc rem_acc (cpos : Position.t) (csize : int) inven =
-    match lst with
-    | [] -> { items = acc; aquired = rem_acc; inventory = inven }
-    | h :: t ->
-        let dist = Position.distance h.pos cpos in
-        if dist < h.rep.size + csize then
-          find_item t acc
-            (GameIntDict.insert_add h.rep.name 1 rem_acc)
-            cpos csize inven
-        else find_item t (h :: acc) rem_acc cpos csize inven
-  in
-  find_item ilist.items [] ilist.aquired c.pos (Character.get_size c)
-    ilist.inventory
-
-let draw_bag bag =
-  Graphics.set_color white;
-  let rec draw_lst (pos : Position.t) line_height lst =
-    match lst with
-    | [] -> ()
-    | h :: t ->
-        Graphics.moveto pos.x pos.y;
-        Graphics.draw_string h;
-        pos.y <- pos.y - line_height;
-        draw_lst pos line_height t
-  in
-  draw_lst { x = 810; y = 200 } 20
-    (* ("bag" :: GameIntDict.format_string_lst bag.aquired) *)
-    [ "bag"; " in the work" ]
 
 let description item = failwith "unimplemented"
 
 (* effect *)
+
 let item_effect item = failwith "unimplemented"
 
 let item_position item = failwith "unimplemented"

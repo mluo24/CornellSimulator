@@ -1,11 +1,13 @@
 open Position
 open Graphics
 open ImageHandler
+open World
 
 type t = {
   name : string;
-  mutable tile_mem : World.tile;
+  mutable tile_mem : Graphics.image;
   mutable rep : Graphics.image;
+  png : string;
   pos : Position.t;
   speed : int;
 }
@@ -16,9 +18,7 @@ let draw t = Graphics.draw_image t.rep t.pos.x t.pos.y
 
 let get_user_name t = t.name
 
-let get_size t = 16
-
-let player_sprites = ImageHandler.load_tileset "assets/spr_player.png" 16
+let get_size t = 32
 
 let player_image_size_width =
   fst (Images.size (ImageHandler.get_entire_image "assets/spr_player.png"))
@@ -26,76 +26,74 @@ let player_image_size_width =
 
 let world = World.map_from_json_file "realmap.json"
 
-let get_person_image person =
+let get_person_pose x y w h png =
+  ImageHandler.get_tileset_part x y w h (ImageHandler.get_entire_image png)
+
+let get_person_image png person =
   match person with
-  | Still ->
-      ImageHandler.get_tile_image_x_y player_sprites player_image_size_width 1
-        1
-  | Up ->
-      ImageHandler.get_tile_image_x_y player_sprites player_image_size_width 2
-        4
-  | Left ->
-      ImageHandler.get_tile_image_x_y player_sprites player_image_size_width 2
-        2
-  | Right ->
-      ImageHandler.get_tile_image_x_y player_sprites player_image_size_width 2
-        3
-  | Down ->
-      ImageHandler.get_tile_image_x_y player_sprites player_image_size_width 2
-        1
+  | Still -> get_person_pose 36 36 32 32 png
+  | Up -> get_person_pose 96 128 32 32 png
+  | Left -> get_person_pose 96 64 32 32 png
+  | Right -> get_person_pose 96 96 32 32 png
+  | Down -> get_person_pose 96 32 32 32 png
 
-(* | Still -> ImageHandler.get_tileset_part 16 16 15 17 player_sprites | Up ->
-   ImageHandler.get_tileset_part 50 64 15 16 player_sprites | Left ->
-   ImageHandler.get_tileset_part 50 32 15 17 player_sprites | Right ->
-   ImageHandler.get_tileset_part 50 48 15 17 player_sprites | Down ->
-   ImageHandler.get_tileset_part 48 16 15 17 player_sprites *)
-
-let init_character () =
+let init_character name png =
   {
-    name = "bear";
-    rep = get_person_image Still;
+    name;
+    rep = get_person_image png Still;
     pos = { x = 160; y = 256 };
-    speed = 16;
-    tile_mem = World.get_tile 9 10 world;
+    speed = 32;
+    png;
+    tile_mem =
+      Graphics.get_image 100 100 32 32
+      (* TO DOOOOO: this needs to be fixed after tiles are adjusted 32 by 32*);
   }
 
 let move_up t =
   if t.pos.y < World.y_dim - 16 then begin
-    World.draw_tile t.pos.x t.pos.y t.tile_mem world;
+    Graphics.draw_image t.tile_mem t.pos.x t.pos.y;
+    (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
     t.pos.y <- t.pos.y + t.speed;
-    t.tile_mem <-
-      World.get_tile ((World.y_dim - t.pos.y - 16) / 16) (t.pos.x / 16) world;
-    t.rep <- get_person_image Up;
+    t.tile_mem <- Graphics.get_image t.pos.x t.pos.y 32 32;
+    (* t.tile_mem <- World.get_tile ((World.y_dim - t.pos.y - 16) / 16)
+       (t.pos.x / 16) world; *)
+    t.rep <- get_person_image t.png Up;
     draw t
   end
 
 let move_right t =
   if t.pos.x < World.x_dim - 16 then begin
-    World.draw_tile t.pos.x t.pos.y t.tile_mem world;
+    Graphics.draw_image t.tile_mem t.pos.x t.pos.y;
+    (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
     t.pos.x <- t.pos.x + t.speed;
-    t.tile_mem <-
-      World.get_tile ((World.y_dim - t.pos.y - 16) / 16) (t.pos.x / 16) world;
-    t.rep <- get_person_image Right;
+    t.tile_mem <- Graphics.get_image t.pos.x t.pos.y 32 32;
+    (* t.tile_mem <- World.get_tile ((World.y_dim - t.pos.y - 16) / 16)
+       (t.pos.x / 16) world; *)
+    t.rep <- get_person_image t.png Right;
     draw t
   end
 
 let move_down t =
   if t.pos.y > 0 then begin
-    World.draw_tile t.pos.x t.pos.y t.tile_mem world;
+    Graphics.draw_image t.tile_mem t.pos.x t.pos.y;
+    (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
     t.pos.y <- t.pos.y - t.speed;
-    t.tile_mem <-
-      World.get_tile ((World.y_dim - t.pos.y - 16) / 16) (t.pos.x / 16) world;
-    t.rep <- get_person_image Down;
+    t.tile_mem <- Graphics.get_image t.pos.x t.pos.y 32 32;
+    (* t.tile_mem <- World.get_tile ((World.y_dim - t.pos.y - 16) / 16)
+       (t.pos.x / 16) world; *)
+    t.rep <- get_person_image t.png Down;
     draw t
   end
 
 let move_left t =
   if t.pos.x > 0 then begin
-    World.draw_tile t.pos.x t.pos.y t.tile_mem world;
+    Graphics.draw_image t.tile_mem t.pos.x t.pos.y;
+    (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
     t.pos.x <- t.pos.x - t.speed;
-    t.tile_mem <-
-      World.get_tile ((World.y_dim - t.pos.y - 16) / 16) (t.pos.x / 16) world;
-    t.rep <- get_person_image Left;
+    t.tile_mem <- Graphics.get_image t.pos.x t.pos.y 32 32;
+    (* t.tile_mem <- World.get_tile ((World.y_dim - t.pos.y - 16) / 16)
+       (t.pos.x / 16) world; *)
+    t.rep <- get_person_image t.png Left;
     draw t
   end
 

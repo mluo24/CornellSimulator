@@ -1,0 +1,15 @@
+{"type":[
+  {"name":"Homework",
+  "description":"Todo Homework",
+  "image":"assets/items/book.png",
+  "effect": {"description": "decrease health", "effects":
+    [{"gauge":"health", "value":-10}]},
+  "dmax": 10
+ },
+ {"name":"Healthy Food",
+  "description":"Food is important for body function",
+  "image":"assets/items/cup.png",
+  "effect": {"description": "increase health", "effects":[{"gauge":"health", "value":10}]},
+  "dmax": 1
+ }
+]}

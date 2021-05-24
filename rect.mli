@@ -18,6 +18,10 @@ val from_json : Yojson.Basic.t -> t
 
 val in_rect : Position.t -> t -> bool
 
+(* make rect by specifying 4 side position *)
 val make_rect : int -> int -> int -> int -> t
+
+(* make rect by position width and height *)
+val make_rect_wh : Position.t -> int -> int -> t
 
 val will_enter_rect : Position.t -> t -> char -> int -> bool
