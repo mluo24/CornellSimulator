@@ -63,7 +63,7 @@ let engineer =
   {
     (* button = { x_min = 0; x_max = 1000; y_min = 0; y_max = 650 }; *)
     (* button = { x_min = 630; x_max = 750; y_min = 380; y_max = 444 }; *)
-    button = { x_min = 425; x_max = 564; y_min = 380; y_max = 444 };
+    button = { x_min = 425; x_max = 564; y_min = 280; y_max = 444 };
     png_file = "assets/character/engineer.png";
     name = "engineer";
   }
@@ -71,14 +71,14 @@ let engineer =
 let premed =
   {
     (* button = { x_min = 425; x_max = 564; y_min = 380; y_max = 444 }; *)
-    button = { x_min = 630; x_max = 750; y_min = 380; y_max = 444 };
+    button = { x_min = 630; x_max = 750; y_min = 280; y_max = 444 };
     png_file = "assets/character/premed.png";
     name = "premed";
   }
 
 let undecided =
   {
-    button = { x_min = 213; x_max = 356; y_min = 380; y_max = 444 };
+    button = { x_min = 213; x_max = 356; y_min = 280; y_max = 444 };
     png_file = "assets/character/freshman.png";
     name = "undecided";
   }
@@ -96,10 +96,11 @@ let in_game () =
     while true do
       draw ();
       let s = Graphics.wait_next_event [ Graphics.Button_down ] in
-      if s.Graphics.button then Graphics.moveto 500 500;
-      Graphics.draw_string "HELLLOOOOO";
+      if s.Graphics.button then Graphics.moveto 500 200;
       let x = fst (Graphics.mouse_pos ()) in
       let y = snd (Graphics.mouse_pos ()) in
+      Graphics.draw_string
+        ("x :" ^ string_of_int x ^ ", y: " ^ string_of_int y);
       match (x, y) with
       | x, y when match_student engineer x y ->
           State.in_game engineer.name engineer.png_file

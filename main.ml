@@ -16,7 +16,6 @@ let main () =
   try
     Graphics.open_graph "";
     set_window_title "Cornell Simulator";
-    IntroState.in_game ();
     resize_window (World.x_dim + 200) (World.y_dim + Item.inventory_height);
     IntroState.in_game ();
     (* let imgs = ImageHandler.load_tileset "assets/Buildings.png" 16 in
