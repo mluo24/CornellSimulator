@@ -118,7 +118,7 @@ let tile_type_of_tile tile =
   | Building2_Left | Building2_Mid | Building2_Right | Roof | Roof_BotLeft
   | Roof_BotRight | Roof_LeftEdge | Roof_BotEdge | Roof_RightEdge ->
       SolidTile tile
-  | DoorTop | DoorBot -> DoorTile ("north", { x = 0; y = 0 }, tile)
+  | DoorTop | DoorBot -> DoorTile ("classroom", { x = 0; y = 0 }, tile)
   | Food x | Water x | RedBook x | YellowBook x | GreenBook x | PurpleBook x
     ->
       ItemTile (x, tile)
