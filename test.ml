@@ -45,10 +45,11 @@ open Graphics
    the game works correctly from a visual and player standpoint, and the basic
    tests that in this file all pass, this system is very likely to be correct. *)
 
-(* AREA MAP TESTS *)
+let area_test_int_to_tile name i expected_output = name >:: fun _ ->
+  assert_equal expected_output (int_to_tile i)
 
-let area_test_int_to_tile name i expected_output =
-  name >:: fun _ -> assert_equal expected_output (int_to_tile i)
+let area_test_get_tile_arr name map expected_output = name >:: fun _ ->
+  assert_equal expected_output (get_tile_arr map)
 
 let area_test_get_layer name map layer expected_output =
   name >:: fun _ -> assert_equal expected_output (get_layer map layer)
@@ -56,20 +57,16 @@ let area_test_get_layer name map layer expected_output =
 let area_test_get_tile name row col layer map expected_output =
   name >:: fun _ -> assert_equal expected_output (get_tile row col layer map)
 
-let area_test_get_rows name map expected_output =
-  name >:: fun _ ->
-  assert_equal expected_output (get_rows map) ~printer:string_of_int
-
-let area_test_get_cols name map expected_output =
-  name >:: fun _ ->
+let area_test_get_cols name map expected_output = name >:: fun _ ->
   assert_equal expected_output (get_cols map) ~printer:string_of_int
 
-let area_test_get_tile_size name map expected_output =
-  name >:: fun _ ->
+let area_test_get_tile_size name map expected_output = name >:: fun _ ->
   assert_equal expected_output (get_tile_size map) ~printer:string_of_int
 
-let area_test_get_assets name map expected_output =
-  name >:: fun _ -> assert_equal expected_output (get_assets map)
+let area_test_get_assets name map expected_output = name >:: fun _ ->
+  assert_equal expected_output (get_assets map)
+
+let blank = map_from_json_file "blankmap.json"
 
 let blank = map_from_json_file "testworlds/blankmap.json"
 
@@ -114,8 +111,6 @@ let area_tests =
     area_test_get_tile_size "map_size_32 has 32x32 tile size" map_size_32 32;
   ]
 
-(* WORLD TESTS *)
-
 let testworld = load_world "testworlds"
 
 let world_test_get_map name map_name world expected_output =
@@ -131,39 +126,76 @@ let world_tests =
   ]
 
 (* CHARACTER TESTS *)
+let () = Graphics.open_graph ""
 
-(* let () = Graphics.open_graph "" *)
+let create_person position =
+  {
+    name = "person";
+    layer1_tile_mem = Blank;
+    layer2_tile_mem = Blank;
+    rep = Character.get_person_image "assets/character/engineer.png" Still;
+    png = "assets/character/engineer.png";
+    pos = { x = position.x; y = position.y };
+    speed = 32;
+  }
 
-(* let create_person position = { name = "person"; rep =
-   Character.get_person_image Still; pos = { x = position.x; y = position.y };
-   speed = 16; tile_mem = World.get_tile 9 10 world; }
+let person_1 () = create_person { x = 500; y = 200 }
 
-   let person_1 () = create_person { x = 16; y = 16 }
+let person_2 () =
+  create_person { x = Position.x_dim - 32; y = Position.y_dim - 32 }
 
-   let person_2 () = create_person { x = World.x_dim - 16; y = World.y_dim -
-   16 }
+let person_3 () = create_person { x = 0; y = 0 }
 
-   let person_3 () = create_person { x = 0; y = 0 }
+let game_state =
+  State.init_game "undecided" "assets/character/engineer.png" 1
+    "missions/freshman_undecided.json" 0
 
-   let move_test_pos name c expected_output p = let person = p () in
-   Character.move person c; name >:: fun _ -> assert_equal expected_output
-   person.pos *)
+let move_test_pos name k expected_output p =
+  let person = p () in
+  let world = World.load_world "worldmaps" in
+  Character.move person k (World.get_start_map world) (get_assets world);
+  name >:: fun _ ->
+  assert_equal expected_output.x person.pos.x ~printer:string_of_int;
+  assert_equal expected_output.y person.pos.y ~printer:string_of_int
 
 let character_tests =
-  [ (* tests for regular movements *)
-    (* move_test_pos "move person_1 left with key a" 'a' { x = 0; y = 16 }
-       person_1; move_test_pos "move person_1 right one with key d" 'd' { x =
-       32; y = 16 } person_1; move_test_pos "move person_1 down one with key
-       s" 's' { x = 16; y = 0 } person_1; move_test_pos "move person_1 up one
-       with key w" 'w' { x = 16; y = 32 } person_1; move_test_pos "person_1
-       will not move with key z" 'z' { x = 16; y = 16 } person_1; (* tests for
-       edge cases *) move_test_pos "person_2 can't move any further right with
-       key d" 'd' { x = World.x_dim - 16; y = World.y_dim - 16 } person_2;
-       move_test_pos "person_2 can't move any further up with key w" 'w' { x =
-       World.x_dim - 16; y = World.y_dim - 16 } person_2; move_test_pos
-       "person_3 can't move any further left with key a" 'a' { x = 0; y = 0 }
-       person_3; move_test_pos "person_3 can't move any further down with key
-       s" 's' { x = 0; y = 0 } person_3; *) ]
+  [
+   move_test_pos "move person_1 left with key a" 'a'
+      { x = (person_1 ()).pos.x - 32; y = (person_1 ()).pos.y }
+      person_1;
+    move_test_pos "move person_1 right one with key d" 'd'
+      { x = (person_1 ()).pos.x + 32; y = (person_1 ()).pos.y }
+      person_1;
+    move_test_pos "move person_1 down one with key s" 's'
+      { x = (person_1 ()).pos.x; y = (person_1 ()).pos.y - 32 }
+      person_1;
+    move_test_pos "move person_1 up one with key w" 'w'
+      { x = (person_1 ()).pos.x; y = (person_1 ()).pos.y + 32 }
+      person_1;
+    move_test_pos "person_1 will not move with key z" 'z'
+      { x = (person_1 ()).pos.x; y = (person_1 ()).pos.y }
+      person_1;
+    move_test_pos "person_2 can't move any further right with key d" 'd'
+      { x = Position.x_dim - 32; y = Position.y_dim - 32 }
+      person_2;
+    move_test_pos "person_2 can't move any further up with key w" 'w'
+      { x = Position.x_dim - 32; y = Position.y_dim - 32 }
+      person_2;
+    move_test_pos "person_2 can move down" 's'
+      { x = Position.x_dim - 32; y = Position.y_dim - 64 }
+      person_2;
+    move_test_pos "person_2 can move left" 'a'
+      { x = Position.x_dim - 64; y = Position.y_dim - 32 }
+      person_2;
+    move_test_pos "person_3 can't move any further left with key a" 'a'
+      { x = 0; y = 0 } person_3;
+    move_test_pos "person_3 can't move any further down with key s" 's'
+      { x = 0; y = 0 } person_3;
+    move_test_pos "person_3 can move right with key d" 'd' { x = 32; y = 0 }
+      person_3;
+    move_test_pos "person_3 can move up with key w" 'w' { x = 0; y = 32 }
+      person_3;
+  ]
 
 let suite =
   "test suite for Cornell Simulator"

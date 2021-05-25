@@ -21,7 +21,7 @@ type t = {
   mutable layer2_tile_mem : tile;
   mutable rep : Graphics.image;
   png : string;
-  pos : Position.t;
+  mutable pos : Position.t;
   speed : int;
 }
 
@@ -32,8 +32,12 @@ type person = Position.direction
 (** [draw t] is draws the character [t]*)
 include Drawable with type t := t
 
-(** [get_user_name t] is the name of the character [t]*)
-val get_user_name : t -> string
+(** [image_width png] returns the integer width of the png image*)
+val image_width : string -> int
+
+(** [get_person_pose x y png] find the pose image representation of the
+    character*)
+val get_person_pose : int -> int -> string -> Graphics.image
 
 (** [get_size t] is the size of character [t] in graphical interface unit*)
 val get_size : t -> int
@@ -42,23 +46,41 @@ val get_size : t -> int
     character in the pose of the direction of the character's movement*)
 val get_person_image : string -> Position.direction -> Graphics.image
 
-(** [init_character name png map] initializes the character [t]*)
+(** [y_offset row] makes calculation adjustments to the tilesize and different
+    coordinate systems*)
+val y_offset : int -> int
+
+(** [get_tile_from_coords x y layer map] finds the tile at the coordinates of
+    the current map*)
+val get_tile_from_coords : int -> int -> int -> AreaMap.t -> AreaMap.tile
+
+(** [init_character] initializes the character [t]*)
 val init_character : string -> string -> AreaMap.t -> t
 
+(** [draw_move] implements the drawing as well as the [t] field values
+    updates, generalizing for movements in any direction*)
+val draw_move :
+  t ->
+  Position.t ->
+  AreaMap.t ->
+  Images.t array array ->
+  Position.direction ->
+  unit
+
 (** [move_up t map assets] implements the animation of the character's up
-    movement and updates the character position. *)
+    movement.*)
 val move_up : t -> AreaMap.t -> Images.t array array -> unit
 
 (** [move_right t map assets] implements the animation of the character's
-    right movement and updates the character position. *)
+    right movement.*)
 val move_right : t -> AreaMap.t -> Images.t array array -> unit
 
-(** [move_down t map assets] implements the animation of the character's up
-    movement and updates the character position. *)
+(** [move_down t map assets] implements the animation of the character's right
+    movement.*)
 val move_down : t -> AreaMap.t -> Images.t array array -> unit
 
-(** [move_left t map assets] implements the animation of the character's left
-    movement and updates the character position. *)
+(** [move_left t map assets] implements the animation of the character's right
+    movement.*)
 val move_left : t -> AreaMap.t -> Images.t array array -> unit
 
 (** [refresh_character t map assets] reloads the current tile layers the
