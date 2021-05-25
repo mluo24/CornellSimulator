@@ -70,130 +70,146 @@ let pp_list pp_elt lst =
    ["foo"]); ] *)
 
 (* HELPER FUNCTIONS/VALUES FOR MAKING TESTS *)
+(* let string_of_array pp_elt arr = let lst = Array.to_list arr in pp_list
+   pp_elt lst
 
-let string_of_array pp_elt arr =
-  let lst = Array.to_list arr in
-  pp_list pp_elt lst
+   (* AREA MAP TESTS *)
 
-(* AREA MAP TESTS *)
+   let area_test_int_to_tile name i expected_output = name >:: fun _ ->
+   assert_equal expected_output (int_to_tile i)
 
-let area_test_int_to_tile name i expected_output =
-  name >:: fun _ -> assert_equal expected_output (int_to_tile i)
+   let area_test_get_tile_arr name map expected_output = name >:: fun _ ->
+   assert_equal expected_output (get_tile_arr map)
 
-let area_test_get_tile_arr name map expected_output =
-  name >:: fun _ -> assert_equal expected_output (get_tile_arr map)
+   (* ~printer:(string_of_array string_of_tile) *)
 
-(* ~printer:(string_of_array string_of_tile) *)
+   let area_test_get_tile name row col map expected_output = name >:: fun _ ->
+   assert_equal expected_output (get_tile row col map)
 
-let area_test_get_tile name row col map expected_output =
-  name >:: fun _ -> assert_equal expected_output (get_tile row col map)
+   let area_test_get_rows name map expected_output = name >:: fun _ ->
+   assert_equal expected_output (get_rows map) ~printer:string_of_int
 
-let area_test_get_rows name map expected_output =
+   let area_test_get_cols name map expected_output = name >:: fun _ ->
+   assert_equal expected_output (get_cols map) ~printer:string_of_int
+
+   let area_test_get_tile_size name map expected_output = name >:: fun _ ->
+   assert_equal expected_output (get_tile_size map) ~printer:string_of_int
+
+   let area_test_get_assets name map expected_output = name >:: fun _ ->
+   assert_equal expected_output (get_assets map)
+
+   let blank = map_from_json_file "blankmap.json"
+
+   let map1 = map_from_json_file "testmap.json"
+
+   let map2 = map_from_json_file "realmap.json"
+
+   let map_size_32 = map_from_json_file "worldmaps/32.json"
+
+   let terrain_image = Png.load_as_rgb24 "assets/Terrain.png" []
+
+   let street_image = Png.load_as_rgb24 "assets/Street.png" []
+
+   let building_image = Png.load_as_rgb24 "assets/Buildings.png" []
+
+   let assets = [| terrain_image; street_image; building_image |]
+
+   let area_tests = [ area_test_int_to_tile "0 gives blank" 0 Blank;
+   area_test_int_to_tile "1 gives grass" 1 Grass; area_test_int_to_tile "27
+   gives top of door" 27 DoorTop; area_test_int_to_tile "28 gives bottom of
+   door" 28 DoorBot; area_test_get_tile_arr "empty file gives empty array"
+   blank (Array.make 0 Blank); area_test_get_tile_arr "testmap.json" map1
+   (Array.map int_to_tile [| 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 3; 1; 3;
+   3; 3; 1; 1; 1; 3; 3; 3; 3; 3; 3; 3; 3; 1; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 1;
+   1; 1; 1; 1; 1; 2; 1; 1; 1; 1; 1; 1; 1; 1; 1; 2; 1; 1; 1; 1; 1; 1; 1; 1; 1;
+   2; 1; 1; 1; |]); area_test_get_tile "empty map will give blank tile" 0 0
+   blank Blank; area_test_get_tile "map1 (0, 0) gives " 0 0 map1 Grass;
+   area_test_get_tile "map1 (2, 3) gives " 2 3 map1 TreeTop;
+   area_test_get_tile "map2 (0, 0) gives " 0 0 map2 Grass; area_test_get_tile
+   "map2 (19, 6) gives " 19 6 map2 Sidewalk_Curved_TopLeft; area_test_get_rows
+   "empty map will give 0 rows" blank 0; area_test_get_rows "map1 will give 7
+   rows" map1 7; area_test_get_rows "map2 will give 35 rows" map2 35;
+   area_test_get_cols "empty map will give 10 cols" blank 0;
+   area_test_get_cols "map1 will give 0 cols" map1 10; area_test_get_cols
+   "map2 will give 0 cols" map2 50; area_test_get_tile_size "blank has 1x1
+   tile size" blank 1; area_test_get_tile_size "map2 has 16x16 tile size" map2
+   16; area_test_get_tile_size "map_size_32 has 32x32 tile size" map_size_32
+   32; (* world_test_get_assets "map should give three assets defined" map2
+   assets; *) ]
+
+   (* WORLD TESTS *)
+
+   let world_tests = [] *)
+
+let () = Graphics.open_graph ""
+
+let create_person position =
+  {
+    name = "person";
+    layer1_tile_mem = Blank;
+    layer2_tile_mem = Blank;
+    rep = Character.get_person_image "assets/character/engineer.png" Still;
+    png = "assets/character/engineer.png";
+    pos = { x = position.x; y = position.y };
+    speed = 32;
+  }
+
+let person_1 () = create_person { x = 500; y = 200 }
+
+let person_2 () =
+  create_person { x = Position.x_dim - 32; y = Position.y_dim - 32 }
+
+let person_3 () = create_person { x = 0; y = 0 }
+
+let game_state =
+  State.init_game "undecided" "assets/character/engineer.png" 1
+    "missions/freshman_undecided.json" 0
+
+let move_test_pos name k expected_output p =
+  let person = p () in
+  let world = World.load_world "worldmaps" in
+  Character.move person k (World.get_start_map world) (get_assets world);
   name >:: fun _ ->
-  assert_equal expected_output (get_rows map) ~printer:string_of_int
-
-let area_test_get_cols name map expected_output =
-  name >:: fun _ ->
-  assert_equal expected_output (get_cols map) ~printer:string_of_int
-
-let area_test_get_tile_size name map expected_output =
-  name >:: fun _ ->
-  assert_equal expected_output (get_tile_size map) ~printer:string_of_int
-
-let area_test_get_assets name map expected_output =
-  name >:: fun _ -> assert_equal expected_output (get_assets map)
-
-let blank = map_from_json_file "blankmap.json"
-
-let map1 = map_from_json_file "testmap.json"
-
-let map2 = map_from_json_file "realmap.json"
-
-let map_size_32 = map_from_json_file "worldmaps/32.json"
-
-let terrain_image = Png.load_as_rgb24 "assets/Terrain.png" []
-
-let street_image = Png.load_as_rgb24 "assets/Street.png" []
-
-let building_image = Png.load_as_rgb24 "assets/Buildings.png" []
-
-let assets = [| terrain_image; street_image; building_image |]
-
-let area_tests =
-  [
-    area_test_int_to_tile "0 gives blank" 0 Blank;
-    area_test_int_to_tile "1 gives grass" 1 Grass;
-    area_test_int_to_tile "27 gives top of door" 27 DoorTop;
-    area_test_int_to_tile "28 gives bottom of door" 28 DoorBot;
-    area_test_get_tile_arr "empty file gives empty array" blank
-      (Array.make 0 Blank);
-    area_test_get_tile_arr "testmap.json" map1
-      (Array.map int_to_tile
-         [|
-           1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 3; 1; 3; 3; 3; 1; 1; 1; 3;
-           3; 3; 3; 3; 3; 3; 3; 1; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 1; 1; 1; 1;
-           1; 1; 2; 1; 1; 1; 1; 1; 1; 1; 1; 1; 2; 1; 1; 1; 1; 1; 1; 1; 1; 1;
-           2; 1; 1; 1;
-         |]);
-    area_test_get_tile "empty map will give blank tile" 0 0 blank Blank;
-    area_test_get_tile "map1 (0, 0) gives " 0 0 map1 Grass;
-    area_test_get_tile "map1 (2, 3) gives " 2 3 map1 TreeTop;
-    area_test_get_tile "map2 (0, 0) gives " 0 0 map2 Grass;
-    area_test_get_tile "map2 (19, 6) gives " 19 6 map2 Sidewalk_Curved_TopLeft;
-    area_test_get_rows "empty map will give 0 rows" blank 0;
-    area_test_get_rows "map1 will give 7 rows" map1 7;
-    area_test_get_rows "map2 will give 35 rows" map2 35;
-    area_test_get_cols "empty map will give 10 cols" blank 0;
-    area_test_get_cols "map1 will give 0 cols" map1 10;
-    area_test_get_cols "map2 will give 0 cols" map2 50;
-    area_test_get_tile_size "blank has 1x1 tile size" blank 1;
-    area_test_get_tile_size "map2 has 16x16 tile size" map2 16;
-    area_test_get_tile_size "map_size_32 has 32x32 tile size" map_size_32 32;
-    (* world_test_get_assets "map should give three assets defined" map2
-       assets; *)
-  ]
-
-(* WORLD TESTS *)
-
-let world_tests = []
-
-(* let () = Graphics.open_graph "" *)
-
-(* let create_person position = { name = "person"; rep =
-   Character.get_person_image Still; pos = { x = position.x; y = position.y };
-   speed = 16; tile_mem = World.get_tile 9 10 world; }
-
-   let person_1 () = create_person { x = 16; y = 16 }
-
-   let person_2 () = create_person { x = World.x_dim - 16; y = World.y_dim -
-   16 }
-
-   let person_3 () = create_person { x = 0; y = 0 }
-
-   let move_test_pos name c expected_output p = let person = p () in
-   Character.move person c; name >:: fun _ -> assert_equal expected_output
-   person.pos *)
+  assert_equal expected_output.x person.pos.x ~printer:string_of_int;
+  assert_equal expected_output.y person.pos.y ~printer:string_of_int
 
 (* CHARACTER TESTS *)
 
 let character_tests =
-  [ (* tests for regular movements *)
-    (* move_test_pos "move person_1 left with key a" 'a' { x = 0; y = 16 }
-       person_1; move_test_pos "move person_1 right one with key d" 'd' { x =
-       32; y = 16 } person_1; move_test_pos "move person_1 down one with key
-       s" 's' { x = 16; y = 0 } person_1; move_test_pos "move person_1 up one
-       with key w" 'w' { x = 16; y = 32 } person_1; move_test_pos "person_1
-       will not move with key z" 'z' { x = 16; y = 16 } person_1; (* tests for
-       edge cases *) move_test_pos "person_2 can't move any further right with
-       key d" 'd' { x = World.x_dim - 16; y = World.y_dim - 16 } person_2;
-       move_test_pos "person_2 can't move any further up with key w" 'w' { x =
-       World.x_dim - 16; y = World.y_dim - 16 } person_2; move_test_pos
-       "person_3 can't move any further left with key a" 'a' { x = 0; y = 0 }
-       person_3; move_test_pos "person_3 can't move any further down with key
-       s" 's' { x = 0; y = 0 } person_3; *) ]
+  [
+    move_test_pos "move person_1 left with key a" 'a'
+      { x = (person_1 ()).pos.x - 32; y = (person_1 ()).pos.y }
+      person_1;
+    move_test_pos "move person_1 right one with key d" 'd'
+      { x = 384; y = 416 } person_1;
+    move_test_pos "move person_1 down one with key s" 's' { x = 352; y = 384 }
+      person_1;
+    move_test_pos "move person_1 up one with key w" 'w' { x = 352; y = 448 }
+      person_1;
+    move_test_pos "person_1 will not move with key z" 'z' { x = 352; y = 416 }
+      person_1;
+    move_test_pos "person_2 can't move any further right with key d" 'd'
+      { x = Position.x_dim - 32; y = Position.y_dim - 32 }
+      person_2;
+    move_test_pos "person_2 can't move any further up with key w" 'w'
+      { x = Position.x_dim - 32; y = Position.y_dim - 32 }
+      person_2;
+    move_test_pos "person_2 can move down" 's'
+      { x = Position.x_dim - 32; y = Position.y_dim - 64 }
+      person_2;
+    move_test_pos "person_2 can move left" 'a'
+      { x = Position.x_dim - 64; y = Position.y_dim - 32 }
+      person_2;
+    move_test_pos "person_3 can't move any further left with key a" 'a'
+      { x = 0; y = 0 } person_3;
+    move_test_pos "person_3 can't move any further down with key s" 's'
+      { x = 0; y = 0 } person_3;
+    move_test_pos "person_3 can move right with key d" 'd' { x = 32; y = 0 }
+      person_3;
+    move_test_pos "person_3 can move up with key w" 'w' { x = 0; y = 32 }
+      person_3;
+  ]
 
-let suite =
-  "test suite for m1"
-  >::: List.flatten [ area_tests; character_tests; world_tests ]
+let suite = "test suite for m1" >::: List.flatten [ character_tests ]
 
 let _ = run_test_tt_main suite
