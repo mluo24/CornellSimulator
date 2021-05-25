@@ -129,11 +129,17 @@ let area_tests =
     area_test_get_tile_size "blank has 1x1 tile size" blank 1;
     area_test_get_tile_size "map2 has 16x16 tile size" map2 16;
     area_test_get_tile_size "map_size_32 has 32x32 tile size" map_size_32 32;
-    area_test_is_solid_tile "area here is solid tile" map_size_32 160 256 true;
-    area_test_is_solid_tile "area here is not solid tile" map_size_32 0 0
+    area_test_is_solid_tile "area here is solid tile in map32x32" map_size_32
+      160 256 true;
+    area_test_is_solid_tile "area here is not solid tile map32x32" map_size_32
+      0 0 false;
+    area_test_is_solid_tile "area here is not solid tile testmap" map1 0 0
       false;
-    area_test_is_door_tile "area here is door tile" map_size_32 224 224 true;
-    area_test_is_door_tile "area here is not door tile" map_size_32 0 0 false;
+    area_test_is_door_tile "area here is door tile map32x32" map_size_32 224
+      224 true;
+    area_test_is_door_tile "area here is not door tile map32x32" map_size_32 0
+      0 false;
+    area_test_is_door_tile "area here is not door tile testmap" map1 0 0 false;
   ]
 
 let testworld = load_world "testworlds"
@@ -241,15 +247,10 @@ let item_iventory_type_tests =
     test_equal_item "init with correct number of item in type"
       (ItemTypeDict.get_size item_t.item_type)
       4;
-    test_equal_item "init with correct number of initail item in inventory"
-      (InventoryDict.get_size item_t.inventory)
-      2;
-    test_equal_item "using up item return string option"
-      (Item.use_item item_t) (Some "red_book");
     test_equal_item "move the selecting tool"
-      (Item.item_command item_t 'l' blank 0 0
-         (tile_type_of_tile (int_to_tile 0));
-       item_t.selected)
+      ( Item.item_command item_t 'l' blank 0 0
+          (tile_type_of_tile (int_to_tile 0));
+        item_t.selected )
       1;
   ]
 

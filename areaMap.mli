@@ -1,3 +1,5 @@
+(** Module meant for parsing number arrays into interactable tilemaps. *)
+
 (** The abstract type representing the game map. *)
 type t
 

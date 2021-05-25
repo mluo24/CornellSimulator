@@ -1,4 +1,4 @@
-(** The type of values representing character. *)
+(** A module for handling the logic of the movable character in game. *)
 
 open Graphics
 open Drawable

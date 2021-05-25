@@ -9,4 +9,4 @@ To install:
 make build 
 make play
 
-you can control movements with `w` `a` `s` `d`
+Check the README.md to see how to play the game.
