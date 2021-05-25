@@ -132,7 +132,7 @@ let character_action game_state s =
     change_room game_state game_state.world
       (get_tile row col 1 game_state.current_area);
     refresh_character game_state.character game_state.current_area
-      (get_assets game_state.world))
+      (get_assets game_state.world) )
 
 let item_action game_state c =
   let x = game_state.character.pos.x in

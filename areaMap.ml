@@ -259,7 +259,24 @@ let get_liq_tile x y tsize assets =
   let liq = assets.(5) in
   ImageHandler.get_tile_image_x_y liq (liq_width / tsize) x y
 
-let get_image_from_tile assets tile tsize =
+let rec get_image_from_tile assets tile tsize =
+  match tile with
+  | Blank | Grass | TreeBot | TreeTop | Flower | Bush ->
+      evaluate_terrain_tiles assets tile tsize
+  | Sidewalk_Curved_BotLeft | Sidewalk_Curved_BotRight
+  | Sidewalk_Curved_TopLeft | Sidewalk_Curved_TopRight | Sidewalk_Horiz
+  | Sidewalk_Vert ->
+      evaluate_street_tiles assets tile tsize
+  | Building1_Left | Building1_Mid | Building1_Right | Building2_Left
+  | Building2_Mid | Building2_Right | Roof | Roof_BotLeft | Roof_BotRight
+  | Roof_TopLeft | Roof_TopRight | Roof_TopEdge | Roof_LeftEdge | Roof_BotEdge
+  | Roof_RightEdge | DoorTop | DoorBot ->
+      evaluate_building_tiles assets tile tsize
+  | BlueBook | Food _ | Water _ | RedBook _ | YellowBook _ | GreenBook _
+  | PurpleBook _ ->
+      evaluate_other_tiles assets tile tsize
+
+and evaluate_terrain_tiles assets tile tsize =
   match tile with
   | Blank ->
       Graphics.make_image (Array.make_matrix tsize tsize Graphics.transp)
@@ -268,12 +285,20 @@ let get_image_from_tile assets tile tsize =
   | TreeTop -> get_terrain_tile 0 0 tsize assets
   | Flower -> get_terrain_tile 3 1 tsize assets
   | Bush -> get_terrain_tile 1 1 tsize assets
+  | _ -> failwith "not terrain tile"
+
+and evaluate_street_tiles assets tile tsize =
+  match tile with
   | Sidewalk_Curved_BotLeft -> get_street_tile 17 4 tsize assets
   | Sidewalk_Curved_BotRight -> get_street_tile 21 4 tsize assets
   | Sidewalk_Curved_TopLeft -> get_street_tile 17 0 tsize assets
   | Sidewalk_Curved_TopRight -> get_street_tile 21 0 tsize assets
   | Sidewalk_Horiz -> get_street_tile 18 0 tsize assets
   | Sidewalk_Vert -> get_street_tile 17 1 tsize assets
+  | _ -> failwith "not street tile"
+
+and evaluate_building_tiles assets tile tsize =
+  match tile with
   | Building1_Left -> get_building_tile 0 0 tsize assets
   | Building1_Mid -> get_building_tile 1 0 tsize assets
   | Building1_Right -> get_building_tile 2 0 tsize assets
@@ -291,6 +316,10 @@ let get_image_from_tile assets tile tsize =
   | Roof_RightEdge -> get_building_tile 6 1 tsize assets
   | DoorTop -> get_building_tile 10 7 tsize assets
   | DoorBot -> get_building_tile 10 8 tsize assets
+  | _ -> failwith "not building tile"
+
+and evaluate_other_tiles assets tile tsize =
+  match tile with
   | BlueBook -> get_book_tile 3 0 tsize assets
   | Food _ -> get_pizza_tile 0 0 tsize assets
   | Water _ -> get_liq_tile 0 0 tsize assets
@@ -298,8 +327,7 @@ let get_image_from_tile assets tile tsize =
   | YellowBook _ -> get_book_tile 1 0 tsize assets
   | GreenBook _ -> get_book_tile 2 0 tsize assets
   | PurpleBook _ -> get_book_tile 4 0 tsize assets
-
-(* and evaluate_terrain_tiles *)
+  | _ -> failwith "not other tile"
 
 let draw_tile x y tile map assets =
   let tsize = get_tile_size map in

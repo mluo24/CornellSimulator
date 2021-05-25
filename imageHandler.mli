@@ -1,6 +1,4 @@
-(* change this so this has a type t so that this can truly be some sort of
-   module? *)
-(** MAYBE MAKE THIS ALL THE TILESETS? *)
+(** Helper for loading tilesets *)
 
 (** [load_tileset filename tile_size] takes an image with the file name
     [filename] and tile size [tile_size] and loads the individual tile images
