@@ -47,10 +47,28 @@ let load_tilesets tile_size =
   let interior_tileset =
     ImageHandler.load_tileset "assets/Interiors_free_32x32.png" tile_size
   in
+  let book_tileset =
+    ImageHandler.load_tileset "assets/items/books.png" tile_size
+  in
+  let pizza = ImageHandler.load_tileset "assets/items/pizza.png" tile_size in
+  let liq = ImageHandler.load_tileset "assets/items/liq.png" tile_size in
   [|
     terrain_tileset; street_tileset; building_tileset; room_tileset;
-    interior_tileset;
+    interior_tileset; book_tileset; pizza; liq;
   |]
+
+let add_exits maps =
+  Hashtbl.iter
+    (fun map_name map ->
+      let exits = get_exits map in
+      Hashtbl.iter
+        (fun exit_name (pos : Position.t) ->
+          let col = pos.x in
+          let row = pos.y in
+          replace_tiletype map col row 1 exit_name
+            (get_spawn (Hashtbl.find maps exit_name)))
+        exits)
+    maps
 
 let load_world dir =
   let area_maps = Hashtbl.create (List.length (load_files dir)) in
@@ -69,8 +87,6 @@ let load_world dir =
     start_map = Hashtbl.find area_maps start_map_key;
     assets;
   }
-
-(**** HERE WE GO ****)
 
 let get_map world name = Hashtbl.find world.maps name
 

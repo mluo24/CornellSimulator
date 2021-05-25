@@ -1,16 +1,13 @@
 open ImageHandler
-open IntroState
 
-let points_message points =
-  "You have graduated! Your GPA is : " ^ string_of_int points
+let points_message points = "You have graduated! Your GPA is : " ^ "3.2"
+
+(*string_of_int points*)
 
 let draw points =
   let img = ImageHandler.get_entire_image "assets/end_state.png" in
   let graphics_img = ImageHandler.get_tileset_part 0 0 800 576 img in
-  Graphics.draw_image graphics_img 50 50;
-  IntroState.draw_texts (points_message points) 520 290
-
-let end_button = { x_min = 339; x_max = 476; y_min = 292; y_max = 334 }
+  Graphics.draw_image graphics_img 50 50
 
 exception End
 
@@ -25,9 +22,7 @@ let in_game points =
       let x = fst (Graphics.mouse_pos ()) in
       let y = snd (Graphics.mouse_pos ()) in
       match (x, y) with
-      | x, y
-        when x > end_button.x_min && x < end_button.x_max
-             && y > end_button.y_min && y < end_button.y_max ->
+      | x, y when x > 339 && x < 476 && y > 292 && y < 334 ->
           Graphics.close_graph ()
       | _, _ -> ()
     done

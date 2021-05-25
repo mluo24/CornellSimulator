@@ -12,9 +12,16 @@ type t = {
   mutable selected : int;
 }
 
+exception SizeExceed of string
+
+exception TypeNotFound
+
+exception NotEnoughSpace
+
 val inventory_height : int
 
-val item_command : t -> char -> unit
+val item_command :
+  t -> char -> AreaMap.t -> int -> int -> AreaMap.tiletype -> unit
 
 include Drawable with type t := t
 
@@ -43,6 +50,13 @@ val draw : t -> unit
 val acquire : t -> string -> is_legal
 
 val get_item_image : t -> string -> Graphics.image
+
+val use_item : t -> string option
+
+val get_item_info :
+  t -> string -> GameDataStructure.ItemTypeDict.game_value option
+
+val get_effect : t -> GameDataStructure.ItemTypeDict.key -> Effect.t option
 
 (* (** [get_item item_lst character] remove item from the list of item on the
    map and add item the aquired item list if [character] is located within

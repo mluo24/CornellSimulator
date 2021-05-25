@@ -22,6 +22,9 @@ val make_transparent : Graphics.image -> Graphics.image
 val get_tileset_part : int -> int -> int -> int -> Images.t -> Graphics.image
 
 (** [get_tile_image_x_y tileset width x y] gets the *)
+
 val get_tile_image_x_y : Images.t array -> int -> int -> int -> Graphics.image
+
+(** [get_graphic_image tileset width x y] gets the *)
 
 val get_graphic_image : string -> Graphics.image

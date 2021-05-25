@@ -14,7 +14,8 @@ open Images
     - [speed] : number of pixels the character moves per keyboard input *)
 type t = {
   name : string;
-  mutable tile_mem : Graphics.image;
+  mutable layer1_tile_mem : tile;
+  mutable layer2_tile_mem : tile;
   mutable rep : Graphics.image;
   png : string;
   pos : Position.t;
@@ -36,33 +37,37 @@ val get_size : t -> int
 
 (** [player_image_size_width] is width of the image, measured in unit tile
     lengths*)
-val player_image_size_width : int
+
+(* val player_image_size_width : int *)
 
 (** [world] is the AreaMap.t type of the json data used to represent the map
     referenced as the character moves*)
-val world : AreaMap.t
+
+(* val world : AreaMap.t *)
 
 (** [get_person_image person] matches [person] to an image representing the
     character in the pose of the direction of the character's movement*)
 val get_person_image : string -> Position.direction -> Graphics.image
 
 (** [init_character] initializes the character [t]*)
-val init_character : string -> string -> t
+val init_character : string -> string -> AreaMap.t -> t
 
 (** [move_up t] implements the animation of the character's up movement.*)
-val move_up : t -> unit
+val move_up : t -> AreaMap.t -> Images.t array array -> unit
 
 (** [move_right t] implements the animation of the character's right movement.*)
-val move_right : t -> unit
+val move_right : t -> AreaMap.t -> Images.t array array -> unit
 
 (** [move_down t] implements the animation of the character's right movement.*)
-val move_down : t -> unit
+val move_down : t -> AreaMap.t -> Images.t array array -> unit
 
 (** [move_left t] implements the animation of the character's right movement.*)
-val move_left : t -> unit
+val move_left : t -> AreaMap.t -> Images.t array array -> unit
+
+val refresh_character : t -> AreaMap.t -> Images.t array array -> unit
 
 (** [move t ch] matches character [t] to the animation in the direction
     specified by character [ch] based on the character current speed Require:
     ch must be 'w', 'a', 's', 'd' which represent up, left, down, right
     respectively. If not the keys specified, the character does not move. *)
-val move : t -> char -> unit
+val move : t -> char -> AreaMap.t -> Images.t array array -> unit

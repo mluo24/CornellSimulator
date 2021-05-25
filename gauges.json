@@ -2,8 +2,8 @@
   "gauges": [
     {
       "name": "health",
-      "max": 100,
-      "init": 100,
+      "max": 1000,
+      "init": 900,
       "color": {
         "r": 8,
         "g": 200,
@@ -12,8 +12,8 @@
     },
     {
       "name": "slip day",
-      "max": 5,
-      "init": 0,
+      "max": 100,
+      "init": 10,
       "color": {
         "r": 8,
         "g": 200,
@@ -23,7 +23,7 @@
     {
       "name": "brain",
       "max": 100,
-      "init": 5,
+      "init": 80,
       "color": {
         "r": 8,
         "g": 200,
