@@ -18,7 +18,7 @@ let main () =
     Graphics.open_graph "";
     Graphics.clear_graph ();
     set_window_title "Cornell Simulator";
-    resize_window (Position.x_dim + 200)
+    resize_window (Position.x_dim + 220)
       (Position.y_dim + Item.inventory_height);
     IntroState.in_game ();
     loop ()

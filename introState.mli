@@ -1,4 +1,3 @@
-open Mission
 open ImageHandler
 open State
 

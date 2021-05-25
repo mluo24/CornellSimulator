@@ -1,4 +1,4 @@
-MODULES=main introState transitionState endState position gameGaugesDict gameDataStructure drawable graphicHelper rect state author world item effect gauges character imageHandler mission
+MODULES=main introState endState position gameGaugesDict drawable rect state author world item effect gauges character imageHandler
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
