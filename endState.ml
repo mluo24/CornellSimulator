@@ -2,7 +2,7 @@ open ImageHandler
 
 (** TODO implement points caluclation here*)
 let points_message points =
-  "You have graduated! Your GPA is : " ^ string_of_int points
+  "You have graduated! Your total score is : " ^ string_of_int points
 
 let draw points =
   let img = ImageHandler.get_entire_image "assets/end_state.png" in
