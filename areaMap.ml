@@ -6,20 +6,17 @@ open Position
 
 type tile =
   | Blank
-  (* terrain.png *)
   | Grass
   | TreeBot
   | TreeTop
   | Flower
   | Bush
-  (* street.png *)
   | Sidewalk_Curved_BotLeft
   | Sidewalk_Curved_BotRight
   | Sidewalk_Curved_TopLeft
   | Sidewalk_Curved_TopRight
   | Sidewalk_Horiz
   | Sidewalk_Vert
-  (* building.png *)
   | Building1_Left
   | Building1_Mid
   | Building1_Right
@@ -51,8 +48,6 @@ type tiletype =
   | SolidTile of tile
   | DoorTile of string * Position.t * tile
 
-(* stringname, visual name *)
-
 type t = {
   name : string;
   cols : int;
@@ -64,8 +59,6 @@ type t = {
   spawn : Position.t;
 }
 
-let layers = 2
-
 let int_to_tile i =
   match i with
   | 1 -> Grass
@@ -73,14 +66,12 @@ let int_to_tile i =
   | 3 -> TreeTop
   | 4 -> Flower
   | 5 -> Bush
-  (* street.png *)
   | 6 -> Sidewalk_Curved_BotLeft
   | 7 -> Sidewalk_Curved_BotRight
   | 8 -> Sidewalk_Curved_TopLeft
   | 9 -> Sidewalk_Curved_TopRight
   | 10 -> Sidewalk_Horiz
   | 11 -> Sidewalk_Vert
-  (* building.png *)
   | 12 -> Building1_Left
   | 13 -> Building1_Mid
   | 14 -> Building1_Right
@@ -123,8 +114,6 @@ let tile_type_of_tile tile =
     ->
       ItemTile (x, tile)
   | _ -> StandardTile tile
-
-(* unimplemented *)
 
 let tile_of_tile_type tiletype =
   match tiletype with
@@ -184,15 +173,10 @@ let replace_tiletype map x y layer exit_name spawn_pos =
 let remove_item_tile map x y =
   map.layer2.((x * map.cols) + y) <- StandardTile Blank
 
-let get_tile_arrs map = [| map.layer1; map.layer2 |]
-
 let get_layer map layer = if layer = 1 then map.layer1 else map.layer2
 
 let get_layer_as_tiles map layer =
   Array.map tile_of_tile_type (get_layer map layer)
-
-(* let get_tile row col map = try map.tiles.((row * map.cols) + col) with
-   Invalid_argument x -> Blank *)
 
 let get_tile row col layer map =
   if layer = 1 then
@@ -215,35 +199,29 @@ let get_exits map = map.exits
 
 let get_spawn map = map.spawn
 
-(* let get_assets map = map.assets *)
+let get_image_size img = fst (Images.size img)
 
 let terrain_image_width =
-  fst (Images.size (ImageHandler.get_entire_image "assets/nature.png"))
+  get_image_size (get_entire_image "assets/nature.png")
 
 let street_image_width =
-  fst (Images.size (ImageHandler.get_entire_image "assets/Street32.png"))
+  get_image_size (get_entire_image "assets/Street32.png")
 
 let building_image_width =
-  fst (Images.size (ImageHandler.get_entire_image "assets/Buildings32.png"))
+  get_image_size (get_entire_image "assets/Buildings32.png")
 
 let room_image_width =
-  fst
-    (Images.size
-       (ImageHandler.get_entire_image "assets/Room_Builder_free_32x32.png"))
+  get_image_size (get_entire_image "assets/Room_Builder_free_32x32.png")
 
 let interior_image_width =
-  fst
-    (Images.size
-       (ImageHandler.get_entire_image "assets/Interiors_free_32x32.png"))
+  get_image_size (get_entire_image "assets/Interiors_free_32x32.png")
 
 let book_image_width =
-  fst (Images.size (ImageHandler.get_entire_image "assets/items/books.png"))
+  get_image_size (get_entire_image "assets/items/books.png")
 
-let pizza_width =
-  fst (Images.size (ImageHandler.get_entire_image "assets/items/pizza.png"))
+let pizza_width = get_image_size (get_entire_image "assets/items/pizza.png")
 
-let liq_width =
-  fst (Images.size (ImageHandler.get_entire_image "assets/items/liq.png"))
+let liq_width = get_image_size (get_entire_image "assets/items/liq.png")
 
 let get_terrain_tile x y tsize assets =
   let terrain_tileset = assets.(0) in
@@ -290,14 +268,12 @@ let get_image_from_tile assets tile tsize =
   | TreeTop -> get_terrain_tile 0 0 tsize assets
   | Flower -> get_terrain_tile 3 1 tsize assets
   | Bush -> get_terrain_tile 1 1 tsize assets
-  (* street.png *)
   | Sidewalk_Curved_BotLeft -> get_street_tile 17 4 tsize assets
   | Sidewalk_Curved_BotRight -> get_street_tile 21 4 tsize assets
   | Sidewalk_Curved_TopLeft -> get_street_tile 17 0 tsize assets
   | Sidewalk_Curved_TopRight -> get_street_tile 21 0 tsize assets
   | Sidewalk_Horiz -> get_street_tile 18 0 tsize assets
   | Sidewalk_Vert -> get_street_tile 17 1 tsize assets
-  (* building.png *)
   | Building1_Left -> get_building_tile 0 0 tsize assets
   | Building1_Mid -> get_building_tile 1 0 tsize assets
   | Building1_Right -> get_building_tile 2 0 tsize assets
@@ -323,6 +299,8 @@ let get_image_from_tile assets tile tsize =
   | GreenBook _ -> get_book_tile 2 0 tsize assets
   | PurpleBook _ -> get_book_tile 4 0 tsize assets
 
+(* and evaluate_terrain_tiles *)
+
 let draw_tile x y tile map assets =
   let tsize = get_tile_size map in
   Graphics.draw_image (get_image_from_tile assets tile tsize) x y
@@ -333,9 +311,6 @@ let draw_tile_iter map assets i tile_t =
   let x = i mod cols * tsize in
   let y = y_dim - tsize - (i / cols * tsize) in
   draw_tile x y tile_t map assets
-
-(* let draw_tiles map assets layer = Array.iteri (draw_tile_iter map assets)
-   (get_layer map layer) *)
 
 let draw_layer map layer assets =
   Array.iteri (draw_tile_iter map assets) (get_layer_as_tiles map layer)
@@ -364,5 +339,3 @@ let is_door_tile map x y =
 
 let is_item_tile tiletype =
   match tiletype with ItemTile _ -> true | _ -> false
-
-let tile_effect tile = failwith "unimplemented"

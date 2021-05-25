@@ -1,4 +1,4 @@
-MODULES=main introState transitionState endState position gameGaugesDict gameDataStructure drawable graphicHelper rect state author world item effect gauges character imageHandler mission
+MODULES=main introState endState position gameGaugesDict gameDataStructure drawable graphicHelper rect state author world item effect gauges character imageHandler
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -14,9 +14,6 @@ build:
 	# $(OCAMLBUILD) $(OBJECTS) && js_of_ocaml +graphics.js $(MAIN)
 	$(OCAMLBUILD) $(OBJECTS)
 
-# build1:
-# 	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
-
 main: 
 	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
 
@@ -29,15 +26,6 @@ bisect-test:
 
 play:
 	$(OCAMLBUILD) -tag 'debug' $(MAIN) && OCAMLRUNPARAM=b ./$(MAIN)
-
-# tiles:
-# 	$(OCAMLBUILD) imgdemo.byte && ./imgdemo.byte
-
-# check:
-# 	@bash check.sh
-	
-# finalcheck:
-# 	@bash check.sh final
 
 zip:
 	zip src.zip *.ml* *.json *.sh _tags .merlin .ocamlformat .ocamlinit LICENSE Makefile	

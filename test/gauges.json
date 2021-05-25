@@ -1,0 +1,85 @@
+{
+  "gauges": [
+    {
+      "name": "health",
+      "max": 1000,
+      "init": 900,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "slip day",
+      "max": 100,
+      "init": 10,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "brain",
+      "max": 100,
+      "init": 80,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    },
+    {
+      "name": "mental health",
+      "max": 100,
+      "init": 80,
+      "color": {
+        "r": 8,
+        "g": 200,
+        "b": 200
+      }
+    }
+  ], 
+
+  "missions": [{
+    "name": "class1",
+    "max": 100,
+    "init": 0,
+    "color": {
+      "r": 8,
+      "g": 200,
+      "b": 200
+    }
+  },
+  {
+    "name": "class2",
+    "max": 100,
+    "init": 0,
+    "color": {
+      "r": 8,
+      "g": 200,
+      "b": 200
+    }
+  },
+  {
+    "name": "class3",
+    "max": 100,
+    "init": 0,
+    "color": {
+      "r": 8,
+      "g": 200,
+      "b": 200
+    }}],
+    "map_mission":[
+      {"id": "class1",
+      "map":"FWS"}, 
+      {"id": "class2",
+        "map":"MATH 1110"}, 
+        {"id": "class3",
+          "map":"HISTORY 1110"}
+  
+  
+    ]
+
+}

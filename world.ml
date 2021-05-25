@@ -4,25 +4,11 @@ open ImageHandler
 open Images
 open AreaMap
 
-type coords = Position.t
-
-(* areamaps, current areamap *)
-
 type t = {
   maps : (string, AreaMap.t) Hashtbl.t;
   start_map : AreaMap.t;
   assets : Images.t array array;
 }
-
-let x_dim = 800
-
-let y_dim = 560
-
-(** for 32x32 *)
-
-(* let y_dim = 576 *)
-
-(* let layers = 2 *)
 
 let load_files dir =
   let files_in_dir = Sys.readdir dir |> Array.to_list in
@@ -31,6 +17,8 @@ let load_files dir =
   in
   map_files
 
+(** [load_tilesets tile_size] loads in all the tileset assets being used in
+    the game. *)
 let load_tilesets tile_size =
   let terrain_tileset =
     ImageHandler.load_tileset "assets/nature.png" tile_size
@@ -57,6 +45,8 @@ let load_tilesets tile_size =
     interior_tileset; book_tileset; pizza; liq;
   |]
 
+(** [add_exits maps] adds the appropriate links as a DoorTile in each map to
+    its specified maps in their initialization. *)
 let add_exits maps =
   Hashtbl.iter
     (fun map_name map ->
@@ -89,10 +79,6 @@ let load_world dir =
   }
 
 let get_map world name = Hashtbl.find world.maps name
-
-(* let switch_map world name = failwith "unimplemented" *)
-
-(* let generate_items world = failwith "unimplemented" *)
 
 let list_maps world = world.maps
 

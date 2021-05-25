@@ -4,17 +4,13 @@ open ImageHandler
 open World
 open AreaMap
 
-(* CHANGES SO FAR: added mutable tile layer records, changed type of them to
-   tile, added map to most things, changed the way character images are
-   accessed*)
-
 type t = {
   name : string;
   mutable layer1_tile_mem : tile;
   mutable layer2_tile_mem : tile;
   mutable rep : Graphics.image;
   png : string;
-  pos : Position.t;
+  mutable pos : Position.t;
   speed : int;
 }
 
@@ -25,14 +21,6 @@ let draw t = Graphics.draw_image t.rep t.pos.x t.pos.y
 let get_user_name t = t.name
 
 let get_size t = 32
-
-(* let player_image_size_width = fst (Images.size
-   (ImageHandler.get_entire_image "assets/spr_player.png")) / 16 *)
-
-(* let world = let json = Yojson.Basic.from_file "world_init.json" in
-   AreaMap.map_from_json_file ( "worldmaps/" ^ (json |>
-   Yojson.Basic.Util.member "start" |> Yojson.Basic.Util.to_string) ^ ".json"
-   ) *)
 
 let image_width png = fst (Images.size (ImageHandler.get_entire_image png))
 
@@ -48,8 +36,6 @@ let get_person_image png person =
   | Left -> get_person_pose 3 2 png
   | Right -> get_person_pose 3 3 png
   | Down -> get_person_pose 3 1 png
-
-(* let x_offset col = let width = Position.x_dim / 32 in width - col *)
 
 let y_offset row =
   let height = Position.y_dim / 32 in
@@ -72,77 +58,40 @@ let init_character name png map =
     layer1_tile_mem =
       get_tile_from_coords initial_spawn.x initial_spawn.y 1 map;
     layer2_tile_mem =
-      get_tile_from_coords initial_spawn.x initial_spawn.y 2 map
-      (* TO DOOOOO: this needs to be fixed after tiles are adjusted 32 by 32*);
+      get_tile_from_coords initial_spawn.x initial_spawn.y 2 map;
   }
 
+let draw_move t new_pos map assets direction =
+  draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
+  draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
+  t.rep <- get_person_image t.png direction;
+  t.pos <- new_pos;
+  draw t;
+  t.layer2_tile_mem <- get_tile_from_coords new_pos.x new_pos.y 2 map;
+  draw_tile new_pos.x new_pos.y t.layer2_tile_mem map assets;
+  t.layer1_tile_mem <- get_tile_from_coords t.pos.x t.pos.y 1 map
+
 let move_up t map assets =
-  let new_pos = t.pos.y + t.speed in
-  if t.pos.y < Position.y_dim - 32 && not (is_solid_tile map t.pos.x new_pos)
-  then begin
-    draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
-    draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
-    (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
-    (* t.tile_mem <- World.get_tile ((World.y_dim - t.pos.y - 16) / 16)
-       (t.pos.x / 16) world; *)
-    t.rep <- get_person_image t.png Up;
-    t.pos.y <- new_pos;
-    draw t;
-    t.layer2_tile_mem <- get_tile_from_coords t.pos.x new_pos 2 map;
-    draw_tile t.pos.x new_pos t.layer2_tile_mem map assets;
-    t.layer1_tile_mem <- get_tile_from_coords t.pos.x t.pos.y 1 map
-  end
+  let new_pos = { x = t.pos.x; y = t.pos.y + t.speed } in
+  if
+    t.pos.y < Position.y_dim - 32 && not (is_solid_tile map t.pos.x new_pos.y)
+  then draw_move t new_pos map assets Up
 
 let move_right t map assets =
-  let new_pos = t.pos.x + t.speed in
-  if t.pos.x < Position.x_dim - 32 && not (is_solid_tile map new_pos t.pos.y)
-  then begin
-    draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
-    draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
-    (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
-    (* t.tile_mem <- World.get_tile ((World.y_dim - t.pos.y - 16) / 16)
-       (t.pos.x / 16) world; *)
-    t.pos.x <- new_pos;
-    t.rep <- get_person_image t.png Right;
-    draw t;
-    t.layer2_tile_mem <- get_tile_from_coords new_pos t.pos.y 2 map;
-    draw_tile new_pos t.pos.y t.layer2_tile_mem map assets;
-    (* print_endline (string_of_int (new_pos / 32) ^ " " ^ string_of_int
-       (t.pos.y / 32)); *)
-    t.layer1_tile_mem <- get_tile_from_coords t.pos.x t.pos.y 1 map
-  end
+  let new_pos = { x = t.pos.x + t.speed; y = t.pos.y } in
+  if
+    t.pos.x < Position.x_dim - 32 && not (is_solid_tile map new_pos.x t.pos.y)
+  then draw_move t new_pos map assets Right
 
 let move_down t map assets =
-  let new_pos = t.pos.y - t.speed in
-  if t.pos.y > 0 && not (is_solid_tile map t.pos.x new_pos) then begin
-    draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
-    draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
-    (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
-    (* t.tile_mem <- World.get_tile ((World.y_dim - t.pos.y - 16) / 16)
-       (t.pos.x / 16) world; *)
-    t.rep <- get_person_image t.png Down;
-    t.pos.y <- new_pos;
-    draw t;
-    t.layer2_tile_mem <- get_tile_from_coords t.pos.x new_pos 2 map;
-    draw_tile t.pos.x new_pos t.layer2_tile_mem map assets;
-    t.layer1_tile_mem <- get_tile_from_coords t.pos.x t.pos.y 1 map
-  end
+  let new_pos = { x = t.pos.x; y = t.pos.y - t.speed } in
+  if t.pos.y > 0 && not (is_solid_tile map t.pos.x new_pos.y) then
+    draw_move t new_pos map assets Down
 
 let move_left t map assets =
-  let new_pos = t.pos.x - t.speed in
-  if t.pos.x > 0 && not (is_solid_tile map new_pos t.pos.y) then begin
-    draw_tile t.pos.x t.pos.y t.layer1_tile_mem map assets;
-    draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
-    (* World.draw_tile t.pos.x t.pos.y t.tile_mem world; *)
-    (* t.tile_mem <- World.get_tile ((World.y_dim - t.pos.y - 16) / 16)
-       (t.pos.x / 16) world; *)
-    t.rep <- get_person_image t.png Left;
-    t.pos.x <- new_pos;
-    draw t;
-    t.layer2_tile_mem <- get_tile_from_coords t.pos.x t.pos.y 2 map;
-    draw_tile t.pos.x t.pos.y t.layer2_tile_mem map assets;
-    t.layer1_tile_mem <- get_tile_from_coords t.pos.x t.pos.y 1 map
-  end
+  let new_pos = { x = t.pos.x - t.speed; y = t.pos.y } in
+  if t.pos.x > 0 && not (is_solid_tile map new_pos.x t.pos.y) then
+    draw_move t new_pos map assets Left
 
 let refresh_character t map assets =
   t.layer1_tile_mem <- get_tile_from_coords t.pos.x t.pos.y 1 map;
