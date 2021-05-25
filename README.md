@@ -4,7 +4,7 @@ This is a game that simulates the life of a Cornell student! Work through tasks 
 
 ## How to Play
 
-Use 'w', 'a', 's', 'd' to move around, press 'j' and 'l' to move through inventory, press 'u' to use current item.
+Use 'w', 'a', 's', 'd' to move around, press 'j' and 'l' to move through inventory, press 'u' to use current item, press 'k' to collect an item and add to inventory.
 
 ## Installation
 
