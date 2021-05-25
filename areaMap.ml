@@ -219,7 +219,7 @@ let interior_image_width =
 let book_image_width =
   get_image_size (get_entire_image "assets/items/books.png")
 
-let pizza_width = get_image_size (get_entire_image "assets/items/pizza.png")
+let pizza_width = get_image_size (get_entire_image "assets/items/cup.png")
 
 let liq_width = get_image_size (get_entire_image "assets/items/liq.png")
 
@@ -252,11 +252,11 @@ let get_book_tile x y tsize assets =
   ImageHandler.get_tile_image_x_y book_tileset (book_image_width / tsize) x y
 
 let get_pizza_tile x y tsize assets =
-  let pizza = assets.(5) in
+  let pizza = assets.(6) in
   ImageHandler.get_tile_image_x_y pizza (pizza_width / tsize) x y
 
 let get_liq_tile x y tsize assets =
-  let liq = assets.(5) in
+  let liq = assets.(7) in
   ImageHandler.get_tile_image_x_y liq (liq_width / tsize) x y
 
 let rec get_image_from_tile assets tile tsize =
