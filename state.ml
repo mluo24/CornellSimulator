@@ -55,7 +55,9 @@ let init_game name png level level_png points =
       Item.init_item
         (Yojson.Basic.from_file "item_type.json")
         (Yojson.Basic.from_file "item_init.json");
-    gauges = Gauges.init_gauges (Yojson.Basic.from_file level_png) level;
+    gauges =
+      Gauges.init_gauges (Yojson.Basic.from_file level_png)
+      (* missions = Mission.init_mission (); *);
   }
 
 let draw t =
@@ -120,8 +122,7 @@ let level_to_next level_num acc_points name =
       create_next_level "missions/junior_undecided.json" 0 name acc_points
 
 let character_action game_state s =
-  Gauges.update_gauge General [ ("health", -5) ] game_state.gauges
-    game_state.items;
+  Gauges.update_gauge General [ ("health", -5) ] game_state.gauges;
   Character.move game_state.character s.Graphics.key game_state.current_area
     (get_assets game_state.world);
   let x = game_state.character.pos.x in
@@ -158,7 +159,9 @@ let rec in_game name png level level_json points =
           | Item -> item_action game_state c
           | Gauges -> Gauges.use_item game_state.items game_state.gauges
           | NoModule -> ()
-      with _ -> transition_in_game level name points
+      with
+      | Gauges.Negative_Gauge i -> transition_in_game level name i
+      | exn -> raise exn
     done
   with End -> ()
 

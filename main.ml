@@ -18,18 +18,16 @@ let main () =
     Graphics.open_graph "";
     Graphics.clear_graph ();
     set_window_title "Cornell Simulator";
-    resize_window (Position.x_dim + 200)
+    resize_window (Position.x_dim + 220)
       (Position.y_dim + Item.inventory_height);
     IntroState.in_game ();
-    (* let imgs = ImageHandler.load_tileset "assets/Buildings.png" 16 in
-       Array.iteri (fun i img -> Graphics.draw_image img (i * 16) 0) imgs; *)
     loop ()
   with Graphic_failure x -> (
     match x with
     | "fatal I/O error" -> print_endline "Goodbye."
     | _ ->
         print_endline
-          (x ^ "Run export DISPLAY=:0 and make sure X server is running."))
+          (x ^ "Run export DISPLAY=:0 and make sure X server is running.") )
 
 (** Runs the game. *)
 let () = main ()

@@ -18,6 +18,10 @@ type person = Position.direction
 
 let draw t = Graphics.draw_image t.rep t.pos.x t.pos.y
 
+let get_user_name t = t.name
+
+let get_size t = 32
+
 let image_width png = fst (Images.size (ImageHandler.get_entire_image png))
 
 let get_person_pose x y png =

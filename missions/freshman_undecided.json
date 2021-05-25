@@ -73,6 +73,7 @@
       }
     }
   ],
+<<<<<<< HEAD
   "map_mission": [
     {
       "id": "class1",
@@ -86,5 +87,16 @@
       "id": "class3",
       "map": "HIST 1110"
     }
+=======
+  "map_mission":[
+    {"id": "class1",
+    "map":"FWS"}, 
+    {"id": "class2",
+      "map":"MATH 1110"}, 
+      {"id": "class3",
+        "map":"HISTORY 1110"}
+
+
+>>>>>>> bd7145bf903061c9857c7efb669c88dca44e0617
   ]
 }

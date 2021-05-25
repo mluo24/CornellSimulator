@@ -1,9 +1,12 @@
 open ImageHandler
 
 (** TODO implement points caluclation here*)
-let points_message points = "You have graduated! Your GPA is : " ^ "3.2"
+let points_message points =
+  "You have graduated! Your GPA is : " ^ string_of_int points
 
 let draw points =
+  Graphics.moveto 380 400;
+  Graphics.draw_string (points_message points);
   let img = ImageHandler.get_entire_image "assets/end_state.png" in
   let graphics_img = ImageHandler.get_tileset_part 0 0 800 576 img in
   Graphics.draw_image graphics_img 50 50

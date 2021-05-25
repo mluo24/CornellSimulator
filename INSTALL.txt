@@ -6,9 +6,7 @@ To install:
 `opam install lablgtk`
 `opam install camlimages`
 
-
 make build 
 make play
 
 you can control movements with `w` `a` `s` `d`
-take items with `t`
