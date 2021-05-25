@@ -1,3 +1,5 @@
+(** The type of values representing character. *)
+
 open Graphics
 open Drawable
 open World
