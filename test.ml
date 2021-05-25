@@ -45,8 +45,6 @@ open Graphics
    the game works correctly from a visual and player standpoint, and the basic
    tests that in this file all pass, this system is very likely to be correct. *)
 
-(* AREA MAP TESTS *)
-
 let area_test_int_to_tile name i expected_output =
   name >:: fun _ -> assert_equal expected_output (int_to_tile i)
 
@@ -114,8 +112,6 @@ let area_tests =
     area_test_get_tile_size "map_size_32 has 32x32 tile size" map_size_32 32;
   ]
 
-(* WORLD TESTS *)
-
 let testworld = load_world "testworlds"
 
 let world_test_get_map name map_name world expected_output =
@@ -163,8 +159,6 @@ let move_test_pos name k expected_output p =
   name >:: fun _ ->
   assert_equal expected_output.x person.pos.x ~printer:string_of_int;
   assert_equal expected_output.y person.pos.y ~printer:string_of_int
-
-(* CHARACTER TESTS *)
 
 let character_tests =
   [
