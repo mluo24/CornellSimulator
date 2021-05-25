@@ -8,7 +8,7 @@
     - items : the state of items on the map *)
 type t = {
   world : World.t;
-  current_area : AreaMap.t;
+  mutable current_area : AreaMap.t;
   character : Character.t;
   mutable items : Item.t;
   (* mutable gauges: Gauges.t *)

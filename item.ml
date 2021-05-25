@@ -2,6 +2,7 @@ open Graphics
 open Yojson.Basic.Util
 open GameDataStructure
 open GraphicHelper
+open AreaMap
 
 (** The abstract type of values representing the items group *)
 open Position
@@ -248,12 +249,6 @@ let draw_inventory item = failwith "unimplement"
 
 let draw_all (item_state : t) = failwith "unimplement"
 
-let item_command t c =
-  match c with
-  | 'j' -> move_select_left t
-  | 'l' -> move_select_right t
-  | _ -> ()
-
 let acquire item_state str_type =
   let update state name (olv : InventoryDict.game_value option) :
       InventoryDict.game_value option =
@@ -280,6 +275,21 @@ let acquire item_state str_type =
 
     Legal
   with TypeNotFound -> Illegal
+
+let item_command t c map row col tiletype =
+  match c with
+  | 'j' -> move_select_left t
+  | 'l' -> move_select_right t
+  (* | 'i' -> use_item Some t *)
+  | 'k' -> (
+      if is_item_tile tiletype then
+        match tiletype with
+        | ItemTile (str_type, _) -> (
+            match acquire t str_type with
+            | Legal -> remove_item_tile map row col
+            | Illegal -> print_endline "inventory full")
+        | _ -> failwith "no")
+  | _ -> ()
 
 (* item name *)
 
