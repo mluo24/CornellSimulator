@@ -54,6 +54,8 @@
           }
         ], 
         "mission": [
+          {"name": "class2",
+          "value": 10}
          ]
       },
       "dmax": 1
@@ -67,7 +69,7 @@
         "gauges": [
           {
             "name": "health",
-            "value": 15
+            "value": -10
           }
         ], 
         "mission": [

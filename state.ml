@@ -57,7 +57,7 @@ let init_game name png level level_png points =
         (Yojson.Basic.from_file "item_type.json")
         (Yojson.Basic.from_file "item_init.json");
     gauges =
-      Gauges.init_gauges (Yojson.Basic.from_file level_png) level
+      Gauges.init_gauges (Yojson.Basic.from_file level_png)
       (* missions = Mission.init_mission (); *);
   }
 
@@ -112,8 +112,7 @@ let rec in_game name png level level_json points =
           let c = s.Graphics.key in
           match eval_key c with
           | Character ->
-              Gauges.update_gauge General [ ("health", -5) ] game_state.gauges
-                game_state.items;
+              Gauges.update_gauge General [ ("health", -5) ] game_state.gauges;
               Character.move game_state.character s.Graphics.key
                 game_state.current_area
                 (get_assets game_state.world);
@@ -138,7 +137,9 @@ let rec in_game name png level level_json points =
                 (get_assets game_state.world)
           | Gauges -> Gauges.use_item game_state.items game_state.gauges
           | NoModule -> ()
-      with _ -> transition_in_game 1 "undecided" 1
+      with
+      | Gauges.Negative_Gauge i -> transition_in_game 1 "undecided" i
+      | exn -> raise exn
     done
   with End -> end_game ()
 

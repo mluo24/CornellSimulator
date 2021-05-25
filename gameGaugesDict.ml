@@ -63,11 +63,6 @@ functor
 
     let insert k value dict = GameMap.add k value dict
 
-    (* let add (new_val : num_val) (ol_val : game_value option) : game_value
-       option = match ol_val with | Some { value; max; color } -> let add_val
-       = GameNum.add value new_val in if add_val > max then Some { value; max;
-       color } else Some { value = add_val; max; color } | None -> None *)
-
     let update name func dict = GameMap.update name func dict
 
     let get_size dict = GameMap.cardinal dict
@@ -81,7 +76,4 @@ functor
       key
 
     let get_value_of key (dict : t) = GameMap.find_opt key dict
-
-    (* let insert_add key value dict = try change_gauges key (add value) dict
-       with InvalidEffect -> failwith "uniplemented" *)
   end

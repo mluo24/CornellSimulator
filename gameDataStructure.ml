@@ -7,25 +7,15 @@ module String : KeyType with type t = string = struct
   type t = string
 
   let compare s1 s2 = Stdlib.compare s1 s2
-
-  let to_string t = Fun.id t
-
-  let format fmt s = Format.fprintf fmt "\"%s\"" s [@@coverage off]
 end
 
 module CaselessString : KeyType with type t = string = struct
   type t = string
 
-  let to_string t = Fun.id t
-
   let compare s1 s2 =
     Stdlib.compare
       (Stdlib.String.lowercase_ascii s1)
       (Stdlib.String.lowercase_ascii s2)
-
-  let format fmt s =
-    Format.fprintf fmt "\"%s\"" (Stdlib.String.lowercase_ascii s)
-    [@@coverage off]
 end
 
 module IntPos = struct
@@ -113,4 +103,4 @@ end
 module GameIntDict = MakeGameDict (GaugesValue) (CaselessString)
 module ItemTypeDict = MakeGameDict (ItemTypeInfo) (CaselessString)
 module InventoryDict = MakeGameDict (ItemInventory) (CaselessString)
-module ClassMapping = MakeGameDict (String) (CaselessString)
+module ClassMapping = MakeGameDict (String) (String)
