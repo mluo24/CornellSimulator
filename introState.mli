@@ -1,3 +1,5 @@
+(** The intro page implementation with character selection.*)
+
 (** [draw] draws intro page*)
 val draw : unit -> unit
 
