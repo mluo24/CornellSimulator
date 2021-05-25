@@ -1,0 +1,13 @@
+{
+    "name": "Blank Map",
+    "cols": 0,
+    "rows": 0,
+    "tile_size": 1,
+    "layer1": [],
+    "layer2": [],
+    "exits" : [],
+    "spawn" : {
+        "x" : -1,
+        "y" : -1
+    }
+}

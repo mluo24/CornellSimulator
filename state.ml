@@ -177,3 +177,4 @@ and transition_in_game level_num name points =
         | _, _ -> ()
     done
   with End -> ()
+
