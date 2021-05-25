@@ -15,5 +15,3 @@ let from_json json =
     gauges = json |> member "gauges" |> to_list |> List.map to_effect;
     mission = json |> member "mission" |> to_list |> List.map to_effect;
   }
-
-(* let execute_effect game_state t = () *)

@@ -28,7 +28,7 @@ let get_score gauges =
   in
   let lst = GameDict.get_bindings gauges.mission in
   let score = List.fold_left compute_score_ratio 0.0 lst in
-  Float.to_int (score /. 3.0)
+  Float.to_int (score *. 100.0 /. 3.0)
 
 let text_height_space = 16
 
