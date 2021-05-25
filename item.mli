@@ -1,5 +1,6 @@
-(* handle the representation of food water slip day etc *)
-(* open Position *)
+(** handle the representation of items inventory and type of items such as
+    food water slip day etc *)
+
 open Graphics
 open Yojson.Basic.Util
 open Drawable

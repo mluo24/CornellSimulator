@@ -44,7 +44,7 @@
   "missions": [
     {
       "name": "class1",
-      "max": 15,
+      "max": 20,
       "init": 0,
       "color": {
         "r": 8,
@@ -54,7 +54,7 @@
     },
     {
       "name": "class2",
-      "max": 15,
+      "max": 20,
       "init": 0,
       "color": {
         "r": 8,
@@ -64,7 +64,7 @@
     },
     {
       "name": "class3",
-      "max": 15,
+      "max": 20,
       "init": 0,
       "color": {
         "r": 8,
@@ -76,15 +76,15 @@
   "map_mission": [
     {
       "id": "class1",
-      "map": "SOC 2208"
+      "map": "CS 3140"
     },
     {
       "id": "class2",
-      "map": "AEM 3240"
+      "map": "ECE 2300"
     },
     {
       "id": "class3",
-      "map": "CS 3110"
+      "map": "BMTRY 3080"
     }
   ]
 }

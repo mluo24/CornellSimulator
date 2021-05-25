@@ -1,6 +1,3 @@
-open ImageHandler
-open State
-
 val draw : unit -> unit
 
 type button = {

@@ -33,7 +33,7 @@ open GameDataStructure
    this. As well, some functions return a specific type that is defined in the
    module, which in this case is obscured from the client. Therefore, we
    "test" those through the other methods to make sure it has been defined
-   properly. One module that we definitely did not need to test was State,
+   properly. One module that we did not test as throughly was State,
    especially because it is meant as a container to hold all of the other
    modules, and if their functions are working, State is more than likely
    working. As well, State directly controls what is being shown and the
@@ -49,19 +49,18 @@ open GameDataStructure
 let area_test_int_to_tile name i expected_output =
   name >:: fun _ -> assert_equal expected_output (int_to_tile i)
 
-let () = Graphics.open_graph ""
-
-let area_test_int_to_tile name i expected_output =
-  name >:: fun _ -> assert_equal expected_output (int_to_tile i)
-
-let area_test_get_tile_arr name map expected_output =
-  name >:: fun _ -> assert_equal expected_output (get_tile_arr map)
+let area_test_tile_type_of_tile name tile expected_output =
+  name >:: fun _ -> assert_equal expected_output (tile_type_of_tile tile)
 
 let area_test_get_layer name map layer expected_output =
   name >:: fun _ -> assert_equal expected_output (get_layer map layer)
 
 let area_test_get_tile name row col layer map expected_output =
   name >:: fun _ -> assert_equal expected_output (get_tile row col layer map)
+
+let area_test_get_rows name map expected_output =
+  name >:: fun _ ->
+  assert_equal expected_output (get_rows map) ~printer:string_of_int
 
 let area_test_get_cols name map expected_output =
   name >:: fun _ ->
@@ -71,10 +70,11 @@ let area_test_get_tile_size name map expected_output =
   name >:: fun _ ->
   assert_equal expected_output (get_tile_size map) ~printer:string_of_int
 
-let area_test_get_assets name map expected_output =
-  name >:: fun _ -> assert_equal expected_output (get_assets map)
+let area_test_is_solid_tile name map x y expected_output =
+  name >:: fun _ -> assert_equal expected_output (is_solid_tile map x y)
 
-let blank = map_from_json_file "blankmap.json"
+let area_test_is_door_tile name map x y expected_output =
+  name >:: fun _ -> assert_equal expected_output (is_door_tile map x y)
 
 let blank = map_from_json_file "testworlds/blankmap.json"
 
@@ -90,6 +90,18 @@ let area_tests =
     area_test_int_to_tile "1 gives grass" 1 Grass;
     area_test_int_to_tile "27 gives top of door" 27 DoorTop;
     area_test_int_to_tile "28 gives bottom of door" 28 DoorBot;
+    area_test_tile_type_of_tile "Grass is standard tile" Grass
+      (StandardTile Grass);
+    area_test_tile_type_of_tile "Bush is solid tile" Bush (SolidTile Bush);
+    area_test_tile_type_of_tile "DoorTop is door tile" DoorTop
+      (DoorTile ("classroom", { x = 0; y = 0 }, DoorTop));
+    area_test_tile_type_of_tile "Grass is standard tile" Grass
+      (StandardTile Grass);
+    area_test_tile_type_of_tile "Bush is solid tile" Bush (SolidTile Bush);
+    area_test_tile_type_of_tile "DoorTop is door tile" DoorTop
+      (DoorTile ("classroom", { x = 0; y = 0 }, DoorTop));
+    area_test_tile_type_of_tile "RedBook is item tile" (RedBook "red_book")
+      (ItemTile ("red_book", RedBook "red_book"));
     area_test_get_layer "empty file gives empty array" blank 1
       (Array.make 0 (StandardTile Blank));
     area_test_get_layer "testmap.json" map1 1
@@ -117,6 +129,11 @@ let area_tests =
     area_test_get_tile_size "blank has 1x1 tile size" blank 1;
     area_test_get_tile_size "map2 has 16x16 tile size" map2 16;
     area_test_get_tile_size "map_size_32 has 32x32 tile size" map_size_32 32;
+    area_test_is_solid_tile "area here is solid tile" map_size_32 160 256 true;
+    area_test_is_solid_tile "area here is not solid tile" map_size_32 0 0
+      false;
+    area_test_is_door_tile "area here is door tile" map_size_32 224 224 true;
+    area_test_is_door_tile "area here is not door tile" map_size_32 0 0 false;
   ]
 
 let testworld = load_world "testworlds"
@@ -134,6 +151,7 @@ let world_tests =
   ]
 
 (* CHARACTER TESTS *)
+
 let () = Graphics.open_graph ""
 
 let create_person position =
@@ -195,6 +213,9 @@ let character_tests =
     move_test_pos "person_2 can move left" 'a'
       { x = Position.x_dim - 64; y = Position.y_dim - 32 }
       person_2;
+    move_test_pos "person_2 can not move with key z" 'z'
+      { x = Position.x_dim - 32; y = Position.y_dim - 32 }
+      person_2;
     move_test_pos "person_3 can't move any further left with key a" 'a'
       { x = 0; y = 0 } person_3;
     move_test_pos "person_3 can't move any further down with key s" 's'
@@ -202,6 +223,8 @@ let character_tests =
     move_test_pos "person_3 can move right with key d" 'd' { x = 32; y = 0 }
       person_3;
     move_test_pos "person_3 can move up with key w" 'w' { x = 0; y = 32 }
+      person_3;
+    move_test_pos "person_3 can not move with key z" 'z' { x = 0; y = 0 }
       person_3;
   ]
 

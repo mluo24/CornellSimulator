@@ -91,33 +91,34 @@ let level_to_next level_num acc_points name =
   let next_level_num = level_num + 1 in
   match (next_level_num, name) with
   | 2, "undecided" ->
-      {
-        json = "missions/sophomore_undecided.json";
-        level = next_level_num;
-        points = acc_points;
-        name;
-      }
+      create_next_level "missions/sophomore_undecided.json" next_level_num
+        name acc_points
   | 3, "undecided" ->
-      {
-        json = "missions/junior_undecided.json";
-        level = next_level_num;
-        points = acc_points;
-        name;
-      }
+      create_next_level "missions/junior_undecided.json" next_level_num name
+        acc_points
   | 4, "undecided" ->
-      {
-        json = "missions/senior_undecided.json";
-        level = next_level_num;
-        points = acc_points;
-        name;
-      }
+      create_next_level "missions/senior_undecided.json" next_level_num name
+        acc_points
+  | 2, "engineer" ->
+      create_next_level "missions/sophomore_engineer.json" next_level_num name
+        acc_points
+  | 3, "engineer" ->
+      create_next_level "missions/junior_engineer.json" next_level_num name
+        acc_points
+  | 4, "engineer" ->
+      create_next_level "missions/senior_engineer.json" next_level_num name
+        acc_points
+  | 2, "premed" ->
+      create_next_level "missions/sophomore_premed.json" next_level_num name
+        acc_points
+  | 3, "premed" ->
+      create_next_level "missions/junior_premed.json" next_level_num name
+        acc_points
+  | 4, "premed" ->
+      create_next_level "missions/senior_premed.json" next_level_num name
+        acc_points
   | _, _ ->
-      {
-        json = "missions/sophomore_undecided.json";
-        level = 0;
-        points = acc_points;
-        name;
-      }
+      create_next_level "missions/junior_undecided.json" 0 name acc_points
 
 let character_action game_state s =
   Gauges.update_gauge General [ ("health", -5) ] game_state.gauges;
@@ -131,7 +132,7 @@ let character_action game_state s =
     change_room game_state game_state.world
       (get_tile row col 1 game_state.current_area);
     refresh_character game_state.character game_state.current_area
-      (get_assets game_state.world))
+      (get_assets game_state.world) )
 
 let item_action game_state c =
   let x = game_state.character.pos.x in
