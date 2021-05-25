@@ -55,11 +55,9 @@ let init_game name png level level_png points =
       Item.init_item
         (Yojson.Basic.from_file "item_type.json")
         (Yojson.Basic.from_file "item_init.json");
-
     gauges =
       Gauges.init_gauges (Yojson.Basic.from_file level_png)
       (* missions = Mission.init_mission (); *);
-
   }
 
 let draw t =
@@ -88,7 +86,9 @@ let change_room state world tiletype =
       draw state
   | _ -> failwith "not possible"
 
+let create_next_level json level name points = { json; level; points; name }
 
+let level_to_next level_num acc_points name =
   let next_level_num = level_num + 1 in
   match (next_level_num, name) with
   | 2, "undecided" ->
@@ -121,8 +121,7 @@ let change_room state world tiletype =
       }
 
 let character_action game_state s =
-  Gauges.update_gauge General [ ("health", -5) ] game_state.gauges
-    game_state.items;
+  Gauges.update_gauge General [ ("health", -5) ] game_state.gauges;
   Character.move game_state.character s.Graphics.key game_state.current_area
     (get_assets game_state.world);
   let x = game_state.character.pos.x in
@@ -161,8 +160,7 @@ let rec in_game name png level level_json points =
           | NoModule -> ()
       with
       | Gauges.Negative_Gauge i -> transition_in_game level name i
-      | exn -> raise exn 
-   
+      | exn -> raise exn
     done
   with End -> ()
 
@@ -184,4 +182,3 @@ and transition_in_game level_num name points =
         | _, _ -> ()
     done
   with End -> ()
-
