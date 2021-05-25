@@ -1,2 +1,6 @@
 A lot of the tilesets and images we used in the project, we downloaded online. Here are the links to these resources:
 
+https://emily2.itch.io/modern-city-top-down-tileset-16x16
+https://limezu.itch.io/moderninteriors
+https://stealthix.itch.io/rpg-nature-tileset
+https://vectorpixelstar.itch.io/mega-pixel-art-32x32-px-icons-sprite-sheet
