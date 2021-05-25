@@ -8,8 +8,6 @@ type t = {
 
 let char_size = 16
 
-let from_json json = failwith "unimplemented"
-
 (* true if the position is vertically at the same level at the rectable *)
 let in_vertical (pos : Position.t) rect =
   pos.y < rect.top && pos.y > rect.bottom + -char_size

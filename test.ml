@@ -5,6 +5,7 @@ open Character
 open Position
 open State
 open Graphics
+open GameDataStructure
 
 (********************************************************************
    OUR APPROACH TO TESTING/TEST PLAN
@@ -227,8 +228,36 @@ let character_tests =
       person_3;
   ]
 
+let test_equal_item name input expected_output =
+  name >:: fun _ -> assert_equal expected_output input
+
+let item_t =
+  Item.init_item
+    (Yojson.Basic.from_file "testitem/item_type.json")
+    (Yojson.Basic.from_file "testitem/item_init.json")
+
+let item_iventory_type_tests =
+  [
+    test_equal_item "init with correct number of item in type"
+      (ItemTypeDict.get_size item_t.item_type)
+      4;
+    test_equal_item "init with correct number of initail item in inventory"
+      (InventoryDict.get_size item_t.inventory)
+      2;
+    test_equal_item "using up item return string option"
+      (Item.use_item item_t) (Some "red_book");
+    test_equal_item "move the selecting tool"
+      (Item.item_command item_t 'l' blank 0 0
+         (tile_type_of_tile (int_to_tile 0));
+       item_t.selected)
+      1;
+  ]
+
 let suite =
   "test suite for Cornell Simulator"
-  >::: List.flatten [ area_tests; character_tests; world_tests ]
+  >::: List.flatten
+         [
+           area_tests; character_tests; world_tests; item_iventory_type_tests;
+         ]
 
 let _ = run_test_tt_main suite

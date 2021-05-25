@@ -10,8 +10,5 @@ type t = {
   mission : (string * int) list;
 }
 
+(** [form_json file_name] is the representation of effect in json [file_name] *)
 val from_json : Yojson.Basic.t -> t
-
-(* (** [execute_effect state effect] updatad the game's gauges in [state] to
-   match the effects specified in [effect] *) val execute_effect : Item.t -> t
-   -> unit *)

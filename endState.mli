@@ -1,3 +1,5 @@
+(** Module for displaying the end state of the game (game is done). *)
+
 (** [points_message points] calculates the points to a GPA format, then
     returns a string message to display to the player*)
 val points_message : int -> string

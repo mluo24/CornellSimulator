@@ -132,7 +132,7 @@ let character_action game_state s =
     change_room game_state game_state.world
       (get_tile row col 1 game_state.current_area);
     refresh_character game_state.character game_state.current_area
-      (get_assets game_state.world) )
+      (get_assets game_state.world))
 
 let item_action game_state c =
   let x = game_state.character.pos.x in
@@ -159,12 +159,12 @@ let rec in_game name png level level_json points =
           | Gauges -> Gauges.use_item game_state.items game_state.gauges
           | NoModule -> ()
       with
-      | Gauges.Negative_Gauge i -> transition_in_game level name i
+      | Gauges.Negative_Gauge i -> transition_in_game level name i png
       | exn -> raise exn
     done
   with End -> ()
 
-and transition_in_game level_num name points =
+and transition_in_game level_num name points png =
   try
     while true do
       draw_t ();
@@ -176,8 +176,7 @@ and transition_in_game level_num name points =
         | x, y when x > 0 && x < 500 && y > 0 && y < 700 ->
             let next_level = level_to_next level_num points name in
             if next_level.level > 0 then
-              in_game "undecided" "assets/character/freshman.png"
-                next_level.level next_level.json points
+              in_game name png next_level.level next_level.json points
             else EndState.in_game points
         | _, _ -> ()
     done
