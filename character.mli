@@ -8,7 +8,10 @@ open Images
 (** The type of values representing character. Record fields include:
 
     - [name] : name of the character,
-    - [tile_mem] : mutable AreaMap.tile that the character is over,
+    - [layer1_tile_mem] : mutable AreaMap.tile that the character is over in
+      the first layer,
+    - [layer2_tile_mem] : mutable AreaMap.tile that the character is over in
+      the second layer,
     - [rep] : mutable character image,
     - [pos] : mutable Position.t of the character
     - [speed] : number of pixels the character moves per keyboard input *)
@@ -35,39 +38,38 @@ val get_user_name : t -> string
 (** [get_size t] is the size of character [t] in graphical interface unit*)
 val get_size : t -> int
 
-(** [player_image_size_width] is width of the image, measured in unit tile
-    lengths*)
-
-(* val player_image_size_width : int *)
-
-(** [world] is the AreaMap.t type of the json data used to represent the map
-    referenced as the character moves*)
-
-(* val world : AreaMap.t *)
-
 (** [get_person_image person] matches [person] to an image representing the
     character in the pose of the direction of the character's movement*)
 val get_person_image : string -> Position.direction -> Graphics.image
 
-(** [init_character] initializes the character [t]*)
+(** [init_character name png map] initializes the character [t]*)
 val init_character : string -> string -> AreaMap.t -> t
 
-(** [move_up t] implements the animation of the character's up movement.*)
+(** [move_up t map assets] implements the animation of the character's up
+    movement and updates the character position. *)
 val move_up : t -> AreaMap.t -> Images.t array array -> unit
 
-(** [move_right t] implements the animation of the character's right movement.*)
+(** [move_right t map assets] implements the animation of the character's
+    right movement and updates the character position. *)
 val move_right : t -> AreaMap.t -> Images.t array array -> unit
 
-(** [move_down t] implements the animation of the character's right movement.*)
+(** [move_down t map assets] implements the animation of the character's up
+    movement and updates the character position. *)
 val move_down : t -> AreaMap.t -> Images.t array array -> unit
 
-(** [move_left t] implements the animation of the character's right movement.*)
+(** [move_left t map assets] implements the animation of the character's left
+    movement and updates the character position. *)
 val move_left : t -> AreaMap.t -> Images.t array array -> unit
 
+(** [refresh_character t map assets] reloads the current tile layers the
+    character is standing on from the updated [map] and redraws the current
+    tile layers and character. *)
 val refresh_character : t -> AreaMap.t -> Images.t array array -> unit
 
 (** [move t ch] matches character [t] to the animation in the direction
-    specified by character [ch] based on the character current speed Require:
-    ch must be 'w', 'a', 's', 'd' which represent up, left, down, right
-    respectively. If not the keys specified, the character does not move. *)
+    specified by character [ch] based on the character current speed.
+
+    Requires: [ch] must be ['w'], ['a'], ['s'], ['d'] which represent up,
+    left, down, right respectively. If not the keys specified, the character
+    does not move. *)
 val move : t -> char -> AreaMap.t -> Images.t array array -> unit

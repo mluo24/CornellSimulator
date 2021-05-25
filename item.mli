@@ -20,6 +20,14 @@ exception NotEnoughSpace
 
 val inventory_height : int
 
+(** [item_command t c map row col tiletype] evaluates [c] to be a character as
+    input from the keyboard:
+
+    - ['j'] moves the inventory selection to the left
+    - ['l'] moves the inventory selection to the right
+    - ['k'] picks up the item and adds it to the inventory if the tile is an
+      [ItemTile], as specified in the given [map] and location of the
+      character. *)
 val item_command :
   t -> char -> AreaMap.t -> int -> int -> AreaMap.tiletype -> unit
 

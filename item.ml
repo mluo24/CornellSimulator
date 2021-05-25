@@ -180,7 +180,8 @@ let item_select_redraw t ol n =
       | None ->
           draw_box t { x = x_pos_new; y = start_pos_y } None selected_col
       | Some (k, v) ->
-          draw_box t { x = x_pos_new; y = start_pos_y } (Some v) selected_col)
+          draw_box t { x = x_pos_new; y = start_pos_y } (Some v) selected_col
+      )
 
 let move_select_left t =
   let ol = t.selected in
@@ -231,7 +232,7 @@ let use_item t =
         let new_val = v - 1 in
         if new_val <= 0 then (
           if t.selected > 0 then t.selected <- t.selected - 1;
-          None)
+          None )
         else Some { value = new_val; max; item_type }
   in
 
@@ -280,15 +281,14 @@ let item_command t c map row col tiletype =
   match c with
   | 'j' -> move_select_left t
   | 'l' -> move_select_right t
-  (* | 'i' -> use_item Some t *)
   | 'k' -> (
       if is_item_tile tiletype then
         match tiletype with
         | ItemTile (str_type, _) -> (
             match acquire t str_type with
             | Legal -> remove_item_tile map row col
-            | Illegal -> print_endline "inventory full")
-        | _ -> failwith "no")
+            | Illegal -> print_endline "inventory full" )
+        | _ -> failwith "no" )
   | _ -> ()
 
 (* item name *)
