@@ -6,11 +6,13 @@ open GameDataStructure
 open Effect
 open Item
 
+exception Negative_Gauge of int
+
 (** [t] is the state of all game's guages. [t] gives information on the current gauges value  *)
 type t = {
   mutable general : GameIntDict.t;
   mutable mission : GameIntDict.t;
-  mutable level : int
+  class_map: ClassMapping.t
 }
 (** [gauge_type] is the type of gauge: General and Mission for mission specific gauges *)
 type gauge_type =
@@ -33,11 +35,11 @@ include Drawable with type t := t
     for wining ie. all starting level of gauges in "gauges" must be greater
     than 0 and at least one of gauge level in "missions" must be less than max
     gauge level *)
-val init_gauges : Yojson.Basic.t -> int -> t
+val init_gauges : Yojson.Basic.t -> t
 
 
 (** [update_gauge g_type lst state] update the gauge type [g_type] in [state.gauges] by incrementing or decrementing gauge name specified in [lst] by a value  *)
-val update_gauge: gauge_type-> (GameDataStructure.GameIntDict.key * int) list-> t -> Item.t ->  unit
+val update_gauge: gauge_type-> (GameDataStructure.GameIntDict.key * int) list-> t ->  unit
 
 val use_item : Item.t -> t -> unit 
 

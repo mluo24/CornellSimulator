@@ -43,8 +43,8 @@
   ],
   "missions": [
     {
-      "name": "AEM 4000",
-      "max": 20,
+      "name": "class1",
+      "max": 25,
       "init": 0,
       "color": {
         "r": 8,
@@ -53,8 +53,8 @@
       }
     },
     {
-      "name": "HME 4000",
-      "max": 20,
+      "name": "class2",
+      "max": 25,
       "init": 0,
       "color": {
         "r": 8,
@@ -63,14 +63,28 @@
       }
     },
     {
-      "name": "PHIL 4000",
-      "max": 20,
+      "name": "class3",
+      "max": 25,
       "init": 0,
       "color": {
         "r": 8,
         "g": 200,
         "b": 200
       }
+    }
+  ],
+  "map_mission": [
+    {
+      "id": "class1",
+      "map": "ECON 3300"
+    },
+    {
+      "id": "class2",
+      "map": "PHIL 4340"
+    },
+    {
+      "id": "class3",
+      "map": "PHYS 1116"
     }
   ]
 }
