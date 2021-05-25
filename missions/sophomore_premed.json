@@ -76,15 +76,15 @@
   "map_mission": [
     {
       "id": "class1",
-      "map": "SOC 2208"
+      "map": "ORGO 2340"
     },
     {
       "id": "class2",
-      "map": "AEM 3240"
+      "map": "BIO 3000"
     },
     {
       "id": "class3",
-      "map": "CS 3110"
+      "map": "CHEM 3000"
     }
   ]
 }

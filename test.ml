@@ -181,12 +181,16 @@ let character_tests =
       { x = (person_1 ()).pos.x - 32; y = (person_1 ()).pos.y }
       person_1;
     move_test_pos "move person_1 right one with key d" 'd'
-      { x = 384; y = 416 } person_1;
-    move_test_pos "move person_1 down one with key s" 's' { x = 352; y = 384 }
+      { x = (person_1 ()).pos.x + 32; y = (person_1 ()).pos.y }
       person_1;
-    move_test_pos "move person_1 up one with key w" 'w' { x = 352; y = 448 }
+    move_test_pos "move person_1 down one with key s" 's'
+      { x = (person_1 ()).pos.x; y = (person_1 ()).pos.y - 32 }
       person_1;
-    move_test_pos "person_1 will not move with key z" 'z' { x = 352; y = 416 }
+    move_test_pos "move person_1 up one with key w" 'w'
+      { x = (person_1 ()).pos.x; y = (person_1 ()).pos.y + 32 }
+      person_1;
+    move_test_pos "person_1 will not move with key z" 'z'
+      { x = (person_1 ()).pos.x; y = (person_1 ()).pos.y }
       person_1;
     move_test_pos "person_2 can't move any further right with key d" 'd'
       { x = Position.x_dim - 32; y = Position.y_dim - 32 }
@@ -200,6 +204,9 @@ let character_tests =
     move_test_pos "person_2 can move left" 'a'
       { x = Position.x_dim - 64; y = Position.y_dim - 32 }
       person_2;
+    move_test_pos "person_2 can not move with key z" 'z'
+      { x = Position.x_dim - 32; y = Position.y_dim - 32 }
+      person_2;
     move_test_pos "person_3 can't move any further left with key a" 'a'
       { x = 0; y = 0 } person_3;
     move_test_pos "person_3 can't move any further down with key s" 's'
@@ -208,8 +215,99 @@ let character_tests =
       person_3;
     move_test_pos "person_3 can move up with key w" 'w' { x = 0; y = 32 }
       person_3;
+    move_test_pos "person_3 can not move with key z" 'z' { x = 0; y = 0 }
+      person_3;
   ]
 
-let suite = "test suite for m1" >::: List.flatten [ character_tests ]
+let level_to_next_test level_num acc_points name expected_output =
+  let next_level = State.level_to_next level_num acc_points name in
+  name >:: fun _ ->
+  assert_equal expected_output.json next_level.json ~printer: ;
+  assert_equal expected_output.level next_level.level;
+  assert_equal expected_output.points next_level.points;
+  assert_equal expected_output.name next_level.name
+
+let state_tests =
+  [
+    level_to_next_test 1 0 "undecided"
+      {
+        json = "missions/sophomore_undecided.json";
+        level = 2;
+        points = 0;
+        name = "undecided";
+      };
+    level_to_next_test 2 0 "undecided"
+      {
+        json = "missions/sophomore_undecided.json";
+        level = 3;
+        points = 0;
+        name = "undecided";
+      };
+    level_to_next_test 3 0 "undecided"
+      {
+        json = "missions/sophomore_undecided.json";
+        level = 4;
+        points = 0;
+        name = "undecided";
+      };
+    level_to_next_test 4 0 "undecided"
+      {
+        json = "missions/sophomore_undecided.json";
+        level = 0;
+        points = 0;
+        name = "undecided";
+      };
+    level_to_next_test 1 0 "undecided"
+      {
+        json = "missions/sophomore_undecided.json";
+        level = 2;
+        points = 0;
+        name = "undecided";
+      };
+    level_to_next_test 2 0 "premed"
+      {
+        json = "missions/sophomore_premed.json";
+        level = 3;
+        points = 0;
+        name = "premed";
+      };
+    level_to_next_test 3 0 "premed"
+      {
+        json = "missions/sophomore_premed.json";
+        level = 4;
+        points = 0;
+        name = "premed";
+      };
+    level_to_next_test 4 0 "premed"
+      {
+        json = "missions/sophomore_premed.json";
+        level = 0;
+        points = 0;
+        name = "premed";
+      };
+    level_to_next_test 2 0 "engineer"
+      {
+        json = "missions/sophomore_engineer.json";
+        level = 3;
+        points = 0;
+        name = "engineer";
+      };
+    level_to_next_test 3 0 "engineer"
+      {
+        json = "missions/sophomore_engineer.json";
+        level = 4;
+        points = 0;
+        name = "engineer";
+      };
+    level_to_next_test 4 0 "engineer"
+      {
+        json = "missions/sophomore_engineer.json";
+        level = 0;
+        points = 0;
+        name = "engineer";
+      };
+  ]
+
+let suite = "test suite for m1" >::: List.flatten [ state_tests ]
 
 let _ = run_test_tt_main suite

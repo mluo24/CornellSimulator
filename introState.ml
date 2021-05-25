@@ -96,10 +96,10 @@ let in_game () =
       match (x, y) with
       | x, y when match_student engineer x y ->
           State.in_game engineer.name engineer.png_file 1
-            "missions/freshman_undecided.json" 0
+            "missions/freshman_engineer.json" 0
       | x, y when match_student premed x y ->
           State.in_game premed.name premed.png_file 1
-            "missions/freshman_undecided.json" 0
+            "missions/freshman_premed.json" 0
       | x, y when match_student undecided x y ->
           State.in_game undecided.name undecided.png_file 1
             "missions/freshman_undecided.json" 0
