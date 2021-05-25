@@ -1,8 +1,7 @@
 open ImageHandler
 
+(** TODO implement points caluclation here*)
 let points_message points = "You have graduated! Your GPA is : " ^ "3.2"
-
-(*string_of_int points*)
 
 let draw points =
   let img = ImageHandler.get_entire_image "assets/end_state.png" in
@@ -11,19 +10,17 @@ let draw points =
 
 exception End
 
-let end_game () = failwith "unimplemented"
-
 let in_game points =
   try
     while true do
       draw points;
       let s = Graphics.wait_next_event [ Graphics.Button_down ] in
-      if s.Graphics.button then Graphics.moveto 500 200;
-      let x = fst (Graphics.mouse_pos ()) in
-      let y = snd (Graphics.mouse_pos ()) in
-      match (x, y) with
-      | x, y when x > 339 && x < 476 && y > 292 && y < 334 ->
-          Graphics.close_graph ()
-      | _, _ -> ()
+      if s.Graphics.button then
+        let x = fst (Graphics.mouse_pos ()) in
+        let y = snd (Graphics.mouse_pos ()) in
+        match (x, y) with
+        | x, y when x > 0 && x < 1000 && y > 0 && y < 1000 ->
+            Graphics.close_graph ()
+        | _, _ -> ()
     done
-  with End -> end_game ()
+  with End -> ()
