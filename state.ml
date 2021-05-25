@@ -7,7 +7,6 @@ open Yojson.Basic
 open ImageHandler
 open World
 open AreaMap
-open Mission
 open Rect
 open EndState
 
