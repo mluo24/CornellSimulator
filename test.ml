@@ -32,7 +32,7 @@ open Graphics
    this. As well, some functions return a specific type that is defined in the
    module, which in this case is obscured from the client. Therefore, we
    "test" those through the other methods to make sure it has been defined
-   properly. One module that we definitely did not need to test was State,
+   properly. One module that we did not test as throughly was State,
    especially because it is meant as a container to hold all of the other
    modules, and if their functions are working, State is more than likely
    working. As well, State directly controls what is being shown and the
@@ -47,6 +47,9 @@ open Graphics
 
 let area_test_int_to_tile name i expected_output =
   name >:: fun _ -> assert_equal expected_output (int_to_tile i)
+
+let area_test_tile_type_of_tile name tile expected_output =
+  name >:: fun _ -> assert_equal expected_output (tile_type_of_tile tile)
 
 let area_test_get_layer name map layer expected_output =
   name >:: fun _ -> assert_equal expected_output (get_layer map layer)
@@ -66,8 +69,11 @@ let area_test_get_tile_size name map expected_output =
   name >:: fun _ ->
   assert_equal expected_output (get_tile_size map) ~printer:string_of_int
 
-let area_test_get_assets name map expected_output =
-  name >:: fun _ -> assert_equal expected_output (get_assets map)
+let area_test_is_solid_tile name map x y expected_output =
+  name >:: fun _ -> assert_equal expected_output (is_solid_tile map x y)
+
+let area_test_is_door_tile name map x y expected_output =
+  name >:: fun _ -> assert_equal expected_output (is_door_tile map x y)
 
 let blank = map_from_json_file "testworlds/blankmap.json"
 
@@ -83,6 +89,18 @@ let area_tests =
     area_test_int_to_tile "1 gives grass" 1 Grass;
     area_test_int_to_tile "27 gives top of door" 27 DoorTop;
     area_test_int_to_tile "28 gives bottom of door" 28 DoorBot;
+    area_test_tile_type_of_tile "Grass is standard tile" Grass
+      (StandardTile Grass);
+    area_test_tile_type_of_tile "Bush is solid tile" Bush (SolidTile Bush);
+    area_test_tile_type_of_tile "DoorTop is door tile" DoorTop
+      (DoorTile ("classroom", { x = 0; y = 0 }, DoorTop));
+    area_test_tile_type_of_tile "Grass is standard tile" Grass
+      (StandardTile Grass);
+    area_test_tile_type_of_tile "Bush is solid tile" Bush (SolidTile Bush);
+    area_test_tile_type_of_tile "DoorTop is door tile" DoorTop
+      (DoorTile ("classroom", { x = 0; y = 0 }, DoorTop));
+    area_test_tile_type_of_tile "RedBook is item tile" (RedBook "red_book")
+      (ItemTile ("red_book", RedBook "red_book"));
     area_test_get_layer "empty file gives empty array" blank 1
       (Array.make 0 (StandardTile Blank));
     area_test_get_layer "testmap.json" map1 1
@@ -110,6 +128,11 @@ let area_tests =
     area_test_get_tile_size "blank has 1x1 tile size" blank 1;
     area_test_get_tile_size "map2 has 16x16 tile size" map2 16;
     area_test_get_tile_size "map_size_32 has 32x32 tile size" map_size_32 32;
+    area_test_is_solid_tile "area here is solid tile" map_size_32 160 256 true;
+    area_test_is_solid_tile "area here is not solid tile" map_size_32 0 0
+      false;
+    area_test_is_door_tile "area here is door tile" map_size_32 224 224 true;
+    area_test_is_door_tile "area here is not door tile" map_size_32 0 0 false;
   ]
 
 let testworld = load_world "testworlds"
@@ -189,6 +212,9 @@ let character_tests =
     move_test_pos "person_2 can move left" 'a'
       { x = Position.x_dim - 64; y = Position.y_dim - 32 }
       person_2;
+    move_test_pos "person_2 can not move with key z" 'z'
+      { x = Position.x_dim - 32; y = Position.y_dim - 32 }
+      person_2;
     move_test_pos "person_3 can't move any further left with key a" 'a'
       { x = 0; y = 0 } person_3;
     move_test_pos "person_3 can't move any further down with key s" 's'
@@ -197,10 +223,102 @@ let character_tests =
       person_3;
     move_test_pos "person_3 can move up with key w" 'w' { x = 0; y = 32 }
       person_3;
+    move_test_pos "person_3 can not move with key z" 'z' { x = 0; y = 0 }
+      person_3;
+  ]
+
+let level_to_next_test level_num acc_points name expected_output =
+  let next_level = State.level_to_next level_num acc_points name in
+  name >:: fun _ ->
+  assert_equal expected_output.json next_level.json;
+  assert_equal expected_output.level next_level.level;
+  assert_equal expected_output.points next_level.points;
+  assert_equal expected_output.name next_level.name
+
+let state_tests =
+  [
+    level_to_next_test 1 0 "undecided"
+      {
+        json = "missions/sophomore_undecided.json";
+        level = 2;
+        points = 0;
+        name = "undecided";
+      };
+    level_to_next_test 2 0 "undecided"
+      {
+        json = "missions/sophomore_undecided.json";
+        level = 3;
+        points = 0;
+        name = "undecided";
+      };
+    level_to_next_test 3 0 "undecided"
+      {
+        json = "missions/sophomore_undecided.json";
+        level = 4;
+        points = 0;
+        name = "undecided";
+      };
+    level_to_next_test 4 0 "undecided"
+      {
+        json = "missions/sophomore_undecided.json";
+        level = 0;
+        points = 0;
+        name = "undecided";
+      };
+    level_to_next_test 1 0 "undecided"
+      {
+        json = "missions/sophomore_undecided.json";
+        level = 2;
+        points = 0;
+        name = "undecided";
+      };
+    level_to_next_test 2 0 "premed"
+      {
+        json = "missions/sophomore_premed.json";
+        level = 3;
+        points = 0;
+        name = "premed";
+      };
+    level_to_next_test 3 0 "premed"
+      {
+        json = "missions/sophomore_premed.json";
+        level = 4;
+        points = 0;
+        name = "premed";
+      };
+    level_to_next_test 4 0 "premed"
+      {
+        json = "missions/sophomore_premed.json";
+        level = 0;
+        points = 0;
+        name = "premed";
+      };
+    level_to_next_test 2 0 "engineer"
+      {
+        json = "missions/sophomore_engineer.json";
+        level = 3;
+        points = 0;
+        name = "engineer";
+      };
+    level_to_next_test 3 0 "engineer"
+      {
+        json = "missions/sophomore_engineer.json";
+        level = 4;
+        points = 0;
+        name = "engineer";
+      };
+    level_to_next_test 4 0 "engineer"
+      {
+        json = "missions/sophomore_engineer.json";
+        level = 0;
+        points = 0;
+        name = "engineer";
+      };
   ]
 
 let suite =
   "test suite for Cornell Simulator"
-  >::: List.flatten [ area_tests; character_tests; world_tests ]
+  >::: List.flatten
+         [ area_tests; character_tests; world_tests (* state_tests *) ]
 
 let _ = run_test_tt_main suite
