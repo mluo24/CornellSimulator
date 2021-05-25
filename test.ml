@@ -45,11 +45,11 @@ open Graphics
    the game works correctly from a visual and player standpoint, and the basic
    tests that in this file all pass, this system is very likely to be correct. *)
 
-let area_test_int_to_tile name i expected_output = name >:: fun _ ->
-  assert_equal expected_output (int_to_tile i)
+let area_test_int_to_tile name i expected_output =
+  name >:: fun _ -> assert_equal expected_output (int_to_tile i)
 
-let area_test_get_tile_arr name map expected_output = name >:: fun _ ->
-  assert_equal expected_output (get_tile_arr map)
+let area_test_get_tile_arr name map expected_output =
+  name >:: fun _ -> assert_equal expected_output (get_tile_arr map)
 
 let area_test_get_layer name map layer expected_output =
   name >:: fun _ -> assert_equal expected_output (get_layer map layer)
@@ -57,14 +57,16 @@ let area_test_get_layer name map layer expected_output =
 let area_test_get_tile name row col layer map expected_output =
   name >:: fun _ -> assert_equal expected_output (get_tile row col layer map)
 
-let area_test_get_cols name map expected_output = name >:: fun _ ->
+let area_test_get_cols name map expected_output =
+  name >:: fun _ ->
   assert_equal expected_output (get_cols map) ~printer:string_of_int
 
-let area_test_get_tile_size name map expected_output = name >:: fun _ ->
+let area_test_get_tile_size name map expected_output =
+  name >:: fun _ ->
   assert_equal expected_output (get_tile_size map) ~printer:string_of_int
 
-let area_test_get_assets name map expected_output = name >:: fun _ ->
-  assert_equal expected_output (get_assets map)
+let area_test_get_assets name map expected_output =
+  name >:: fun _ -> assert_equal expected_output (get_assets map)
 
 let blank = map_from_json_file "blankmap.json"
 
@@ -160,7 +162,7 @@ let move_test_pos name k expected_output p =
 
 let character_tests =
   [
-   move_test_pos "move person_1 left with key a" 'a'
+    move_test_pos "move person_1 left with key a" 'a'
       { x = (person_1 ()).pos.x - 32; y = (person_1 ()).pos.y }
       person_1;
     move_test_pos "move person_1 right one with key d" 'd'
@@ -205,7 +207,7 @@ let character_tests =
 let level_to_next_test level_num acc_points name expected_output =
   let next_level = State.level_to_next level_num acc_points name in
   name >:: fun _ ->
-  assert_equal expected_output.json next_level.json ~printer: ;
+  assert_equal expected_output.json next_level.json;
   assert_equal expected_output.level next_level.level;
   assert_equal expected_output.points next_level.points;
   assert_equal expected_output.name next_level.name
