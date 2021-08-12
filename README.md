@@ -1,4 +1,5 @@
 # Cornell Simulator
+**Note: this is forked from MinaJP, as part of a group final project for CS 3110.**
 
 This is a game that simulates the life of a Cornell student! Work through tasks by collecting items, but do so before you run out of energy!
 
